@@ -1,0 +1,1404 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="安卓," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/lufei.jpg?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="前言
+Android源码分析">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android源码分析">
+<meta property="og:url" content="http://yoursite.com/2016/08/31/Android源码分析/index.html">
+<meta property="og:site_name" content="KidSea's Blog">
+<meta property="og:description" content="前言
+Android源码分析">
+<meta property="og:image" content="http://yoursite.com/images/Handler消息机制.png">
+<meta property="og:image" content="http://yoursite.com/images/AsyncTask分析.png">
+<meta property="og:updated_time" content="2016-08-31T14:23:40.688Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android源码分析">
+<meta name="twitter:description" content="前言
+Android源码分析">
+<meta name="twitter:image" content="http://yoursite.com/images/Handler消息机制.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/08/31/Android源码分析/"/>
+
+  <title> Android源码分析 | KidSea's Blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?a19b4052e92d3054ac7023476b52e8a9";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta custom-logo">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">KidSea's Blog</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Android源码分析
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-08-31T20:36:45+08:00" content="2016-08-31">
+              2016-08-31
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/08/31/Android源码分析/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/08/31/Android源码分析/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2016/08/31/Android源码分析/" class="leancloud_visitors" data-flag-title="Android源码分析">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+              &nbsp; | &nbsp;
+              <span class="page-pv"><i class="fa fa-file-o"></i>
+              <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+              </span>
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><hr>
+<p><strong>Android源码分析</strong><br><a id="more"></a></p>
+<h2 id="内容"><a href="#内容" class="headerlink" title="内容"></a>内容</h2><hr>
+<h3 id="Android系统启动流程"><a href="#Android系统启动流程" class="headerlink" title="Android系统启动流程"></a>Android系统启动流程</h3><ul>
+<li><p>当系统引导程序启动Linux内核，内核会加载各种数据结构，和驱动程序，加载完毕之后，Android系统开始启动并加载第一个用户级别的进程：init（system/core/init/Init.c）</p>
+</li>
+<li><p>查看Init.c代码，看main函数</p>
+<pre><code>int main(int argc, char **argv)
+{
+        ...
+    //执行Linux指令
+    mkdir(&quot;/dev&quot;, 0755);
+    mkdir(&quot;/proc&quot;, 0755);
+    mkdir(&quot;/sys&quot;, 0755);
+
+      ...
+    //解析执行init.rc配置文件
+    init_parse_config_file(&quot;/init.rc&quot;);
+    ...
+}
+</code></pre></li>
+<li><p>在system\core\rootdir\Init.rc中定义好的指令都会开始执行，其中执行了很多bin指令，启动系统服务</p>
+<pre><code>//启动孵化器进程，此进程是Android系统启动关键服务的一个母进程
+service zygote /system/bin/app_process -Xzygote /system/bin --zygote --start-system-server
+socket zygote stream 666
+    onrestart write /sys/android_power/request_state wake
+onrestart write /sys/power/state on
+onrestart restart media
+onrestart restart netd
+</code></pre></li>
+<li><p>在app_process文件夹下找到app_main.cpp，查看main函数，发现以下代码</p>
+<pre><code>int main(int argc, const char* const argv[])
+{
+       ...
+    //启动一个系统服务：ZygoteInit
+    runtime.start(&quot;com.android.internal.os.ZygoteInit&quot;,startSystemServer);
+    ...
+}
+</code></pre></li>
+<li><p>在ZygoteInit.java中，查看main方法</p>
+<pre><code> public static void main(String argv[]) {
+    ...
+    //加载Android系统需要的类
+    preloadClasses();
+    ...
+    if (argv[1].equals(&quot;true&quot;)) {
+        //调用方法启动一个系统服务
+        startSystemServer();
+    }
+    ...
+}
+</code></pre></li>
+<li><p>startSystemServer()方法的方法体</p>
+<pre><code>String args[] = {
+    &quot;--setuid=1000&quot;,
+    &quot;--setgid=1000&quot;,
+    &quot;--setgroups=1001,1002,1003,1004,1005,1006,1007,1008,1009,1010,1018,3001,3002,3003&quot;,
+    &quot;--capabilities=130104352,130104352&quot;,
+    &quot;--runtime-init&quot;,
+    &quot;--nice-name=system_server&quot;,
+    &quot;com.android.server.SystemServer&quot;,
+};
+
+...
+//分叉启动上面字符串数组定义的服务
+ pid = Zygote.forkSystemServer(
+ parsedArgs.uid, parsedArgs.gid,
+ parsedArgs.gids, debugFlags, null,
+ parsedArgs.permittedCapabilities,
+ parsedArgs.effectiveCapabilities);
+</code></pre></li>
+<li><p>SystemServer服务被启动</p>
+<pre><code>public static void main(String[] args) {
+    ...
+    //加载动态链接库
+     System.loadLibrary(&quot;android_servers&quot;);
+    //执行链接库里的init1方法
+    init1(args);
+    ...
+}
+</code></pre></li>
+<li><p>动态链接库文件和java类包名相同，找到com_android_server_SystemServer.cpp文件</p>
+</li>
+<li><p>在com_android_server_SystemServer.cpp文件中，找到了</p>
+<pre><code>static JNINativeMethod gMethods[] = {
+    /* name, signature, funcPtr */
+    //给init1方法映射一个指针，调用system_init方法
+    { &quot;init1&quot;, &quot;([Ljava/lang/String;)V&quot;, (void*) android_server_SystemServer_init1 },
+};
+</code></pre></li>
+<li><p>android_server_SystemServer_init1方法体中调用了system_init()，system_init()没有方法体</p>
+</li>
+<li><p>在system_init.cpp文件中找到system_init()方法，方法体中</p>
+<pre><code>//执行了SystemServer.java的init2方法
+runtime-&gt;callStatic(&quot;com/android/server/SystemServer&quot;, &quot;init2&quot;);
+</code></pre></li>
+<li><p>回到SystemServer.java，在init2的方法体中</p>
+<pre><code>//启动一个服务线程
+Thread thr = new ServerThread();
+thr.start();
+</code></pre></li>
+<li><p>在ServerThread的run方法中</p>
+<pre><code>//准备消息轮询器
+Looper.prepare();
+...
+//启动大量的系统服务并把其逐一添加至ServiceManager
+ServiceManager.addService(Context.WINDOW_SERVICE, wm);
+...
+//调用systemReady，准备创建第一个activity
+ ((ActivityManagerService)ActivityManagerNative.getDefault())
+        .systemReady(new Runnable(){
+        ...
+}）；
+</code></pre></li>
+<li><p>在ActivityManagerService.java中，有systemReady方法，方法体里找到</p>
+<pre><code>//检测任务栈中有没有activity，如果没有，创建Launcher
+mMainStack.resumeTopActivityLocked(null);
+</code></pre></li>
+<li><p>在ActivityStack.java中，方法resumeTopActivityLocked</p>
+<pre><code>// Find the first activity that is not finishing.
+ActivityRecord next = topRunningActivityLocked(null);
+...
+if (next == null) {
+    // There are no more activities!  Let&apos;s just start up the
+    // Launcher...
+    if (mMainStack) {
+        return mService.startHomeActivityLocked();
+    }
+}
+...
+</code></pre></li>
+</ul>
+<hr>
+<h3 id="Handler消息机制"><a href="#Handler消息机制" class="headerlink" title="Handler消息机制"></a>Handler消息机制</h3><ul>
+<li><p>Message类的obtain方法</p>
+<ul>
+<li>消息队列顺序的维护是使用单链表的形式来维护的</li>
+<li><p>把消息池里的第一条数据取出来，然后把第二条变成第一条</p>
+<pre><code>if (sPool != null) {
+     Message m = sPool;
+     sPool = m.next;
+     m.next = null;
+     sPoolSize--;
+     return m;
+ }
+</code></pre></li>
+</ul>
+</li>
+<li><p>创建Handler对象时，在构造方法中会获取Looper和MessageQueue的对象</p>
+<pre><code>public Handler() {
+    ...
+    //拿到looper
+    mLooper = Looper.myLooper();
+    ...
+    //拿到消息队列
+    mQueue = mLooper.mQueue;
+    mCallback = null;
+}
+</code></pre></li>
+<li><p>查看myLooper方法体，发现Looper对象是通过ThreadLocal得到的，再查找ThreadLocal的set方法时发现</p>
+<ul>
+<li><p>Looper是直接new出来的，并且在Looper的构造方法中，new出了消息队列对象</p>
+<pre><code>sThreadLocal.set(new Looper());
+
+private Looper() {
+    mQueue = new MessageQueue();
+    mRun = true;
+    mThread = Thread.currentThread();
+   }
+</code></pre></li>
+<li>sThreadLocal.set(new Looper())是在Looper.prepare方法中调用的</li>
+</ul>
+</li>
+<li><p>prepare方法是在prepareMainLooper()方法中调用的</p>
+<pre><code>public static final void prepareMainLooper() {
+       prepare();
+    ...
+}
+</code></pre></li>
+<li><p>在应用启动时，主线程要被启动，ActivityThread会被创建，在此类的main方法中</p>
+<pre><code>public static final void main(String[] args) {
+    ...
+    //创建Looper和MessageQueue
+    Looper.prepareMainLooper();
+    ...
+    //轮询器开始轮询
+    Looper.loop();
+    ...
+}
+</code></pre></li>
+<li><p>Looper.loop()方法中有一个死循环</p>
+<pre><code>while (true) {
+    //取出消息队列的消息，可能会阻塞
+    Message msg = queue.next(); // might block
+    ...
+    //解析消息，分发消息
+    msg.target.dispatchMessage(msg);
+    ...
+}
+</code></pre></li>
+</ul>
+<ul>
+<li>Linux的一个进程间通信机制：管道（pipe）。原理：在内存中有一个特殊的文件，这个文件有两个句柄（引用），一个是读取句柄，一个是写入句柄</li>
+<li><p>主线程Looper从消息队列读取消息，当读完所有消息时，进入睡眠，主线程阻塞。子线程往消息队列发送消息，并且往管道文件写数据，主线程即被唤醒，从管道文件读取数据，主线程被唤醒只是为了读取消息，当消息读取完毕，再次睡眠</p>
+</li>
+<li><p>Handler发送消息，sendMessage的所有重载，实际最终都调用了sendMessageAtTime</p>
+<pre><code>public boolean sendMessageAtTime(Message msg, long uptimeMillis)
+{
+   ...
+    //把消息放到消息队列中
+    sent = queue.enqueueMessage(msg, uptimeMillis);
+   ...
+}
+</code></pre></li>
+<li><p>enqueueMessage把消息通过重新排序放入消息队列</p>
+<pre><code>final boolean enqueueMessage(Message msg, long when) {
+    ...
+    final boolean needWake;
+    synchronized (this) {
+       ...
+        //对消息的重新排序，通过判断消息队列里是否有消息以及消息的时间对比
+        msg.when = when;
+
+        Message p = mMessages;                
+        if (p == null || when == 0 || when &lt; p.when) {
+            // 如果消息队列中没有消息，或者当前消息的时候比队列中的消息的时间小，则让当前消息成为队列中的第一条消息
+            msg.next = p;
+            mMessages = msg;
+            needWake = mBlocked; // new head, might need to wake up
+        } else {        
+            // 代码能进入到这里说明消息队列中有消息，且队列中的消息时间比当前消息时间小，说明当前消息不能做为队列中的第一条消息            
+            Message prev = null;    // 当前消息要插入到这个prev消息的后面
+            // 这个while循环用于找出当前消息(msg)应该插入到消息列表中的哪个消息的后面（应该插入到prev这条消息的后面）
+            while (p != null &amp;&amp; p.when &lt;= when) {    
+                prev = p;
+                p = p.next;
+            }
+
+            // 下面两行代码
+            msg.next = prev.next;
+            prev.next = msg;
+            needWake = false; // still waiting on head, no need to wake up
+        }
+    }
+    //唤醒主线程
+    if (needWake) {
+        nativeWake(mPtr);
+    }
+    return true;
+}
+</code></pre></li>
+<li><p>Looper.loop方法中，获取消息，然后分发消息</p>
+<pre><code>//获取消息队列的消息
+ Message msg = queue.next(); // might block
+ ...
+//分发消息，消息由哪个handler对象创建，则由它分发，并由它的handlerMessage处理  
+msg.target.dispatchMessage(msg);
+</code></pre></li>
+<li><p>message对象的target属性，用于记录该消息由哪个Handler创建，在obtain方法中赋值</p>
+</li>
+<li>Handler中的Callback接口，可能过构造方法或其它方法传入</li>
+<li><p>Handler的dispatchMessage方法中：</p>
+<pre><code>public void dispatchMessage(Message msg) {
+    if (msg.callback != null) {
+        handleCallback(msg);                    // 第一优先Runnable对象
+    } else {
+        if (mCallback != null) {
+            if (mCallback.handleMessage(msg)) { // 第二优先Callback对象
+                return;
+            }
+        }
+        handleMessage(msg);
+    }
+}
+</code></pre></li>
+<li>Message中保存了callback(Runnabe)和target(Handler)，也可以调用Message的sendToTarget()方法来发消息，前提是必须已经给Message设置了target对象。</li>
+</ul>
+<p><img src="/images/Handler消息机制.png" alt=""></p>
+<p align="center">Handler消息机制</p>
+
+<hr>
+<h3 id="AsyncTask机制"><a href="#AsyncTask机制" class="headerlink" title="AsyncTask机制"></a>AsyncTask机制</h3><ul>
+<li><p>AsyncTask基本使用：</p>
+<pre><code>AsyncTask&lt;String, Integer, Object&gt; asyncTask = new AsyncTask&lt;String, Integer, Object&gt;() {
+
+    protected void onPreExecute() {};
+
+    @Override
+    protected Object doInBackground(String... params) {
+        return null;
+    }
+
+    protected void onPostExecute(Object result) {};
+
+    protected void onProgressUpdate(Integer[] values) {};
+
+};
+asyncTask.execute(&quot;params&quot;)
+</code></pre></li>
+<li><p>AsyncTask的execute方法，开始执行异步任务，在此方法体中</p>
+<pre><code>public final AsyncTask&lt;Params, Progress, Result&gt; execute(Params... params) {
+    ...
+
+    mStatus = Status.RUNNING;
+
+    //调用onPreExecute方法
+    onPreExecute();
+
+    //把参数赋值给mWorker对象
+    mWorker.mParams = params;
+    //线程池对象执行mFuture
+    sExecutor.execute(mFuture);
+
+    return this;
+}
+</code></pre></li>
+<li><p>mWorker是什么类型？，在AsyncTask的构造方法中</p>
+<pre><code>mWorker = new WorkerRunnable&lt;Params, Result&gt;() {
+    public Result call() throws Exception {
+        Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);
+        return doInBackground(mParams);
+    }
+};
+</code></pre></li>
+<li><p>然后把mWorker对象封装至FutureTask对象</p>
+<pre><code>mFuture = new FutureTask&lt;Result&gt;(mWorker)
+</code></pre></li>
+<li><p>在FutureTask的构造中，又把mWorker封装给Sync对象</p>
+<pre><code>public FutureTask(Callable&lt;V&gt; callable) {
+if (callable == null)
+    throw new NullPointerException();
+    sync = new Sync(callable);
+}
+</code></pre></li>
+<li><p>在Sync的构造方法中</p>
+<pre><code>Sync(Callable&lt;V&gt; callable) {
+    //这里的callable就是mWorker
+    this.callable = callable;
+}
+</code></pre></li>
+<li><p>线程池执行mFuture对象，此对象是FutureTask的对象，而FutureTask实现了Runnable接口</p>
+<pre><code>public final AsyncTask&lt;Params, Progress, Result&gt; execute(Params... params) {
+...
+
+//线程池对象开一个子线程去执行mFuture对象中的run方法
+sExecutor.execute(mFuture);    
+...
+</code></pre><p>  }</p>
+</li>
+<li><p>mFuture的run方法被调用了</p>
+<pre><code>public void run() {
+    sync.innerRun();
+}
+</code></pre></li>
+<li><p>在innerRun方法中，调用了callable的call方法，但是在sync被new出来的时候，在构造方法中就已经把mWorker赋值给了callable，所以实际上是调用mWorker的call方法</p>
+<pre><code>void innerRun() {
+    ...
+        //调用mWorker的call()
+        result = callable.call();
+
+        set(result);
+    ...
+}
+</code></pre></li>
+<li><p>mWorker的call在mWorker被new出来时就已经重写了</p>
+<pre><code>mWorker = new WorkerRunnable&lt;Params, Result&gt;() {
+    public Result call() throws Exception {
+       ...
+        //在子线程中调用了doInBackground方法
+        return doInBackground(mParams);
+    }
+};
+</code></pre></li>
+<li><p>call方法调用完毕后，得到doInBackground所返回的result</p>
+<pre><code>void innerRun() {
+    ...
+        result = callable.call();
+        //返回的result传入了set方法
+        set(result);
+    ...
+}
+</code></pre></li>
+<li><p>set方法体</p>
+<pre><code>protected void set(V v) {
+        sync.innerSet(v);
+}
+</code></pre></li>
+<li><p>innerSet方法体</p>
+<pre><code>if (compareAndSetState(s, RAN)) {
+           result = v;
+           releaseShared(0);
+           //关键的done方法
+           done();
+           return;
+ }
+</code></pre></li>
+<li><p>innerSet方法是属于FutureTask类的，那么done方法也是调用FutureTask类的，这个done方法定义的地方，在AsyncTask.java的构造方法里</p>
+<pre><code>mFuture = new FutureTask&lt;Result&gt;(mWorker) {
+    //此处重写done方法
+    @Override
+    protected void done() {
+</code></pre></li>
+</ul>
+<pre><code>       //获取doInbackground方法返回的结果
+        result = get();
+
+        //创建一个消息
+        message = sHandler.obtainMessage(MESSAGE_POST_RESULT,
+                new AsyncTaskResult&lt;Result&gt;(AsyncTask.this, result));
+        //把这条消息发送给创建这个消息的Handler：target.sendMessage(this)
+        message.sendToTarget();
+    }
+};
+</code></pre><ul>
+<li><p>然后sHandler的handlerMessage被触发</p>
+<pre><code>public void handleMessage(Message msg) {
+    AsyncTaskResult result = (AsyncTaskResult) msg.obj;
+    switch (msg.what) {
+        case MESSAGE_POST_RESULT:
+            //调用finish方法
+            result.mTask.finish(result.mData[0]);
+            break;
+
+    }
+}
+</code></pre></li>
+<li><p>查看AsyncTaskResult类中的mTask成员，其实它就是AsyncTask对象</p>
+</li>
+<li><p>再看AsyncTask对象的finish的方法体</p>
+<pre><code>private void finish(Result result) {
+    if (isCancelled()) result = null;
+    //调用onPostExecute方法，并传入结果
+    onPostExecute(result);
+    mStatus = Status.FINISHED;
+}
+</code></pre></li>
+</ul>
+<p><img src="/images/AsyncTask分析.png" alt=""></p>
+<p align="center">AsyncTask分析</p>
+
+
+<hr>
+<p><strong>版权声明：本文为博主原创文章，转载请注明出处<a href="https://kidsea.github.io/" target="_blank" rel="external">KidSea</a></strong></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/安卓/" rel="tag">#安卓</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/08/31/Android源码编译/" rel="next" title="Android源码编译">
+                <i class="fa fa-chevron-left"></i> Android源码编译
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/08/31/Android源码下载/" rel="prev" title="Android源码下载">
+                Android源码下载 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <div class="ds-share flat" data-thread-key="2016/08/31/Android源码分析/"
+     data-title="Android源码分析"
+     data-content=""
+     data-url="http://yoursite.com/2016/08/31/Android源码分析/">
+  <div class="ds-share-inline">
+    <ul  class="ds-share-icons-16">
+
+      <li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+      <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+      <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+      <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+      <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+
+    </ul>
+    <div class="ds-share-icons-more">
+    </div>
+  </div>
+</div>
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/08/31/Android源码分析/"
+           data-title="Android源码分析" data-url="http://yoursite.com/2016/08/31/Android源码分析/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/james.jpg"
+               alt="yuxuehai" />
+          <p class="site-author-name" itemprop="name">yuxuehai</p>
+          <p class="site-description motion-element" itemprop="description">I belive I can fly</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">49</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">11</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/KidSea" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              友情链接
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://opiece.me/" title="Chillax" target="_blank">Chillax</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://hukai.me/" title="hukai" target="_blank">hukai</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://www.csdn.net/" title="CSDN" target="_blank">CSDN</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://duanqz.github.io/" title="启智观" target="_blank">启智观</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#内容"><span class="nav-number">2.</span> <span class="nav-text">内容</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Android系统启动流程"><span class="nav-number">2.1.</span> <span class="nav-text">Android系统启动流程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Handler消息机制"><span class="nav-number">2.2.</span> <span class="nav-text">Handler消息机制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AsyncTask机制"><span class="nav-number">2.3.</span> <span class="nav-text">AsyncTask机制</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">yuxuehai</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+<div class="busuanzi-count">
+
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv"><i class="fa fa-user"></i><span class="busuanzi-value" id="busuanzi_value_site_uv"></span></span>
+  
+
+  
+    <span class="site-pv"><i class="fa fa-eye"></i><span class="busuanzi-value" id="busuanzi_value_site_pv"></span></span>
+  
+  
+</div>
+
+
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"kidsea"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+       search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="popoverlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+    'use strict';
+    $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+            // get the contents from search data
+            isfetched = true;
+            $('.popup').detach().appendTo('.header-inner');
+            var datas = $( "entry", xmlResponse ).map(function() {
+                return {
+                    title: $( "title", this ).text(),
+                    content: $("content",this).text(),
+                    url: $( "url" , this).text()
+                };
+            }).get();
+            var $input = document.getElementById(search_id);
+            var $resultContent = document.getElementById(content_id);
+            $input.addEventListener('input', function(){
+                var matchcounts = 0;
+                var str='<ul class=\"search-result-list\">';
+                var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                $resultContent.innerHTML = "";
+                if (this.value.trim().length > 1) {
+                // perform local searching
+                datas.forEach(function(data) {
+                    var isMatch = true;
+                    var content_index = [];
+                    var data_title = data.title.trim().toLowerCase();
+                    var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                    var data_url = data.url;
+                    var index_title = -1;
+                    var index_content = -1;
+                    var first_occur = -1;
+                    // only match artiles with not empty titles and contents
+                    if(data_title != '' && data_content != '') {
+                        keywords.forEach(function(keyword, i) {
+                            index_title = data_title.indexOf(keyword);
+                            index_content = data_content.indexOf(keyword);
+                            if( index_title < 0 && index_content < 0 ){
+                                isMatch = false;
+                            } else {
+                                if (index_content < 0) {
+                                    index_content = 0;
+                                }
+                                if (i == 0) {
+                                    first_occur = index_content;
+                                }
+                            }
+                        });
+                    }
+                    // show search results
+                    if (isMatch) {
+                        matchcounts += 1;
+                        str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                        var content = data.content.trim().replace(/<[^>]+>/g,"");
+                        if (first_occur >= 0) {
+                            // cut out 100 characters
+                            var start = first_occur - 20;
+                            var end = first_occur + 80;
+                            if(start < 0){
+                                start = 0;
+                            }
+                            if(start == 0){
+                                end = 50;
+                            }
+                            if(end > content.length){
+                                end = content.length;
+                            }
+                            var match_content = content.substring(start, end);
+                            // highlight all keywords
+                            keywords.forEach(function(keyword){
+                                var regS = new RegExp(keyword, "gi");
+                                match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                            });
+
+                            str += "<p class=\"search-result\">" + match_content +"...</p>"
+                        }
+                        str += "</li>";
+                    }
+                })};
+                str += "</ul>";
+                if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+                if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+                $resultContent.innerHTML = str;
+            });
+            proceedsearch();
+        }
+    });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".popoverlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+  
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("4eyaSbRt4Gxv0uJLw1stS8o3-gzGzoHsz", "mJcxoCODhi155s3ypExw4OT6");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+</body>
+</html>

@@ -1,0 +1,1234 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Java," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/lufei.jpg?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="前言
+java学习之路—–&amp;gt;Servlet编程">
+<meta property="og:type" content="article">
+<meta property="og:title" content="java学习之路-7">
+<meta property="og:url" content="http://yoursite.com/2016/09/02/java学习之路-7/index.html">
+<meta property="og:site_name" content="KidSea's Blog">
+<meta property="og:description" content="前言
+java学习之路—–&amp;gt;Servlet编程">
+<meta property="og:updated_time" content="2016-09-02T11:49:04.215Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="java学习之路-7">
+<meta name="twitter:description" content="前言
+java学习之路—–&amp;gt;Servlet编程">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/09/02/java学习之路-7/"/>
+
+  <title> java学习之路-7 | KidSea's Blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?a19b4052e92d3054ac7023476b52e8a9";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta custom-logo">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">KidSea's Blog</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                java学习之路-7
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-09-02T19:27:08+08:00" content="2016-09-02">
+              2016-09-02
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/09/02/java学习之路-7/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/09/02/java学习之路-7/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2016/09/02/java学习之路-7/" class="leancloud_visitors" data-flag-title="java学习之路-7">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+              &nbsp; | &nbsp;
+              <span class="page-pv"><i class="fa fa-file-o"></i>
+              <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+              </span>
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><hr>
+<p><strong>java学习之路—–&gt;Servlet编程</strong></p>
+<a id="more"></a>
+<h1 id="内容"><a href="#内容" class="headerlink" title="内容"></a>内容</h1><hr>
+<h2 id="Servlet编程"><a href="#Servlet编程" class="headerlink" title="Servlet编程"></a>Servlet编程</h2><h3 id="开发步骤"><a href="#开发步骤" class="headerlink" title="开发步骤"></a>开发步骤</h3><pre><code>1) 编写java类，继承HttpServlet类
+2) 重写doGet和doPost方法
+3) Servlet程序交给tomcat服务器运行
+    将程序的字节码class码拷贝到WEB-INF/classes目录下。
+    在web.xml文件里进行配置 
+    &lt;!-- 配置一个servlet --&gt;
+      &lt;!-- servlet的配置 --&gt;
+      &lt;servlet&gt;
+        &lt;!-- servlet的内部名称，自定义。尽量有意义 --&gt;
+        &lt;servlet-name&gt;FirstServlet&lt;/servlet-name&gt;
+        &lt;!-- servlet的类全名： 包名+简单类名 --&gt;
+        &lt;servlet-class&gt;gz.example.a_servlet.FirstServlet&lt;/servlet-cl
+        ass&gt;
+      &lt;/servlet&gt;
+
+
+      &lt;!-- servlet的映射配置 --&gt;
+      &lt;servlet-mapping&gt;
+        &lt;!-- servlet的内部名称，一定要和上面的内部名称保持一致！！ --&gt;
+        &lt;servlet-name&gt;FirstServlet&lt;/servlet-name&gt;
+        &lt;!-- servlet的映射路径（访问servlet的名称） --&gt;
+        &lt;url-pattern&gt;/first&lt;/url-pattern&gt;
+      &lt;/servlet-mapping&gt;
+</code></pre><h3 id="访问步骤"><a href="#访问步骤" class="headerlink" title="访问步骤"></a>访问步骤</h3><pre><code>问题：访问次URL： http://localhost:8080/day10/first
+
+前提: tomcat服务器启动时，首先加载webapp上面的web.xml的配置文件
+http:// http协议
+localhost: 到本地的hosts文件中查找是否存在该域名对应的IP地址
+            127.0.0.1
+8080：找到tomcat服务器
+/day10: 找到webapp目录下的day10目录
+first: 资源名称.
+        1）在day10的web.xml中查找是否有匹配的url-pattern的内容（/first）
+        2）如果找到匹配的url-pattern,则使用当前servlet-name的名称到
+        web.xml文件中查询是否相同名称的servlet配置
+        3）如果找到，则取出对应的servlet配置信息中的servlet-class内容：
+                字符串： gz.example.a_servlet.FirstServlet
+        通过反射
+           a) 构造FirstServlet的对象
+           b) 然后调用FirstServlet里面的方法
+</code></pre><h3 id="Servlet的映射路径"><a href="#Servlet的映射路径" class="headerlink" title="Servlet的映射路径"></a>Servlet的映射路径</h3><pre><code>&lt;!-- servlet的映射配置 --&gt;
+  &lt;servlet-mapping&gt;
+    &lt;!-- servlet的内部名称，一定要和上面的内部名称保持一致！！ --&gt;
+    &lt;servlet-name&gt;FirstServlet&lt;/servlet-name&gt;
+    &lt;!-- servlet的映射路径（访问servlet的名称） --&gt;
+    &lt;url-pattern&gt;/first&lt;/url-pattern&gt;
+  &lt;/servlet-mapping&gt;
+             url-pattern       浏览器输入
+精确匹配     /first           http://localhost:8080/day10/first
+            /itcast/demo1   http://localhost:8080/day10/itcast/demo1
+
+
+模糊匹配         /*          http://localhost:8080/day10/任意路径               
+               /itcast/*     http://localhost:8080/day10/itcast/任意
+                             路径                       
+               *.后缀名      
+
+注意: 
+    1) url-pattern 要么以/开头 要么以*开头。  例如， itcast是非法路径。
+    2）不能同时使用两种模糊匹配，例如 /itcast/*.do是非法路径
+    3）当有输入的URL有多个servlet同时被匹配的情况下：
+        3.1 精确匹配优先。（长的最像优先被匹配）
+        3.2 以后缀名结尾的模糊url-pattern优先级最低！！！               
+</code></pre><h3 id="Servlet缺省路径"><a href="#Servlet缺省路径" class="headerlink" title="Servlet缺省路径"></a>Servlet缺省路径</h3><pre><code>servlet的缺省路径（&lt;url-pattern&gt;/&lt;/url-pattern&gt;）是在tomcat服务器内置的
+一个路径。
+该路径对应的是一个DefaultServlet（缺省Servlet）。
+这个缺省的Servlet的作用是用于解析web应用的静态资源文件。
+
+问题： URL输入http://localhost:8080/day10/index.html 如何读取文件
+
+1）到当前day10应用下的web.xml文件查找是否有匹配的url-pattern。
+2）如果没有匹配的url-pattern，则交给tomcat的内置的DefaultServlet处理
+3）DefaultServlet程序到day10应用的根目录下查找是存在一个名称为
+index.html的静态文件。
+4）如果找到该文件，则读取该文件内容，返回给浏览器。
+5）如果找不到该文件，则返回404错误页面。
+
+    结论： 先找动态资源，再找静态资源。
+</code></pre><h3 id="Servlet的生命周期-重点"><a href="#Servlet的生命周期-重点" class="headerlink" title="Servlet的生命周期(重点)"></a>Servlet的生命周期(重点)</h3><pre><code>Servlet的生命周期：Servlet类对象什么时候创建，调用什么方法，什么时候销毁。
+Servlet程序的生命周期由tomcat服务器控制
+</code></pre><h4 id="Servlet重要的生命周期"><a href="#Servlet重要的生命周期" class="headerlink" title="Servlet重要的生命周期"></a>Servlet重要的生命周期</h4><pre><code>构造方法： 创建servlet对象的时候调用。默认情况下，第一次访问servlet的时候创
+建servlet对象。                        
+init方法： 创建完servlet对象的时候调用。只调用1次。
+service方法： 每次发出请求时调用。调用n次。
+destroy方法： 销毁servlet对象的时候调用。停止服务器或者重新部署web应用时销
+毁servlet对象。
+只调用1次。    只调用1次。证明servlet对象在tomcat是单实例的。
+</code></pre><h4 id="伪代码演示servlet的生命周期"><a href="#伪代码演示servlet的生命周期" class="headerlink" title="伪代码演示servlet的生命周期"></a>伪代码演示servlet的生命周期</h4><pre><code>Tomtcat内部代码运行：
+1）通过映射找到到servlet-class的内容，字符串： 
+gz.itcast.a_servlet.FirstServlet
+2）通过反射构造FirstServlet对象
+    2.1 得到字节码对象
+    Class clazz = class.forName(&quot;gz.itcast.a_servlet.FirstServlet&quot;);
+    2.2 调用无参数的构造方法来构造对象
+    Object obj = clazz.newInstance();     ---1.servlet的构造方法被调用
+3）创建ServletConfig对象，通过反射调用init方法
+    3.1 得到方法对象
+    Method m = clazz.getDeclareMethod(&quot;init&quot;,ServletConfig.class);
+    3.2 调用方法
+    m.invoke(obj,config);             --2.servlet的init方法被调用
+4）创建request，response对象，通过反射调用service方法
+    4.1 得到方法对象
+    Methodm m =clazz.getDeclareMethod(&quot;service&quot;,
+    HttpServletRequest.class,HttpServletResponse.class);
+    4.2 调用方法
+    m.invoke(obj,request,response);  --3.servlet的service方法被调用
+5）当tomcat服务器停止或web应用重新部署，通过反射调用destroy方法
+    5.1 得到方法对象
+    Method m = clazz.getDeclareMethod(&quot;destroy&quot;,null);
+    5.2 调用方法
+    m.invoke(obj,null);            --4.servlet的destroy方法被调用        
+</code></pre><h3 id="Servlet的自动加载"><a href="#Servlet的自动加载" class="headerlink" title="Servlet的自动加载"></a>Servlet的自动加载</h3><pre><code>默认情况下，第一次访问servlet的时候创建servlet对象。
+如果servlet的构造方法或init方法中执行了比较多的逻辑代码，那么导致用户第一次
+访问sevrlet的时候比较慢。
+
+改变servlet创建对象的时机： 提前到加载web应用的时候！！！
+在servlet的配置信息中，加上一个&lt;load-on-startup&gt;即可！！
+&lt;servlet&gt;
+    &lt;servlet-name&gt;LifeDemo&lt;/servlet-name&gt;
+    &lt;servlet-class&gt;gz.itcast.c_life.LifeDemo&lt;/servlet-class&gt;
+    &lt;!-- 让servlet对象自动加载 --&gt;
+    &lt;load-on-startup&gt;1&lt;/load-on-startup&gt;  注意： 整数值越大，
+    创建优先级越低！！
+&lt;/servlet&gt;
+</code></pre><h3 id="有参的init方法和无参的init方法"><a href="#有参的init方法和无参的init方法" class="headerlink" title="有参的init方法和无参的init方法"></a>有参的init方法和无参的init方法</h3><pre><code>有参方法，生命周期方法，一定会被tomcat服务器调用 
+无参方法，是用以初始化的方法
+</code></pre><h3 id="Servlet的多线程并发问题"><a href="#Servlet的多线程并发问题" class="headerlink" title="Servlet的多线程并发问题"></a>Servlet的多线程并发问题</h3><pre><code>注意： servlet对象在tomcat服务器是单实例多线程的。
+
+因为servlet是多线程的，所以当多个servlet的线程同时访问了servlet的
+共享数据，如成员变量，可能会引发线程安全问题。
+
+解决办法：
+    1）把使用到共享数据的代码块进行同步（使用synchronized关键字进行同步）
+    2）建议在servlet类中尽量不要使用成员变量。如果确实要使用成员，
+    必须同步。而且尽量缩小同步代码块的范围。
+   （哪里使用到了成员变量，就同步哪里），以避免因为同步而导致并发效率降低。        
+</code></pre><h3 id="Servlet学习："><a href="#Servlet学习：" class="headerlink" title="Servlet学习："></a>Servlet学习：</h3><pre><code>HttpServletRequest  请求对象：获取请求信息
+HttpServletResponse 响应对象： 设置响应对象
+ServletConfig对象    servlet配置对象
+ServletContext对象  servlet的上下文对象
+</code></pre><h3 id="Servletconfig对象"><a href="#Servletconfig对象" class="headerlink" title="Servletconfig对象"></a>Servletconfig对象</h3><pre><code>用于加载servlet的初始化参数
+
+对象创建和得到
+    创建时机：在创建完servlet对象后，调用init方法之前
+    得到对象：直接从init方法里得到
+
+servlet的初始化配置参数
+    &lt;servlet&gt;
+        &lt;servlet-name&gt;ConfigDemo&lt;/servlet-name&gt;
+        &lt;servlet-class&gt;gz.itcast.f_config.ConfigDemo&lt;/servlet-class&gt;
+        &lt;!-- 初始参数： 这些参数会在加载web应用的时候，封装到ServletConfi
+        g对象中 --&gt;
+        &lt;init-param&gt;
+            &lt;param-name&gt;path&lt;/param-name&gt;
+            &lt;param-value&gt;e:/b.txt&lt;/param-value&gt;
+        &lt;/init-param&gt;
+    &lt;/servlet&gt;
+    注意： servlet的参数只能由当前的这个sevlet获取！！！！
+
+    ServletConfig的API：
+        java.lang.String getInitParameter(java.lang.String name) 
+        根据参数名获取参数值
+        java.util.Enumeration getInitParameterNames()    获取所有参数
+        ServletContext getServletContext()     得到servlet上下文对象
+        java.lang.String getServletName()       得到servlet的名称
+</code></pre><h3 id="ServletContext对象"><a href="#ServletContext对象" class="headerlink" title="ServletContext对象"></a>ServletContext对象</h3><pre><code>ServletContext对象 ,叫做Servlet的上下文对象。
+表示一个当前的web应用环境。一个web应用中只有一个ServletContext对象。
+</code></pre><h4 id="对象创建和得到"><a href="#对象创建和得到" class="headerlink" title="对象创建和得到"></a>对象创建和得到</h4><pre><code>创建时机：加载web应用时创建ServletContext对象。
+得到对象： 从ServletConfig对象的getServletContext方法得到
+
+    我们设计：
+        创建ServletConfig对象
+        public void init( ServletConfig config，ServletContext c
+        ontext ){  多了一个参数
+            得到ServletConfig对象
+            得到ServletContext对象；
+        }
+
+    Sun公司设计
+        1）创建ServletContext对象      ServletContext  context = 
+        new ServletContext()        
+
+        2）创建ServletConfig对象   ServetConfig config 
+        = new ServletConfig();
+         config.setServletContxt(context);
+        class  ServletConfig{
+                ServletContext context;
+
+                public ServletContext getServletContxt(){
+                    return contxt;
+                }
+        } 
+
+        public void init( ServletConfig config ){
+            得到ServletConfig对象
+            从ServletConfig对象中得到ServletContext对象
+            SerlvetContext context = config.getServletContext();
+
+        }    
+</code></pre><h4 id="ServletContext对象的核心API-作用"><a href="#ServletContext对象的核心API-作用" class="headerlink" title="ServletContext对象的核心API(作用)"></a>ServletContext对象的核心API(作用)</h4><pre><code>java.lang.String getContextPath()   --得到当前web应用的路径
+
+java.lang.String getInitParameter(java.lang.String name) 
+--得到web应用的初始化参数
+java.util.Enumeration getInitParameterNames()  
+
+void setAttribute(java.lang.String name, 
+java.lang.Object object) --域对象有关的方法
+
+java.lang.Object getAttribute(java.lang.String name)  
+void removeAttribute(java.lang.String name)  
+
+RequestDispatcher getRequestDispatcher(java.lang.String path)  
+--转发（类似于重定向）
+
+java.lang.String getRealPath(java.lang.String path)    
+--得到web应用的资源文件
+java.io.InputStream getResourceAsStream(java.lang.String path)  
+
+得到web应用路径
+java.lang.String getContextPath()  用在请求重定向的资源名称中
+
+得到web应用的初始化参数（全局）
+java.lang.String getInitParameter(java.lang.String name)  
+--得到web应用的初始化参数
+
+java.util.Enumeration getInitParameterNames()  
+
+web应用参数可以让当前web应用的所有servlet获取！！！
+</code></pre><h3 id="域对象有关的方法"><a href="#域对象有关的方法" class="headerlink" title="域对象有关的方法"></a>域对象有关的方法</h3><pre><code>域对象：作用是用于保存数据，获取数据。可以在不同的动态资源之间共享数据。
+
+        案例：   
+        Servlet1                   Servlet2
+        name=eric                     
+    response.sendRedirect(&quot;/Servlet2?name=eric&quot;)    
+    String request.getParameter(&quot;name&quot;);
+        保存到域对象中            从域对象获取
+        Student                  
+    方案1： 可以通过传递参数的形式，共享数据。局限：只能传递字符串类型。
+    方案2： 可以使用域对象共享数据，好处：可以共享任何类型的数据！！！！！
+
+    ServletContext就是一个域对象！！！！
+
+保存数据： void setAttribute(java.lang.String name, java.lang.Object 
+           object)                    
+获取数据： java.lang.Object getAttribute(java.lang.String name)  
+删除数据： void removeAttribute(java.lang.String name)  
+
+ServletContext域对象：作用范围在整个web应用中有效！！！
+
+    所有域对象：
+        HttpServletRequet 域对象
+        ServletContext域对象
+        HttpSession 域对象
+        PageContext域对象    
+</code></pre><h3 id="转发"><a href="#转发" class="headerlink" title="转发"></a>转发</h3><pre><code>RequestDispatcher getRequestDispatcher(java.lang.String path)
+
+1）转发
+    a）地址栏不会改变
+    b）转发只能转发到当前web应用内的资源
+    c）可以在转发过程中，可以把数据保存到request域对象中
+
+2）重定向            
+    a）地址栏会改变，变成重定向到地址。
+    b）重定向可以跳转到当前web应用，或其他web应用，甚至是外部域名网站。
+    c）不能再重定向的过程，把数据保存到request中。
+
+
+结论： 如果要使用request域对象进行数据共享，只能用转发技术！！！
+
+加载web应用中的资源文件
+</code></pre><hr>
+<p><strong>版权声明：本文为博主原创文章，转载请注明出处<a href="https://kidsea.github.io/" target="_blank" rel="external">KidSea</a></strong></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Java/" rel="tag">#Java</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/09/01/java学习之路-6/" rel="next" title="java学习之路-6">
+                <i class="fa fa-chevron-left"></i> java学习之路-6
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/09/03/java学习之路-8/" rel="prev" title="java学习之路-8">
+                java学习之路-8 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <div class="ds-share flat" data-thread-key="2016/09/02/java学习之路-7/"
+     data-title="java学习之路-7"
+     data-content=""
+     data-url="http://yoursite.com/2016/09/02/java学习之路-7/">
+  <div class="ds-share-inline">
+    <ul  class="ds-share-icons-16">
+
+      <li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+      <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+      <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+      <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+      <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+
+    </ul>
+    <div class="ds-share-icons-more">
+    </div>
+  </div>
+</div>
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/09/02/java学习之路-7/"
+           data-title="java学习之路-7" data-url="http://yoursite.com/2016/09/02/java学习之路-7/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/james.jpg"
+               alt="yuxuehai" />
+          <p class="site-author-name" itemprop="name">yuxuehai</p>
+          <p class="site-description motion-element" itemprop="description">I belive I can fly</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">49</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">11</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/KidSea" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              友情链接
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://opiece.me/" title="Chillax" target="_blank">Chillax</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://hukai.me/" title="hukai" target="_blank">hukai</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://www.csdn.net/" title="CSDN" target="_blank">CSDN</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://duanqz.github.io/" title="启智观" target="_blank">启智观</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#内容"><span class="nav-number">2.</span> <span class="nav-text">内容</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Servlet编程"><span class="nav-number">2.1.</span> <span class="nav-text">Servlet编程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#开发步骤"><span class="nav-number">2.1.1.</span> <span class="nav-text">开发步骤</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#访问步骤"><span class="nav-number">2.1.2.</span> <span class="nav-text">访问步骤</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Servlet的映射路径"><span class="nav-number">2.1.3.</span> <span class="nav-text">Servlet的映射路径</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Servlet缺省路径"><span class="nav-number">2.1.4.</span> <span class="nav-text">Servlet缺省路径</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Servlet的生命周期-重点"><span class="nav-number">2.1.5.</span> <span class="nav-text">Servlet的生命周期(重点)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Servlet重要的生命周期"><span class="nav-number">2.1.5.1.</span> <span class="nav-text">Servlet重要的生命周期</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#伪代码演示servlet的生命周期"><span class="nav-number">2.1.5.2.</span> <span class="nav-text">伪代码演示servlet的生命周期</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Servlet的自动加载"><span class="nav-number">2.1.6.</span> <span class="nav-text">Servlet的自动加载</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#有参的init方法和无参的init方法"><span class="nav-number">2.1.7.</span> <span class="nav-text">有参的init方法和无参的init方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Servlet的多线程并发问题"><span class="nav-number">2.1.8.</span> <span class="nav-text">Servlet的多线程并发问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Servlet学习："><span class="nav-number">2.1.9.</span> <span class="nav-text">Servlet学习：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Servletconfig对象"><span class="nav-number">2.1.10.</span> <span class="nav-text">Servletconfig对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ServletContext对象"><span class="nav-number">2.1.11.</span> <span class="nav-text">ServletContext对象</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#对象创建和得到"><span class="nav-number">2.1.11.1.</span> <span class="nav-text">对象创建和得到</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ServletContext对象的核心API-作用"><span class="nav-number">2.1.11.2.</span> <span class="nav-text">ServletContext对象的核心API(作用)</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#域对象有关的方法"><span class="nav-number">2.1.12.</span> <span class="nav-text">域对象有关的方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#转发"><span class="nav-number">2.1.13.</span> <span class="nav-text">转发</span></a></li></ol></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">yuxuehai</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+<div class="busuanzi-count">
+
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv"><i class="fa fa-user"></i><span class="busuanzi-value" id="busuanzi_value_site_uv"></span></span>
+  
+
+  
+    <span class="site-pv"><i class="fa fa-eye"></i><span class="busuanzi-value" id="busuanzi_value_site_pv"></span></span>
+  
+  
+</div>
+
+
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"kidsea"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+       search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="popoverlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+    'use strict';
+    $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+            // get the contents from search data
+            isfetched = true;
+            $('.popup').detach().appendTo('.header-inner');
+            var datas = $( "entry", xmlResponse ).map(function() {
+                return {
+                    title: $( "title", this ).text(),
+                    content: $("content",this).text(),
+                    url: $( "url" , this).text()
+                };
+            }).get();
+            var $input = document.getElementById(search_id);
+            var $resultContent = document.getElementById(content_id);
+            $input.addEventListener('input', function(){
+                var matchcounts = 0;
+                var str='<ul class=\"search-result-list\">';
+                var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                $resultContent.innerHTML = "";
+                if (this.value.trim().length > 1) {
+                // perform local searching
+                datas.forEach(function(data) {
+                    var isMatch = true;
+                    var content_index = [];
+                    var data_title = data.title.trim().toLowerCase();
+                    var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                    var data_url = data.url;
+                    var index_title = -1;
+                    var index_content = -1;
+                    var first_occur = -1;
+                    // only match artiles with not empty titles and contents
+                    if(data_title != '' && data_content != '') {
+                        keywords.forEach(function(keyword, i) {
+                            index_title = data_title.indexOf(keyword);
+                            index_content = data_content.indexOf(keyword);
+                            if( index_title < 0 && index_content < 0 ){
+                                isMatch = false;
+                            } else {
+                                if (index_content < 0) {
+                                    index_content = 0;
+                                }
+                                if (i == 0) {
+                                    first_occur = index_content;
+                                }
+                            }
+                        });
+                    }
+                    // show search results
+                    if (isMatch) {
+                        matchcounts += 1;
+                        str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                        var content = data.content.trim().replace(/<[^>]+>/g,"");
+                        if (first_occur >= 0) {
+                            // cut out 100 characters
+                            var start = first_occur - 20;
+                            var end = first_occur + 80;
+                            if(start < 0){
+                                start = 0;
+                            }
+                            if(start == 0){
+                                end = 50;
+                            }
+                            if(end > content.length){
+                                end = content.length;
+                            }
+                            var match_content = content.substring(start, end);
+                            // highlight all keywords
+                            keywords.forEach(function(keyword){
+                                var regS = new RegExp(keyword, "gi");
+                                match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                            });
+
+                            str += "<p class=\"search-result\">" + match_content +"...</p>"
+                        }
+                        str += "</li>";
+                    }
+                })};
+                str += "</ul>";
+                if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+                if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+                $resultContent.innerHTML = str;
+            });
+            proceedsearch();
+        }
+    });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".popoverlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+  
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("4eyaSbRt4Gxv0uJLw1stS8o3-gzGzoHsz", "mJcxoCODhi155s3ypExw4OT6");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+</body>
+</html>

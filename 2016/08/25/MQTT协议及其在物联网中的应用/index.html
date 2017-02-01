@@ -1,0 +1,1008 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Iot," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/lufei.jpg?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="前言
+MQTT协议及其在物联网中的应用">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MQTT协议及其在物联网中的应用">
+<meta property="og:url" content="http://yoursite.com/2016/08/25/MQTT协议及其在物联网中的应用/index.html">
+<meta property="og:site_name" content="KidSea's Blog">
+<meta property="og:description" content="前言
+MQTT协议及其在物联网中的应用">
+<meta property="og:image" content="http://yoursite.com/images/8-25-1.png">
+<meta property="og:image" content="http://yoursite.com/images/8-25-2.png">
+<meta property="og:updated_time" content="2016-08-25T12:48:01.943Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="MQTT协议及其在物联网中的应用">
+<meta name="twitter:description" content="前言
+MQTT协议及其在物联网中的应用">
+<meta name="twitter:image" content="http://yoursite.com/images/8-25-1.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/08/25/MQTT协议及其在物联网中的应用/"/>
+
+  <title> MQTT协议及其在物联网中的应用 | KidSea's Blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?a19b4052e92d3054ac7023476b52e8a9";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta custom-logo">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">KidSea's Blog</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                MQTT协议及其在物联网中的应用
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-08-25T18:46:49+08:00" content="2016-08-25">
+              2016-08-25
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/08/25/MQTT协议及其在物联网中的应用/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/08/25/MQTT协议及其在物联网中的应用/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2016/08/25/MQTT协议及其在物联网中的应用/" class="leancloud_visitors" data-flag-title="MQTT协议及其在物联网中的应用">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+              &nbsp; | &nbsp;
+              <span class="page-pv"><i class="fa fa-file-o"></i>
+              <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+              </span>
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><hr>
+<p><strong><code>MQTT</code>协议及其在物联网中的应用</strong></p>
+<a id="more"></a>
+<h1 id="内容"><a href="#内容" class="headerlink" title="内容"></a>内容</h1><hr>
+<blockquote>
+<p>原文链接：<a href="https://zoetrope.io/tech-blog/brief-practical-introduction-mqtt-protocol-and-its-application-iot" target="_blank" rel="external">A Brief, but Practical Introduction to the MQTT Protocol and its Application to IoT</a><br>作者：Ben Howes<br>译者：孙薇<br>责编：周建丁（zhoujd@csdn.net）</p>
+</blockquote>
+<p>MQTT （Message Queuing Telemetry Transport，消息队列遥测传输） 是一种<a href="https://www.oasis-open.org/news/announcements/mqtt-version-3-1-1-becomes-an-oasis-standard" target="_blank" rel="external">标准化</a>的发布/订阅消息传输协议，设计于1999年，最初是为了在卫星之类的物体上使用。它是一个非常轻量级的协议，由于对带宽需求很低，从而成为了 M2M 通信或物联网应用的理想选择，现在已经成为这类场景最常见的协议之一。</p>
+<p>本文会对该协议及一些使用范例做以简介，虽然没打算写成 MQTT 的综合性参考指南，但会提供足够的信息，让开发人员了解到如何安装运行这一协议。如果想要更深入地了解，可以参考 HiveMQ 所发布的<a href="http://www.hivemq.com/mqtt-essentials-wrap-up/" target="_blank" rel="external">系列文章</a>。</p>
+<h2 id="发布-订阅"><a href="#发布-订阅" class="headerlink" title="发布/订阅"></a>发布/订阅</h2><p>发布/订阅，通常也被成为 pub-sub 模式是 MQTT 的核心，除了基于同一个消息代理的发布者和订阅者之外，还有一些其它节点围绕着该消息代理呈星型拓扑分布。这个模型与标准的客户端/服务器迥然不同，一开始看似有些奇怪，但它提供的去耦能力在很多情况下都有巨大的优势。</p>
+<p>客户端可以发布或订阅特定的主题（topic，有些类似信息主题），根据使用它们的消息代理来决定谁会收到信息。MQTT 的主题有特定的语法，使用斜杠（/）作为分隔符，整体呈层次结构，非常类似 URL 中的路径格式，因此厨房中的温度传感器也许会发布到类似“sensors/temperature/home/kitchen” 这样的主题。</p>
+<p>我们看一个例子：想象一下有一个网络，将全世界的温度传感器连接起来，提供气象服务。所有这些传感器保持与某个消息代理中间件相连接，每隔10分钟报告一次当前的温度。他们基于自身位置按照下面的格式向特定主题发布信息：</p>
+<pre><code>sensors/temperature/{country}/{city}/{street name}
+</code></pre><p>那么在伦敦贝克街（BakerStreet）的某个传感器就会向<br>“sensors/temperature/uk/london/baker_street”发布一条包含当前温度的信息。</p>
+<p><img src="/images/8-25-1.png" alt=""></p>
+<p align="center">MQTT 示例拓扑</p>
+
+<p>气象服务需要保证历史温度数据库的数据最新，因此创建了订阅到 MQTT主题的数据库服务，数据库服务会在收到最新温度信息时发出提示。不过这里存在一个问题：数据库服务需要了解到全世界所有的温度传感器，而将每个传感器订阅到独立的主题会非常复杂，幸好 MQTT 有相应的解决方案：通配符（wildcards）。</p>
+<h2 id="通配符"><a href="#通配符" class="headerlink" title="通配符"></a>通配符</h2><p>在 MQTT 中有两个可用的通配符，分别是+和#，+表示匹配单一层级中的任意主题，#表示匹配任意数量的层次。因此在全球温度数据库中可能会有订阅到 sensors/temperature/#的服务，它能从全世界的任何一个传感器接收温度读数。但如果英国政府想要在自己的温度服务中利用这些数据，只要订阅到<br>sensors/temperature/uk/#，就可以限制范围，只接受英国的传感器读数。如果某个服务想要接收某个特定位置所有类型的传感器数据，可以使用类似这样的格式：</p>
+<pre><code>sensors/+/uk/london/bakerstreet_
+</code></pre><p>正如你所见，这是一个极优秀的模块化系统，添加新的传感器与数据库只是小事一桩。而且该系统在性能方面也很优秀，MQTT消息代理可以高度并行化并采用事件驱动，从而使得单个消息代理可以轻易扩展到每秒处理数万条信息的级别。</p>
+<h2 id="服务质量（QoS）"><a href="#服务质量（QoS）" class="headerlink" title="服务质量（QoS）"></a>服务质量（QoS）</h2><p>MQTT 的设计初衷是为了在不可靠的网络中运作良好，为不同的场景提供了三个级别的服务质量，允许客户端指定自己想要的可靠性级别。</p>
+<h3 id="QoS-Level-0：至多一次"><a href="#QoS-Level-0：至多一次" class="headerlink" title="QoS Level 0：至多一次"></a>QoS Level 0：至多一次</h3><p>这是最简单的级别，无需客户端确认，其可靠性与基础网络层 TCP/IP 一致。</p>
+<h3 id="QoS-Level-1：至少一次，有可能重复"><a href="#QoS-Level-1：至少一次，有可能重复" class="headerlink" title="QoS Level 1：至少一次，有可能重复"></a>QoS Level 1：至少一次，有可能重复</h3><p>确保至少向客户端发送一次信息，不过也可发送多次；在接收数据包时，需要客户端返回确认消息（ACK包）。这种方式常用于传递确保交付的信息，但开发人员必须确保其系统可以处理重复的数据包。</p>
+<h3 id="QoS-Level-2：只有一次，确保消息只到达一次"><a href="#QoS-Level-2：只有一次，确保消息只到达一次" class="headerlink" title="QoS Level 2：只有一次，确保消息只到达一次"></a>QoS Level 2：只有一次，确保消息只到达一次</h3><p>这是最不常见的服务质量级别，确保消息发送且仅发送一次。这种方法需要交换4个数据包，同时也会降低消息代理的性能。由于相对比较复杂，在MQTT 实现中通常会忽略这个级别，请确保在选择数据库或消息代理前检查这个问题。</p>
+<p><img src="/images/8-25-2.png" alt=""></p>
+<p align="center">在 MQTT 中的服务质量水平划分</p>
+
+<h2 id="“临终遗嘱”信息"><a href="#“临终遗嘱”信息" class="headerlink" title="“临终遗嘱”信息"></a>“临终遗嘱”信息</h2><p>该协议提供了检测方式，利用KeepAlive机制在客户端异常断开时发现问题。因此当客户端电量耗尽、崩溃或者网络断开时，消息代理会采取相应措施。</p>
+<p>客户端会向任意点的消息代理发送“临终遗嘱”（LWT）信息，当消息代理检测到客户端离线（连接并未关闭），就会发送保存在特定主题上的LWT信息，让其它客户端知道该节点已经意外离线。</p>
+<h2 id="安全性"><a href="#安全性" class="headerlink" title="安全性"></a>安全性</h2><p>MQTT（及通常的物联网设备）的安全性是一个相当大的主题，之后我们会详加描述，不过在本文中仅涉及两个主要的安全性功能：身份验证与加密。</p>
+<p>身份验证是通过在 MQTT连接包中发送用户名与密码来实现，几乎所有消息代理与客户端在实现时都支持这一功能。但由于信息太容易被拦截，为了避免，应当尽可能地使用安全传输层协议（TLS）。</p>
+<p>协议本身未提供加密功能，但由于MQTT是在TCP上层运行的，我们可以很容易地利用TLS来提供加密连接。但这确实增加了发送与接收信息的计算复杂性，不但在约束系统中会造成问题，还会影响消息代理的性能。稍后我们会就这个问题进行更多讨论。</p>
+<h2 id="消息代理软件"><a href="#消息代理软件" class="headerlink" title="消息代理软件"></a>消息代理软件</h2><p>有许多不同方式实现的可用消息代理，最常见的系统包括：</p>
+<ol>
+<li><p>Mosquitto —— 这是最早在生产环境中可用的消息代理之一，以 C 语言编写，提供多种配置与高性能。</p>
+</li>
+<li><p>Mosca —— 以Node.js编写，可嵌入Node应用或以独立可执行文件的形式运行。由于配置简单并具有可扩展性，它也是我们最喜欢的消息代理，具有高性能的优点。</p>
+</li>
+<li><p>RSMB —— IBM对MQTT协议的实现，也是最不常用的选项之一，不过它是一个用C语言编写的成熟系统。</p>
+</li>
+<li>HiveMQ —— HiveMQ是一种相对较新的消息代理，面向企业环境，在博客上有很多关于 MQTT 不错的信息。</li>
+</ol>
+<h2 id="客户端库"><a href="#客户端库" class="headerlink" title="客户端库"></a>客户端库</h2><p>几乎包含了所有流行语言的客户端库，想要具体了解的话，Paho项目会是你的最佳选择。这个项目隶属于Eclipse，旨在提供各种语言尽可能多样化的 MQTT 客户端实现参考。这是个很好的资源，包含以C、Java、Python、Javascript等语言编写的可用客户端。</p>
+<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>MQTT是一个理想的协议，它在物联网与M2M通信中的应用是无限的。如果你需要轻量级的消息传输系统，那么它会是很好的选择，而且在未来几年中很可能会流行起来。希望本文能帮助读者对 MQTT 做以了解。</p>
+<hr>
+<p><strong>版权声明：本文为博主转载文章，转载请注明出处<a href="http://geek.csdn.net/news/detail/73152" target="_blank" rel="external">CSDN社区</a></strong></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Iot/" rel="tag">#Iot</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/08/25/Linux之Shell命令/" rel="next" title="Linux之Shell命令">
+                <i class="fa fa-chevron-left"></i> Linux之Shell命令
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/08/26/java学习之路-1/" rel="prev" title="java学习之路-1">
+                java学习之路-1 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <div class="ds-share flat" data-thread-key="2016/08/25/MQTT协议及其在物联网中的应用/"
+     data-title="MQTT协议及其在物联网中的应用"
+     data-content=""
+     data-url="http://yoursite.com/2016/08/25/MQTT协议及其在物联网中的应用/">
+  <div class="ds-share-inline">
+    <ul  class="ds-share-icons-16">
+
+      <li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+      <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+      <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+      <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+      <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+
+    </ul>
+    <div class="ds-share-icons-more">
+    </div>
+  </div>
+</div>
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/08/25/MQTT协议及其在物联网中的应用/"
+           data-title="MQTT协议及其在物联网中的应用" data-url="http://yoursite.com/2016/08/25/MQTT协议及其在物联网中的应用/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/james.jpg"
+               alt="yuxuehai" />
+          <p class="site-author-name" itemprop="name">yuxuehai</p>
+          <p class="site-description motion-element" itemprop="description">I belive I can fly</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">49</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">11</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/KidSea" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              友情链接
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://opiece.me/" title="Chillax" target="_blank">Chillax</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://hukai.me/" title="hukai" target="_blank">hukai</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://www.csdn.net/" title="CSDN" target="_blank">CSDN</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://duanqz.github.io/" title="启智观" target="_blank">启智观</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#内容"><span class="nav-number">2.</span> <span class="nav-text">内容</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#发布-订阅"><span class="nav-number">2.1.</span> <span class="nav-text">发布/订阅</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#通配符"><span class="nav-number">2.2.</span> <span class="nav-text">通配符</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#服务质量（QoS）"><span class="nav-number">2.3.</span> <span class="nav-text">服务质量（QoS）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#QoS-Level-0：至多一次"><span class="nav-number">2.3.1.</span> <span class="nav-text">QoS Level 0：至多一次</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#QoS-Level-1：至少一次，有可能重复"><span class="nav-number">2.3.2.</span> <span class="nav-text">QoS Level 1：至少一次，有可能重复</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#QoS-Level-2：只有一次，确保消息只到达一次"><span class="nav-number">2.3.3.</span> <span class="nav-text">QoS Level 2：只有一次，确保消息只到达一次</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#“临终遗嘱”信息"><span class="nav-number">2.4.</span> <span class="nav-text">“临终遗嘱”信息</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安全性"><span class="nav-number">2.5.</span> <span class="nav-text">安全性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#消息代理软件"><span class="nav-number">2.6.</span> <span class="nav-text">消息代理软件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#客户端库"><span class="nav-number">2.7.</span> <span class="nav-text">客户端库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结论"><span class="nav-number">2.8.</span> <span class="nav-text">结论</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">yuxuehai</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+<div class="busuanzi-count">
+
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv"><i class="fa fa-user"></i><span class="busuanzi-value" id="busuanzi_value_site_uv"></span></span>
+  
+
+  
+    <span class="site-pv"><i class="fa fa-eye"></i><span class="busuanzi-value" id="busuanzi_value_site_pv"></span></span>
+  
+  
+</div>
+
+
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"kidsea"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+       search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="popoverlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+    'use strict';
+    $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+            // get the contents from search data
+            isfetched = true;
+            $('.popup').detach().appendTo('.header-inner');
+            var datas = $( "entry", xmlResponse ).map(function() {
+                return {
+                    title: $( "title", this ).text(),
+                    content: $("content",this).text(),
+                    url: $( "url" , this).text()
+                };
+            }).get();
+            var $input = document.getElementById(search_id);
+            var $resultContent = document.getElementById(content_id);
+            $input.addEventListener('input', function(){
+                var matchcounts = 0;
+                var str='<ul class=\"search-result-list\">';
+                var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                $resultContent.innerHTML = "";
+                if (this.value.trim().length > 1) {
+                // perform local searching
+                datas.forEach(function(data) {
+                    var isMatch = true;
+                    var content_index = [];
+                    var data_title = data.title.trim().toLowerCase();
+                    var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                    var data_url = data.url;
+                    var index_title = -1;
+                    var index_content = -1;
+                    var first_occur = -1;
+                    // only match artiles with not empty titles and contents
+                    if(data_title != '' && data_content != '') {
+                        keywords.forEach(function(keyword, i) {
+                            index_title = data_title.indexOf(keyword);
+                            index_content = data_content.indexOf(keyword);
+                            if( index_title < 0 && index_content < 0 ){
+                                isMatch = false;
+                            } else {
+                                if (index_content < 0) {
+                                    index_content = 0;
+                                }
+                                if (i == 0) {
+                                    first_occur = index_content;
+                                }
+                            }
+                        });
+                    }
+                    // show search results
+                    if (isMatch) {
+                        matchcounts += 1;
+                        str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                        var content = data.content.trim().replace(/<[^>]+>/g,"");
+                        if (first_occur >= 0) {
+                            // cut out 100 characters
+                            var start = first_occur - 20;
+                            var end = first_occur + 80;
+                            if(start < 0){
+                                start = 0;
+                            }
+                            if(start == 0){
+                                end = 50;
+                            }
+                            if(end > content.length){
+                                end = content.length;
+                            }
+                            var match_content = content.substring(start, end);
+                            // highlight all keywords
+                            keywords.forEach(function(keyword){
+                                var regS = new RegExp(keyword, "gi");
+                                match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                            });
+
+                            str += "<p class=\"search-result\">" + match_content +"...</p>"
+                        }
+                        str += "</li>";
+                    }
+                })};
+                str += "</ul>";
+                if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+                if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+                $resultContent.innerHTML = str;
+            });
+            proceedsearch();
+        }
+    });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".popoverlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+  
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("4eyaSbRt4Gxv0uJLw1stS8o3-gzGzoHsz", "mJcxoCODhi155s3ypExw4OT6");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+</body>
+</html>

@@ -1,0 +1,1221 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Java," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/lufei.jpg?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="前言
+java学习之路—–&amp;gt;Servlet入门与Http协议">
+<meta property="og:type" content="article">
+<meta property="og:title" content="java学习之路-6">
+<meta property="og:url" content="http://yoursite.com/2016/09/01/java学习之路-6/index.html">
+<meta property="og:site_name" content="KidSea's Blog">
+<meta property="og:description" content="前言
+java学习之路—–&amp;gt;Servlet入门与Http协议">
+<meta property="og:image" content="http://yoursite.com/images/9-1-1.png">
+<meta property="og:image" content="http://yoursite.com/images/9-1-2.png">
+<meta property="og:image" content="http://yoursite.com/images/9-1-3.png">
+<meta property="og:image" content="http://yoursite.com/images/9-1-4.png">
+<meta property="og:image" content="http://yoursite.com/images/9-1-5.png">
+<meta property="og:updated_time" content="2016-09-01T12:12:10.168Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="java学习之路-6">
+<meta name="twitter:description" content="前言
+java学习之路—–&amp;gt;Servlet入门与Http协议">
+<meta name="twitter:image" content="http://yoursite.com/images/9-1-1.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/09/01/java学习之路-6/"/>
+
+  <title> java学习之路-6 | KidSea's Blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?a19b4052e92d3054ac7023476b52e8a9";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta custom-logo">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">KidSea's Blog</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                java学习之路-6
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-09-01T17:11:30+08:00" content="2016-09-01">
+              2016-09-01
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/09/01/java学习之路-6/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/09/01/java学习之路-6/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2016/09/01/java学习之路-6/" class="leancloud_visitors" data-flag-title="java学习之路-6">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+              &nbsp; | &nbsp;
+              <span class="page-pv"><i class="fa fa-file-o"></i>
+              <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+              </span>
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><hr>
+<p><strong>java学习之路—–&gt;Servlet入门与Http协议</strong></p>
+<a id="more"></a>
+<h1 id="内容"><a href="#内容" class="headerlink" title="内容"></a>内容</h1><hr>
+<h2 id="开发动态资源"><a href="#开发动态资源" class="headerlink" title="开发动态资源"></a>开发动态资源</h2><h3 id="静态资源和动态资源的区别"><a href="#静态资源和动态资源的区别" class="headerlink" title="静态资源和动态资源的区别"></a>静态资源和动态资源的区别</h3><pre><code>静态资源：当用户多次访问这个资源，资源的源代码永远不会改变的资源。
+动态资源：当用户多次访问这个资源，资源的源代码可能会发送改变。
+</code></pre><h3 id="动态资源开发技术"><a href="#动态资源开发技术" class="headerlink" title="动态资源开发技术"></a>动态资源开发技术</h3><pre><code>servlet: 用java语言来编写动态资源的开发技术.
+
+servlet特点：
+    1) 普通的java类，继承HttpServlet类，覆盖doGet方法
+    2) Servlet类只能由tomcat服务器来运行(开发者不能运行)
+
+Servlet手动编写步骤：
+    1) 编写一个servlet程序，继承HttpServlet
+        public class HelloServlet extends HttpServlet{
+
+            @Override
+            protected void doGet(HttpServletRequest req, HttpServlet
+            Response resp)
+                    throws ServletException, IOException {
+                //解决中文乱码问题
+                resp.setContentType(&quot;text/html;charset=utf-8&quot;);
+                //向浏览器输出内容
+                resp.getWriter().write(&quot;这是第一个servlet程序。当前时间
+                为：&quot;+new Date());
+            }
+        }
+
+    2) 找到HelloServlet类的class字节码，然后把拷贝到tomcat的一个web应用中
+    WEB-INF/classes目录下。
+    3) 在当前web应用下的web.xml文件配置Servlet。
+        &lt;!-- 配置一个servlet程序 --&gt;
+        &lt;servlet&gt;
+            &lt;!-- servlet的内部名称 ，可以自定义--&gt;
+            &lt;servlet-name&gt;HelloServlet&lt;/servlet-name&gt;
+            &lt;!-- servlet类名： 包名+简单类名--&gt;
+            &lt;servlet-class&gt;gz.itcast.d_servlet.HelloServlet&lt;/servle
+            t-class&gt;
+        &lt;/servlet&gt;
+
+        &lt;servlet-mapping&gt;
+            &lt;!-- servlet的内部名称，和上面的名称保持一致！！！--&gt;
+            &lt;servlet-name&gt;HelloServlet&lt;/servlet-name&gt;
+            &lt;!-- servlet的访问名称： /名称 --&gt;
+            &lt;url-pattern&gt;/hello&lt;/url-pattern&gt;
+        &lt;/servlet-mapping&gt;
+
+    4) 启动tomcat服务器，运行访问
+        访问servlet:  http://localhost:8080/myweb/ hello
+</code></pre><h3 id="工具开发动态资源"><a href="#工具开发动态资源" class="headerlink" title="工具开发动态资源"></a>工具开发动态资源</h3><pre><code>1) 创建web project （javaweb工程）
+2) 在WebRoot下建立静态资源文件，
+3) 在src下建立动态资源文件
+      3.1 new -&gt; Servlet( servlet的代码生成器)
+      3.2 写pacakge  -&gt; class名 -&gt; 修改mapping  url 
+4) 关联tomcat服务器
+      4.1 window-&gt; Preferences - &gt; MyEcplise -&gt; servers -&gt; Tomcat 
+      6.x (注意一定要enable)
+
+5) 部署web project应用。（拷贝web应用到tomcat的webapps目录下）
+6) 启动tomcat服务器
+7) 访问servlet            
+        http://localhost:8081/day08_web/hello
+</code></pre><h2 id="Http协议"><a href="#Http协议" class="headerlink" title="Http协议"></a>Http协议</h2><h3 id="Http协议入门"><a href="#Http协议入门" class="headerlink" title="Http协议入门"></a>Http协议入门</h3><pre><code>http协议：对浏览器客户端和服务器端之间数据传输的格式规范。
+
+tcp/ip协议: 数据传输的底层协议，关注是客户端与服务器之间的数据是否传输成功。
+            http协议是在tcp/ip之前的封装的一层协议，关注的是数据传输规范。
+</code></pre><p><img src="/images/9-1-1.png" alt="">    </p>
+<p></p><p align="center">Http协议</p><p></p>
+<h3 id="查看Http协议的工具"><a href="#查看Http协议的工具" class="headerlink" title="查看Http协议的工具"></a>查看Http协议的工具</h3><pre><code>1）使用火狐的firebug插件（右键-&gt;firebug-&gt;网络）
+2）使用谷歌的“审查元素”
+3）使用系统自带的telnet工具（远程访问工具）                
+    a）telnet localhost 8080      访问tomcat服务器
+    b）ctrl+]     回车          可以看到回显
+    c）输入请求内容
+        GET /day09/hello HTTP/1.1
+        Host: localhost:8080
+    d）回车，即可查看到服务器响应信息。
+</code></pre><h3 id="Http请求"><a href="#Http请求" class="headerlink" title="Http请求"></a>Http请求</h3><h4 id="请求（浏览器-》服务器）"><a href="#请求（浏览器-》服务器）" class="headerlink" title="请求（浏览器-》服务器）"></a>请求（浏览器-》服务器）</h4><pre><code>GET /day09/hello HTTP/1.1  --请求行
+Host: localhost:8080       --请求头(多个键值对象)
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:35.0) Gecko/2
+0100101 Firefox/35.0
+Accept: text/html,application/xhtml+xml,application/xm
+l;q=0.9,*/*;q=0.8
+Accept-Language: zh-cn,en-us;q=0.8,zh;q=0.5,en;q=0.3
+Accept-Encoding: gzip, deflate
+Connection: keep-alive    
+                           --一个空行
+name=eric&amp;password=123456  --（可选）实体内容
+</code></pre><h4 id="请求行"><a href="#请求行" class="headerlink" title="请求行"></a>请求行</h4><pre><code>GET  /day09/hello  HTTP/1.1
+
+http协议版本
+    http1.0: 当前浏览器客户端与服务器建立连接后，只能发送一次请求，就结
+    束连接，效率低。
+    http1.1: 当前浏览器客户端与服务器建立连接后，可以在一次连接中发送多
+    次请求，效率高。
+
+请求资源
+    URL: 统一资源定位符, http://localhost:8080/day09/testImg.html 
+    只能定位互联网资源 是URI的子集
+    URI：统一资源标记符, /day09/hello 可以定位任意资源 
+
+请求方式
+    常见的请求方式: GET 、 POST、 HEAD、 TRACE、 PUT、 CONNECT 、DE
+    LETE    
+
+    常用的请求方式：GET  和 POST
+
+表单提交
+    &lt;form action=&quot;提交地址&quot; method=&quot;GET/POST&quot;&gt;    
+
+    &lt;form&gt;
+
+get与post的区别
+
+    1)get方式
+        a）地址栏（URI）会跟上参数数据。以？开头，多个参数之间以&amp;分割。
+        b）GET提交参数数据有限制，不超过1KB。
+        c）GET方式不适合提交敏感密码。
+        d）注意： 浏览器直接访问的请求，默认提交方式是GET方式
+
+    2)post方式
+        a）参数不会跟着URI后面。参数而是跟在请求的实体内容中。没有？开
+        头，多个参数之间以&amp;分割。
+        b）POST提交的参数数据没有限制。
+        c）POST方式提交敏感数据。    
+</code></pre><h4 id="请求头"><a href="#请求头" class="headerlink" title="请求头"></a>请求头</h4><pre><code>Accept: text/html,image/*      -- 浏览器接受的数据类型
+
+Accept-Charset: ISO-8859-1     -- 浏览器接受的编码格式
+
+Accept-Encoding: gzip,compress  --浏览器接受的数据压缩格式
+
+Accept-Language: en-us,zh-       --浏览器接受的语言
+
+Host: www.it315.org:80          --（必须的）当前请求访问的
+目标地址（主机:端口）
+
+If-Modified-Since: Tue, 11 Jul 2000 18:23:51 GMT  --浏览器最后的
+缓存时间
+
+Referer: http://www.it315.org/index.jsp      -- 当前请求来自于哪里
+
+User-Agent: Mozilla/4.0 (compatible; MSIE 5.5; Windows NT 5.0)  
+--浏览器类型
+
+Cookie:name=eric                     -- 浏览器保存的cookie信息
+
+Connection: close/Keep-Alive            -- 浏览器跟服务器
+连接状态。close: 连接关闭  keep-alive：保存连接。
+
+Date: Tue, 11 Jul 2000 18:23:51 GMT      -- 请求发出的时间
+</code></pre><h4 id="实体内容"><a href="#实体内容" class="headerlink" title="实体内容"></a>实体内容</h4><pre><code>只有POST提交的参数会放到实体内容中
+</code></pre><h4 id="HttpServletRequest对象"><a href="#HttpServletRequest对象" class="headerlink" title="HttpServletRequest对象"></a>HttpServletRequest对象</h4><pre><code>HttpServletRequest对象作用是用于获取请求数据。
+
+核心的API：
+    请求行：
+    request.getMethod();   请求方式
+    request.getRequetURI()   / request.getRequetURL()   请求资源
+    request.getProtocol()   请求http协议版本
+
+    请求头：
+    request.getHeader(&quot;名称&quot;)   根据请求头获取请求值
+    request.getHeaderNames()    获取所有的请求头名称
+
+    实体内容:
+    request.getInputStream()   获取实体内容数据    
+
+传递的请求参数如何获取
+    GET方式： 参数放在URI后面
+    POST方式： 参数放在实体内容中
+
+    获取GET方式参数：
+            request.getQueryString();
+    获取POST方式参数：
+            request.getInputStream();
+
+    问题：但是以上两种不通用，而且获取到的参数还需要进一步地解析。
+    所以可以使用统一方便的获取参数的方式：
+
+         核心的API：
+        request.getParameter(&quot;参数名&quot;);  根据参数名获取参数值
+        （注意，只能获取一个值的参数）
+        request.getParameterValue(&quot;参数名“)；根据参数名获取参数值
+        （可以获取多个值的参数）
+
+        request.getParameterNames();   获取所有参数名称列表  
+</code></pre><h4 id="请求参数编码问题"><a href="#请求参数编码问题" class="headerlink" title="请求参数编码问题"></a>请求参数编码问题</h4><pre><code>修改POST方式参数编码：
+        request.setCharacterEncoding(&quot;utf-8&quot;);
+修改GET方式参数编码：
+        手动解码：String name = new 
+        String(name.getBytes(&quot;iso-8859-1&quot;),&quot;utf-8&quot;);
+</code></pre><p><img src="/images/9-1-2.png" alt="">    </p>
+<p></p><p align="center">请求参数编码问题</p><p></p>
+<h3 id="Http响应"><a href="#Http响应" class="headerlink" title="Http响应"></a>Http响应</h3><h4 id="响应（服务器-》浏览器）"><a href="#响应（服务器-》浏览器）" class="headerlink" title="响应（服务器-》浏览器）"></a>响应（服务器-》浏览器）</h4><pre><code>HTTP/1.1 200 OK   --响应行
+Server: Apache-Coyote/1.1  --响应头
+Content-Length: 24
+Date: Fri, 30 Jan 2015 01:54:57 GMT
+                           --一个空格
+this is hello servlet!!!   --实体内容
+</code></pre><h4 id="响应行"><a href="#响应行" class="headerlink" title="响应行"></a>响应行</h4><pre><code>HTTP/1.1 200 OK
+
+http响应版本
+
+状态码 
+    常见的状态：
+        200：表示请求处理完成并完美返回
+        302：表示请求需要进一步细化。
+        404：表示客户访问的资源找不到。
+        500：表示服务器的资源发送错误。（服务器内部错误）
+</code></pre><h4 id="常见的响应头"><a href="#常见的响应头" class="headerlink" title="常见的响应头"></a>常见的响应头</h4><pre><code>Location: http://www.it315.org/index.jsp   -表示重定向的地址，
+该头和302的状态码一起使用。
+
+Server:apache tomcat                 ---表示服务器的类型
+
+Content-Encoding: gzip                 -- 表示服务器发送给浏览器的
+数据压缩类型
+</code></pre><p><img src="/images/9-1-3.png" alt="">    </p>
+<p></p><p align="center">请求重定向</p><p>    </p>
+<pre><code>Content-Length: 80                    --表示服务器发送给浏览器的数据长度
+
+Content-Language: zh-cn               --表示服务器支持的语言
+
+Content-Type: text/html; charset=GB2312   --表示服务器发送给浏览器的
+数据类型及内容编码
+
+Last-Modified: Tue, 11 Jul 2000 18:23:51 GMT  --表示服务器资源的
+最后修改时间
+
+Refresh: 1;url=http://www.it315.org     --表示定时刷新
+
+Content-Disposition: attachment; filename=aaa.zip --表示告诉浏览器以
+下载方式打开资源（下载文件时用到）
+
+Transfer-Encoding: chunked
+Set-Cookie:SS=Q0=5Lb_nQ; path=/search   --表示服务器发送给浏览器的
+cookie信息（会话管理用到）
+
+Expires: -1                           --表示通知浏览器不进行缓存
+Cache-Control: no-cache
+Pragma: no-cache
+
+Connection: close/Keep-Alive       
+--表示服务器和浏览器的连接状态。close：关闭连接 keep-alive:保存连接            
+</code></pre><h4 id="HttpServletResponse对象"><a href="#HttpServletResponse对象" class="headerlink" title="HttpServletResponse对象"></a>HttpServletResponse对象</h4><pre><code>HttpServletResponse对象修改响应信息：
+
+    响应行： 
+            response.setStatus()  设置状态码
+    响应头： 
+            response.setHeader(&quot;name&quot;,&quot;value&quot;)  设置响应头
+    实体内容：
+            response.getWriter().writer();   发送字符实体内容
+            response.getOutputStream().writer()  发送字节实体内容 
+</code></pre><p><img src="/images/9-1-4.png" alt="">    </p>
+<p></p><p align="center">响应数据编码</p><p>                    </p>
+<p><img src="/images/9-1-5.png" alt="">    </p>
+<p></p><p align="center">项目中的编码问题</p><p></p>
+<hr>
+<p><strong>版权声明：本文为博主原创文章，转载请注明出处<a href="https://kidsea.github.io/" target="_blank" rel="external">KidSea</a></strong></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Java/" rel="tag">#Java</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/08/31/Android源码下载/" rel="next" title="Android源码下载">
+                <i class="fa fa-chevron-left"></i> Android源码下载
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/09/02/java学习之路-7/" rel="prev" title="java学习之路-7">
+                java学习之路-7 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <div class="ds-share flat" data-thread-key="2016/09/01/java学习之路-6/"
+     data-title="java学习之路-6"
+     data-content=""
+     data-url="http://yoursite.com/2016/09/01/java学习之路-6/">
+  <div class="ds-share-inline">
+    <ul  class="ds-share-icons-16">
+
+      <li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+      <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+      <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+      <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+      <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+
+    </ul>
+    <div class="ds-share-icons-more">
+    </div>
+  </div>
+</div>
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/09/01/java学习之路-6/"
+           data-title="java学习之路-6" data-url="http://yoursite.com/2016/09/01/java学习之路-6/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/james.jpg"
+               alt="yuxuehai" />
+          <p class="site-author-name" itemprop="name">yuxuehai</p>
+          <p class="site-description motion-element" itemprop="description">I belive I can fly</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">49</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">11</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/KidSea" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              友情链接
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://opiece.me/" title="Chillax" target="_blank">Chillax</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://hukai.me/" title="hukai" target="_blank">hukai</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://www.csdn.net/" title="CSDN" target="_blank">CSDN</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://duanqz.github.io/" title="启智观" target="_blank">启智观</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#内容"><span class="nav-number">2.</span> <span class="nav-text">内容</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#开发动态资源"><span class="nav-number">2.1.</span> <span class="nav-text">开发动态资源</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#静态资源和动态资源的区别"><span class="nav-number">2.1.1.</span> <span class="nav-text">静态资源和动态资源的区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#动态资源开发技术"><span class="nav-number">2.1.2.</span> <span class="nav-text">动态资源开发技术</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#工具开发动态资源"><span class="nav-number">2.1.3.</span> <span class="nav-text">工具开发动态资源</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Http协议"><span class="nav-number">2.2.</span> <span class="nav-text">Http协议</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Http协议入门"><span class="nav-number">2.2.1.</span> <span class="nav-text">Http协议入门</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查看Http协议的工具"><span class="nav-number">2.2.2.</span> <span class="nav-text">查看Http协议的工具</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Http请求"><span class="nav-number">2.2.3.</span> <span class="nav-text">Http请求</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#请求（浏览器-》服务器）"><span class="nav-number">2.2.3.1.</span> <span class="nav-text">请求（浏览器-》服务器）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#请求行"><span class="nav-number">2.2.3.2.</span> <span class="nav-text">请求行</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#请求头"><span class="nav-number">2.2.3.3.</span> <span class="nav-text">请求头</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#实体内容"><span class="nav-number">2.2.3.4.</span> <span class="nav-text">实体内容</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#HttpServletRequest对象"><span class="nav-number">2.2.3.5.</span> <span class="nav-text">HttpServletRequest对象</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#请求参数编码问题"><span class="nav-number">2.2.3.6.</span> <span class="nav-text">请求参数编码问题</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Http响应"><span class="nav-number">2.2.4.</span> <span class="nav-text">Http响应</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#响应（服务器-》浏览器）"><span class="nav-number">2.2.4.1.</span> <span class="nav-text">响应（服务器-》浏览器）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#响应行"><span class="nav-number">2.2.4.2.</span> <span class="nav-text">响应行</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#常见的响应头"><span class="nav-number">2.2.4.3.</span> <span class="nav-text">常见的响应头</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#HttpServletResponse对象"><span class="nav-number">2.2.4.4.</span> <span class="nav-text">HttpServletResponse对象</span></a></li></ol></li></ol></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">yuxuehai</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+<div class="busuanzi-count">
+
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv"><i class="fa fa-user"></i><span class="busuanzi-value" id="busuanzi_value_site_uv"></span></span>
+  
+
+  
+    <span class="site-pv"><i class="fa fa-eye"></i><span class="busuanzi-value" id="busuanzi_value_site_pv"></span></span>
+  
+  
+</div>
+
+
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"kidsea"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+       search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="popoverlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+    'use strict';
+    $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+            // get the contents from search data
+            isfetched = true;
+            $('.popup').detach().appendTo('.header-inner');
+            var datas = $( "entry", xmlResponse ).map(function() {
+                return {
+                    title: $( "title", this ).text(),
+                    content: $("content",this).text(),
+                    url: $( "url" , this).text()
+                };
+            }).get();
+            var $input = document.getElementById(search_id);
+            var $resultContent = document.getElementById(content_id);
+            $input.addEventListener('input', function(){
+                var matchcounts = 0;
+                var str='<ul class=\"search-result-list\">';
+                var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                $resultContent.innerHTML = "";
+                if (this.value.trim().length > 1) {
+                // perform local searching
+                datas.forEach(function(data) {
+                    var isMatch = true;
+                    var content_index = [];
+                    var data_title = data.title.trim().toLowerCase();
+                    var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                    var data_url = data.url;
+                    var index_title = -1;
+                    var index_content = -1;
+                    var first_occur = -1;
+                    // only match artiles with not empty titles and contents
+                    if(data_title != '' && data_content != '') {
+                        keywords.forEach(function(keyword, i) {
+                            index_title = data_title.indexOf(keyword);
+                            index_content = data_content.indexOf(keyword);
+                            if( index_title < 0 && index_content < 0 ){
+                                isMatch = false;
+                            } else {
+                                if (index_content < 0) {
+                                    index_content = 0;
+                                }
+                                if (i == 0) {
+                                    first_occur = index_content;
+                                }
+                            }
+                        });
+                    }
+                    // show search results
+                    if (isMatch) {
+                        matchcounts += 1;
+                        str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                        var content = data.content.trim().replace(/<[^>]+>/g,"");
+                        if (first_occur >= 0) {
+                            // cut out 100 characters
+                            var start = first_occur - 20;
+                            var end = first_occur + 80;
+                            if(start < 0){
+                                start = 0;
+                            }
+                            if(start == 0){
+                                end = 50;
+                            }
+                            if(end > content.length){
+                                end = content.length;
+                            }
+                            var match_content = content.substring(start, end);
+                            // highlight all keywords
+                            keywords.forEach(function(keyword){
+                                var regS = new RegExp(keyword, "gi");
+                                match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                            });
+
+                            str += "<p class=\"search-result\">" + match_content +"...</p>"
+                        }
+                        str += "</li>";
+                    }
+                })};
+                str += "</ul>";
+                if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+                if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+                $resultContent.innerHTML = str;
+            });
+            proceedsearch();
+        }
+    });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".popoverlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+  
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("4eyaSbRt4Gxv0uJLw1stS8o3-gzGzoHsz", "mJcxoCODhi155s3ypExw4OT6");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+</body>
+</html>

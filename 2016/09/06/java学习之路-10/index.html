@@ -1,0 +1,1119 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Java," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/lufei.jpg?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="前言
+java学习之路—–&amp;gt;Jsp学习-2">
+<meta property="og:type" content="article">
+<meta property="og:title" content="java学习之路-10">
+<meta property="og:url" content="http://yoursite.com/2016/09/06/java学习之路-10/index.html">
+<meta property="og:site_name" content="KidSea's Blog">
+<meta property="og:description" content="前言
+java学习之路—–&amp;gt;Jsp学习-2">
+<meta property="og:updated_time" content="2016-09-06T12:21:32.620Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="java学习之路-10">
+<meta name="twitter:description" content="前言
+java学习之路—–&amp;gt;Jsp学习-2">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/09/06/java学习之路-10/"/>
+
+  <title> java学习之路-10 | KidSea's Blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?a19b4052e92d3054ac7023476b52e8a9";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta custom-logo">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">KidSea's Blog</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                java学习之路-10
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-09-06T19:57:40+08:00" content="2016-09-06">
+              2016-09-06
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/09/06/java学习之路-10/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/09/06/java学习之路-10/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2016/09/06/java学习之路-10/" class="leancloud_visitors" data-flag-title="java学习之路-10">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+              &nbsp; | &nbsp;
+              <span class="page-pv"><i class="fa fa-file-o"></i>
+              <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+              </span>
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><hr>
+<p><strong>java学习之路—–&gt;Jsp学习-2</strong></p>
+<a id="more"></a>
+<h1 id="内容"><a href="#内容" class="headerlink" title="内容"></a>内容</h1><hr>
+<h2 id="Jsp中的四个域对象"><a href="#Jsp中的四个域对象" class="headerlink" title="Jsp中的四个域对象"></a>Jsp中的四个域对象</h2><pre><code>四个域对象：
+pageContext      page域                
+request          request域
+session          session域
+application       context域
+
+1）域对象作用：
+        保存数据  和 获取数据 ，用于数据共享。
+
+2）域对象方法：
+        setAttribute(&quot;name&quot;,Object) 保存数据
+        getAttribute(&quot;name&quot;)  获取数据
+        removeAttribute(&quot;name&quot;) 清除数据
+
+3）域对象作用范围：
+        page域： 只能在当前jsp页面中使用（当前页面）
+        request域： 只能在同一个请求中使用（转发）
+        session域： 只能在同一个会话（session对象）中使用（私有的）
+        context域： 只能在同一个web应用中使用。（全局的）
+</code></pre><h2 id="Jsp的最佳实践"><a href="#Jsp的最佳实践" class="headerlink" title="Jsp的最佳实践"></a>Jsp的最佳实践</h2><pre><code>Servlet技术： 开发动态资源。是一个java类，最擅长写java代码
+jsp技术： 开发动态资源。通过java代码最擅长输出html代码。
+
+
+各取所长：
+    在web项目中涉及到逻辑：
+        1）接收参数      servlet做
+        2）处理业务逻辑，返回结果    servlet做
+        3）显示数据到浏览器      jsp做
+        4）跳转到其他页面        servlet做
+
+
+servlet+jsp模式
+
+  servlet:
+        1）接收参数
+        2）处理业务逻辑
+        3）把结果保存到域对象中
+        4）跳转到jsp页面
+    Jsp:
+        1）从域对象取出数据
+        2）把数据显示到浏览器
+
+servlet的数据    -&gt;   jsp页面
+List&lt;Contact&gt;    使用域对象 共享数据    
+</code></pre><h2 id="EL表达式"><a href="#EL表达式" class="headerlink" title="EL表达式"></a>EL表达式</h2><pre><code>EL作用
+    替换jsp表达式
+
+EL表达式作用
+    向浏览器输出域对象中的变量值或者是表达式计算的结果
+
+语法：
+    $(变量或表达式)
+    1）输出基本数据类型变量
+    1.1 从四个域获取    ${name}
+            1.2 指定域获取
+                ${pageScope.name}
+        域范围： pageScoep / requestScope / sessionScope / 
+        applicationScope
+
+    2）输出对象的属性值
+            Student
+    3）输出集合对象
+           List  和 Map
+    4）EL表达式计算        
+</code></pre><h2 id="Jsp标签"><a href="#Jsp标签" class="headerlink" title="Jsp标签"></a>Jsp标签</h2><h3 id="jsp标签的作用"><a href="#jsp标签的作用" class="headerlink" title="jsp标签的作用"></a>jsp标签的作用</h3><pre><code>替换jsp脚本
+
+1）流程判断（if   for循环）
+2）跳转页面（转发，重定向）
+3）。。。。。        
+</code></pre><h3 id="jsp标签分类"><a href="#jsp标签分类" class="headerlink" title="jsp标签分类"></a>jsp标签分类</h3><pre><code>1）内置标签（动作标签）： 不需要在jsp页面导入标签
+2）jstl标签： 需要在jsp页面中导入标签
+3）自定义标签 ： 开发者自行定义，需要在jsp页面导入标签        
+</code></pre><h3 id="动作标签"><a href="#动作标签" class="headerlink" title="动作标签"></a>动作标签</h3><pre><code>转发标签  &lt;jsp:forward/&gt;
+参数标签  &lt;jsp:pararm/&gt;
+包含标签  &lt;jsp:include/&gt;
+原理： 包含与被包含的页面先各自翻译成java源文件，然后再运行时合并在一起。
+            （先翻译再合并），动态包含
+
+        静态包含  vs  动态包含的区别？
+
+    1） 语法不同
+    静态包含语法： &lt;%@inclue file=&quot;被包含的页面&quot;%&gt;
+    动态包含语法：　&lt;jsp:include page=&quot;被包含的页面&quot;&gt;
+
+    2）参数传递不同
+    静态包含不能向被包含页面传递参数
+    动态包含可以向被包含页面传递参数
+
+    3）原理不同
+    静态包含： 先合并再翻译
+    动态包含： 先翻译再合并    
+</code></pre><h3 id="JSTL标签"><a href="#JSTL标签" class="headerlink" title="JSTL标签"></a>JSTL标签</h3><pre><code>JSTL (全名：java  standard  tag  libarary   -  java标准标签库  )
+
+核心标签库 （c标签库） 天天用
+国际化标签（fmt标签库）
+EL函数库（fn函数库）
+xml标签库（x标签库）
+sql标签库（sql标签库）    
+</code></pre><h3 id="使用JSTL标签步骤"><a href="#使用JSTL标签步骤" class="headerlink" title="使用JSTL标签步骤"></a>使用JSTL标签步骤</h3><pre><code>1）导入jstl支持的jar包（标签背后隐藏的java代码）
+        注意：使用javaee5.0的项目自动导入jstl支持jar包
+2）使用taglib指令导入标签库 
+                &lt;%@taglib uri=&quot;tld文件的uri名称&quot; prefix=&quot;简写&quot; %&gt;
+3）在jsp中使用标签    
+</code></pre><h3 id="核心标签库的重点标签："><a href="#核心标签库的重点标签：" class="headerlink" title="核心标签库的重点标签："></a>核心标签库的重点标签：</h3><pre><code>保存数据：
+        &lt;c:set&gt;&lt;/c:set&gt;   
+获取数据： 
+         &lt;c:out value=&quot;&quot;&gt;&lt;/c:out&gt;
+单条件判断
+        &lt;c:if test=&quot;&quot;&gt;&lt;/c:if&gt;
+多条件判断
+      &lt;c:choose&gt;&lt;/c:choose&gt;
+      &lt;c:when test=&quot;&quot;&gt;&lt;/c:when&gt;
+      &lt;c:otherwise&gt;&lt;/c:otherwise&gt;
+循环数据
+      &lt;c:forEach&gt;&lt;/c:forEach&gt;
+      &lt;c:forTokens items=&quot;&quot; delims=&quot;&quot;&gt;&lt;/c:forTokens&gt;
+重定向
+      &lt;c:redirect&gt;&lt;/c:redirect&gt;        
+</code></pre><h2 id="自定义标签"><a href="#自定义标签" class="headerlink" title="自定义标签"></a>自定义标签</h2><h3 id="引入"><a href="#引入" class="headerlink" title="引入"></a>引入</h3><p>需求： 向浏览器输出当前客户的IP地址 （只能使用jsp标签）</p>
+<h3 id="第一个自定义标签开发步骤"><a href="#第一个自定义标签开发步骤" class="headerlink" title="第一个自定义标签开发步骤"></a>第一个自定义标签开发步骤</h3><blockquote>
+<ol>
+<li>编写一个普通的java类，继承SimpleTagSupport类，叫标签处理器类</li>
+<li>在web项目的WEB-INF目录下建立itcast.tld文件，这个tld叫标签库的声明文件。（参考核心标签库的tld文件）</li>
+<li>在jsp页面的头部导入自定义标签库<br>  &lt;%@taglib uri=”<a href="http://gz.itcast.cn" target="_blank" rel="external">http://gz.itcast.cn</a>“ prefix=”itcast”%&gt;</li>
+<li>在jsp中使用自定义标签</li>
+</ol>
+</blockquote>
+<h3 id="自定义标签的执行过程"><a href="#自定义标签的执行过程" class="headerlink" title="自定义标签的执行过程"></a>自定义标签的执行过程</h3><pre><code>问题： http://localhost:8080/day14/01.hellotag.jsp  
+如何访问到自定义标签？
+
+前提： tomcat服务器启动时，加载到每个web应用，
+加载每个web应用的WEB-INF目录下的所有文件！！！例如。web.xml, tld文件！！！
+
+1）访问01.hellotag.jsp资源
+
+2）tomcat服务器把jsp文件翻译成java源文件-&gt;编译class
+-&gt;构造类对象-&gt;调用_jspService（）方法
+
+3）检查jsp文件的taglib指令，是否存在一个名为
+http://gz.itcast.cn的tld文件。如果没有，则报错
+
+4）上一步已经读到itcast.tld文件
+
+5）读到&lt;itcast:showIp&gt;到itcast.tld文件中查询是否存在&lt;name&gt;为showIp的
+&lt;tag&gt;标签
+
+6）找到对应的&lt;tag&gt;标签，则读到&lt;tag-class&gt;内容
+
+7）得到 gz.itcast.a_tag.ShowIpTag
+
+构造ShowIpTag对象，然后调用ShowIpTag里面的方法
+</code></pre><h3 id="自定义标签的作用"><a href="#自定义标签的作用" class="headerlink" title="自定义标签的作用"></a>自定义标签的作用</h3><blockquote>
+<p>1）控制标签体内容是否输出<br>2）控制标签余下内容是否输出<br>3）控制重复输出标签体内容<br>4）改变标签体内容<br>5）带属性的标签</p>
+</blockquote>
+<h3 id="输出标签体内容格式"><a href="#输出标签体内容格式" class="headerlink" title="输出标签体内容格式"></a>输出标签体内容格式</h3><p>JSP：   在传统标签中使用的。可以写和执行jsp的java代码。<br>scriptless:  标签体不可以写jsp的java代码<br>empty:    必须是空标签。<br>tagdependent : 标签体内容可以写jsp的java代码，但不会执行。</p>
+<hr>
+<p><strong>版权声明：本文为博主原创文章，转载请注明出处<a href="https://kidsea.github.io/" target="_blank" rel="external">KidSea</a></strong></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Java/" rel="tag">#Java</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/09/05/人生最好的心态是平静/" rel="next" title="人生最好的心态是平静">
+                <i class="fa fa-chevron-left"></i> 人生最好的心态是平静
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/09/08/知识，比什么都重要/" rel="prev" title="知识，比什么都重要">
+                知识，比什么都重要 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <div class="ds-share flat" data-thread-key="2016/09/06/java学习之路-10/"
+     data-title="java学习之路-10"
+     data-content=""
+     data-url="http://yoursite.com/2016/09/06/java学习之路-10/">
+  <div class="ds-share-inline">
+    <ul  class="ds-share-icons-16">
+
+      <li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+      <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+      <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+      <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+      <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+
+    </ul>
+    <div class="ds-share-icons-more">
+    </div>
+  </div>
+</div>
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/09/06/java学习之路-10/"
+           data-title="java学习之路-10" data-url="http://yoursite.com/2016/09/06/java学习之路-10/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/james.jpg"
+               alt="yuxuehai" />
+          <p class="site-author-name" itemprop="name">yuxuehai</p>
+          <p class="site-description motion-element" itemprop="description">I belive I can fly</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">49</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">11</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/KidSea" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              友情链接
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://opiece.me/" title="Chillax" target="_blank">Chillax</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://hukai.me/" title="hukai" target="_blank">hukai</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://www.csdn.net/" title="CSDN" target="_blank">CSDN</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://duanqz.github.io/" title="启智观" target="_blank">启智观</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#内容"><span class="nav-number">2.</span> <span class="nav-text">内容</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Jsp中的四个域对象"><span class="nav-number">2.1.</span> <span class="nav-text">Jsp中的四个域对象</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Jsp的最佳实践"><span class="nav-number">2.2.</span> <span class="nav-text">Jsp的最佳实践</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#EL表达式"><span class="nav-number">2.3.</span> <span class="nav-text">EL表达式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Jsp标签"><span class="nav-number">2.4.</span> <span class="nav-text">Jsp标签</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#jsp标签的作用"><span class="nav-number">2.4.1.</span> <span class="nav-text">jsp标签的作用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#jsp标签分类"><span class="nav-number">2.4.2.</span> <span class="nav-text">jsp标签分类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#动作标签"><span class="nav-number">2.4.3.</span> <span class="nav-text">动作标签</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#JSTL标签"><span class="nav-number">2.4.4.</span> <span class="nav-text">JSTL标签</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用JSTL标签步骤"><span class="nav-number">2.4.5.</span> <span class="nav-text">使用JSTL标签步骤</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#核心标签库的重点标签："><span class="nav-number">2.4.6.</span> <span class="nav-text">核心标签库的重点标签：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#自定义标签"><span class="nav-number">2.5.</span> <span class="nav-text">自定义标签</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#引入"><span class="nav-number">2.5.1.</span> <span class="nav-text">引入</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第一个自定义标签开发步骤"><span class="nav-number">2.5.2.</span> <span class="nav-text">第一个自定义标签开发步骤</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#自定义标签的执行过程"><span class="nav-number">2.5.3.</span> <span class="nav-text">自定义标签的执行过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#自定义标签的作用"><span class="nav-number">2.5.4.</span> <span class="nav-text">自定义标签的作用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#输出标签体内容格式"><span class="nav-number">2.5.5.</span> <span class="nav-text">输出标签体内容格式</span></a></li></ol></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">yuxuehai</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+<div class="busuanzi-count">
+
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv"><i class="fa fa-user"></i><span class="busuanzi-value" id="busuanzi_value_site_uv"></span></span>
+  
+
+  
+    <span class="site-pv"><i class="fa fa-eye"></i><span class="busuanzi-value" id="busuanzi_value_site_pv"></span></span>
+  
+  
+</div>
+
+
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"kidsea"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+       search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="popoverlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+    'use strict';
+    $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+            // get the contents from search data
+            isfetched = true;
+            $('.popup').detach().appendTo('.header-inner');
+            var datas = $( "entry", xmlResponse ).map(function() {
+                return {
+                    title: $( "title", this ).text(),
+                    content: $("content",this).text(),
+                    url: $( "url" , this).text()
+                };
+            }).get();
+            var $input = document.getElementById(search_id);
+            var $resultContent = document.getElementById(content_id);
+            $input.addEventListener('input', function(){
+                var matchcounts = 0;
+                var str='<ul class=\"search-result-list\">';
+                var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                $resultContent.innerHTML = "";
+                if (this.value.trim().length > 1) {
+                // perform local searching
+                datas.forEach(function(data) {
+                    var isMatch = true;
+                    var content_index = [];
+                    var data_title = data.title.trim().toLowerCase();
+                    var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                    var data_url = data.url;
+                    var index_title = -1;
+                    var index_content = -1;
+                    var first_occur = -1;
+                    // only match artiles with not empty titles and contents
+                    if(data_title != '' && data_content != '') {
+                        keywords.forEach(function(keyword, i) {
+                            index_title = data_title.indexOf(keyword);
+                            index_content = data_content.indexOf(keyword);
+                            if( index_title < 0 && index_content < 0 ){
+                                isMatch = false;
+                            } else {
+                                if (index_content < 0) {
+                                    index_content = 0;
+                                }
+                                if (i == 0) {
+                                    first_occur = index_content;
+                                }
+                            }
+                        });
+                    }
+                    // show search results
+                    if (isMatch) {
+                        matchcounts += 1;
+                        str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                        var content = data.content.trim().replace(/<[^>]+>/g,"");
+                        if (first_occur >= 0) {
+                            // cut out 100 characters
+                            var start = first_occur - 20;
+                            var end = first_occur + 80;
+                            if(start < 0){
+                                start = 0;
+                            }
+                            if(start == 0){
+                                end = 50;
+                            }
+                            if(end > content.length){
+                                end = content.length;
+                            }
+                            var match_content = content.substring(start, end);
+                            // highlight all keywords
+                            keywords.forEach(function(keyword){
+                                var regS = new RegExp(keyword, "gi");
+                                match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                            });
+
+                            str += "<p class=\"search-result\">" + match_content +"...</p>"
+                        }
+                        str += "</li>";
+                    }
+                })};
+                str += "</ul>";
+                if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+                if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+                $resultContent.innerHTML = str;
+            });
+            proceedsearch();
+        }
+    });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".popoverlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+  
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("4eyaSbRt4Gxv0uJLw1stS8o3-gzGzoHsz", "mJcxoCODhi155s3ypExw4OT6");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+</body>
+</html>

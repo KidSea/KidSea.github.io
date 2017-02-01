@@ -1,0 +1,1394 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Java," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/lufei.jpg?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="前言
+java学习之路—–&amp;gt;Javaspcrit">
+<meta property="og:type" content="article">
+<meta property="og:title" content="java学习之路-3">
+<meta property="og:url" content="http://yoursite.com/2016/08/28/java学习之路-3/index.html">
+<meta property="og:site_name" content="KidSea's Blog">
+<meta property="og:description" content="前言
+java学习之路—–&amp;gt;Javaspcrit">
+<meta property="og:updated_time" content="2016-08-30T11:54:08.187Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="java学习之路-3">
+<meta name="twitter:description" content="前言
+java学习之路—–&amp;gt;Javaspcrit">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/08/28/java学习之路-3/"/>
+
+  <title> java学习之路-3 | KidSea's Blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?a19b4052e92d3054ac7023476b52e8a9";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta custom-logo">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">KidSea's Blog</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                java学习之路-3
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-08-28T23:19:43+08:00" content="2016-08-28">
+              2016-08-28
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/08/28/java学习之路-3/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/08/28/java学习之路-3/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2016/08/28/java学习之路-3/" class="leancloud_visitors" data-flag-title="java学习之路-3">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+              &nbsp; | &nbsp;
+              <span class="page-pv"><i class="fa fa-file-o"></i>
+              <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+              </span>
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><hr>
+<p><strong>java学习之路—–&gt;Javaspcrit</strong></p>
+<a id="more"></a>
+<h1 id="内容"><a href="#内容" class="headerlink" title="内容"></a>内容</h1><hr>
+<h2 id="JavaScrip"><a href="#JavaScrip" class="headerlink" title="JavaScrip"></a>JavaScrip</h2><p>html负责一个页面的结构<br>css 负责一个页面的数据的风格和样式<br>javascrip负责与用户交互  </p>
+<h3 id="javascript的历史"><a href="#javascript的历史" class="headerlink" title="javascript的历史"></a>javascript的历史</h3><pre><code>微软  盖茨认为未来是&quot;视窗&quot;的世界。  
+网景： 1995年退出了一款浏览器（导航者）和liveScript(校验功能)， 非常受欢
+迎。
+和sun公司合作，借用了java的名字，把liveScirpt改名成javascript。  70%市场
+份额。
+盖茨知错了,盖茨找网景的老大判断， 不同意  （领航者)。
+盖茨一年投资20亿美元去开发JScript.  微软 :捆绑销售+免费。   45美元。
+1998年被美国在线的公司收购， 03年的时候网景宣布破产。  
+同意赔钱7亿美元   拿出2千万美金成立了一个基金会（Mozilla ）谋智+ 把浏览器的
+源代码全部开工。
+</code></pre><h3 id="协议"><a href="#协议" class="headerlink" title="协议"></a>协议</h3><pre><code>1997年欧洲的计算机协议（ECMA）组织出来给javascript规定协议。  
+1. ECMAScirpt(规范了基本的语法而已)
+2. BOM （浏览器对象模型）
+3. DOM  (文档对象模型)
+</code></pre><h3 id="javascript的特点："><a href="#javascript的特点：" class="headerlink" title="javascript的特点："></a>javascript的特点：</h3><pre><code>1. 跨平台
+2. 安全性。 （javascript的代码不能直接访问硬盘的内容） 
+</code></pre><h3 id="javascript与java之间区别-："><a href="#javascript与java之间区别-：" class="headerlink" title="javascript与java之间区别 ："></a>javascript与java之间区别 ：</h3><pre><code>1. javascript是属于网景公司产品， java是sun公司的产品。
+2. javascript是基于对象的语言，java是面向对象的语言。
+3. javascript是解释型语言，java是解释、编译型语言。
+4. javascript是弱类型语言， java 是强类型语言。
+5. java中声明变量 的时候必须要明确该变量的数据类型。
+6. javascript声明变量不需要明确是何种数据类型， 任何的变量都是使用一个关键字
+   var去声明即可。
+</code></pre><h3 id="如何编写javascript的代码。"><a href="#如何编写javascript的代码。" class="headerlink" title="如何编写javascript的代码。"></a>如何编写javascript的代码。</h3><pre><code>方法1：可以使用&lt;script&gt;标签体进行编写；
+       &lt;script type=&quot;test/javascript&quot;&gt;
+         js代码块；
+         alert(&quot;哈哈&quot;);//弹出框
+         document.write(&quot;数据&quot;);//向页面输出数据
+       &lt;/script&gt;
+方法2： 可以引入javascript代码
+        &lt;script src=&quot;name.js&quot; type=&quot;test/javascript&quot;&gt;
+        &lt;/script&gt;
+注意： 
+        1.&lt;script&gt;是有开始标签与结束标签的，千万不要在一个标签中结束了。
+        2.如果&lt;script&gt;已经用于引入了js文件，那么该&lt;script&gt;标签体就不能再写
+        js代码了，
+</code></pre><h3 id="网页的注释："><a href="#网页的注释：" class="headerlink" title="网页的注释："></a>网页的注释：</h3><pre><code>html &lt;!--注释的内容--&gt;
+css注释  /*注释的内容*/
+javascript: //单行   /*多行*/
+</code></pre><h3 id="变量的声明："><a href="#变量的声明：" class="headerlink" title="变量的声明："></a>变量的声明：</h3><pre><code>格式：
+    var 变量名 = 数据;
+    var a = 10;
+    document.write(&quot;a=&quot;+a+&quot;&lt;br/&gt;&quot;);
+    var b = &quot;狗娃&quot;;
+    document.write(&quot;b=&quot;+b+&quot;&lt;br/&gt;&quot;);    
+    var c = 3.14;
+    document.write(&quot;c=&quot;+c+&quot;&lt;br/&gt;&quot;);    
+
+注意:
+    1. 变量可以存储任何类型
+    2. 类型根据数据类型决定
+    3. 没有重复变量说法，只有定义顺序
+    4. 使用typeof来检测数据类型    
+
+数据类型：
+    number 小数跟整数
+    string 字符跟字符串
+    boolean 布尔类型
+    undefined 未被定义类型
+
+类型转换：
+    字符串转数字
+    parseInt() 整数
+    parseFloat() 浮点数
+    IsNaN方法  判断该字符串是不是一个数字
+</code></pre><h3 id="运算符"><a href="#运算符" class="headerlink" title="运算符"></a>运算符</h3><pre><code>+(加法、正数、连接符) 
+true 是1  
+false 是0
+/(除法) 两个整数不能整除时候结果为浮点数。
+
+比较运算符
+&gt; 大于号
+  10&gt;3 true
+  &quot;10&quot;&gt;&quot;3&quot; false
+  &quot;19&quot;&gt;&quot;18888&quot; true
+  10&gt;&quot;9&quot; true 数字与字符串比较时，会先把字符串转换成数字再进行比较
+&lt; 小于号
+
+逻辑运算符
+&amp;&amp; 逻辑与 没有单与
+|| 逻辑或
+！ 非
+
+三目运算符
+表达式?执行体1:执行体2
+</code></pre><h3 id="控制流程语句"><a href="#控制流程语句" class="headerlink" title="控制流程语句"></a>控制流程语句</h3><pre><code>if语句
+if(condition){
+   执行体
+}
+
+if语句的特殊处
+1.类似C语言，与JAVA有些区别
+2.String不能空是true 空为false
+3.undefined false
+4.NaN false
+
+switch用法与其他类似
+特殊之处
+case后可以跟常量与变量，还可以跟表达式
+
+循环语句
+for
+格式：
+  for(初始化语句;判断条件;循环后的语句){
+    执行体;
+  }
+
+for-in
+格式：
+  for(var 变量名 in 遍历的目标){
+    执行体；
+  }
+1. 可以遍历数据的元素
+var arr = {12,13,19,15,16};
+for (var index in arr){
+   document.write(arr[index]+&quot;,&quot;);
+}
+2. 可以用以遍历对象的所以属性
+
+while
+格式：
+  while(判断条件){
+    执行体；
+  }        
+
+do while
+格式：
+   do {
+    执行体；
+   }while(判断条件)；    
+
+with 
+说明：有了With语句，在存取对象属性和调用方法时就不用重复指定对象
+格式:
+   with(对象){
+      可直接调用对象方法或属性;
+   }
+</code></pre><h3 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h3><pre><code>格式：
+function 函数名(形参列表){
+   函数体;
+}
+注意细节:
+1.在Js的函数定义时，形参不能加var声明
+2.在Js函数中，没有返回值类型，但可以有返回值，也可以没有，不用声明
+3.在Js的函数中，没有函数重载
+4.在Js的函数中，任何一个函数内部都隐式的维护了一个arguments的对象，给函
+  数传递数据的时候，会先给arguements的数组里，然后再分配给形参
+</code></pre><h3 id="字符串对象"><a href="#字符串对象" class="headerlink" title="字符串对象"></a>字符串对象</h3><pre><code>方式1：
+new String(&quot;内容&quot;);
+方式2：
+var str = &quot;内容&quot;;
+
+常用方法
+anchor() 生产锚点
+&quot;&quot;.anchor(&quot;&quot;);
+
+blink() 为元素添加blink标签
+
+charAt()  返回指定索引位置处的字符
+
+charCodeAt() 返回索引值对应的码值
+
+fontcolor() 给字符串加上颜色
+
+indexof() 返回指定字符串第一次出现的索引值
+
+italics() 把字符串变为斜体
+
+link() 给字符串添加超链接
+
+replace() 替换字符串内容
+
+split() 切割字符串
+
+substr() 截取字符串
+
+toUpperCase()转大写
+toLowerCase()转小写
+</code></pre><h3 id="Date对象"><a href="#Date对象" class="headerlink" title="Date对象"></a>Date对象</h3><pre><code>getYear() 获取当前年份与1900年份相差年份
+
+getFullYear() 获取当前准确年份
+
+getMonth()获取月份
+
+getDate()获取日
+
+getHours()获得时间
+
+getMinutes()获得分钟
+
+getSeconds()获得秒
+
+toLocaleString()获取一定格式的日期，不能修改
+</code></pre><h3 id="Number对象"><a href="#Number对象" class="headerlink" title="Number对象"></a>Number对象</h3><pre><code>方式1： 
+var 变量 = new Number(数字);
+方式2：
+var 变量 = 数字;
+
+常用方法
+toString() 将数字转换成字符串
+
+toFixed() 指定保留小数位，还带有四舍五入
+</code></pre><h3 id="Math对象"><a href="#Math对象" class="headerlink" title="Math对象"></a>Math对象</h3><pre><code>常用方法
+   ceil() 向上取整
+
+   floor() 向下取整
+
+   random() 随机数方法 
+
+   round() 四舍五入
+</code></pre><h3 id="Array数组对象"><a href="#Array数组对象" class="headerlink" title="Array数组对象"></a>Array数组对象</h3><pre><code>   方式1：
+   var 变量名 = new Array();
+   方式2：
+   var 变量名 = new Array(个数); 创建一个指定数组长度的数组
+   方式3：
+   var 变量名 = new Array(元素1,元素2,...);
+   方式4:
+   var 变量名 = [&quot;&quot;];
+
+
+注意细节：
+   1.数组长度可以变化    
+
+常用方法
+   concat() 连接数组
+
+   join() 使用指定的分割符，把数组中的元素拼装成一个字符串返回
+
+   pop() 移除数组中的最后一个元素并返回
+
+   push() 将新元素加入数组，并返回最新长度
+
+   reverse() 反转数组的元素
+
+   shift() 移除第一个元素，并返回
+
+   slice() 截取数组的一段内容
+
+   sort() 排序方法,但是需要写排序方法
+
+   splice() 移除一个或多个元素，必要时还可以插入元素
+</code></pre><h3 id="自定义对象"><a href="#自定义对象" class="headerlink" title="自定义对象"></a>自定义对象</h3><pre><code>在Js中没有类的概念，只要有函数即可创建对象
+
+方式1：使用无参函数创建对象
+function Person(){
+}
+var p = new Person();
+p.id = 110;
+方式2：使用带参的函数创建对象
+function Person(id,name){
+    this.id = id;
+    this.name = name;
+    this.say = function(){
+      alert(name + &quot;呵呵&quot;);
+    }
+}
+var p = new Person();
+方式3: 使用Object函数来创建对象
+function Object(){
+}
+var p = new Object();
+p.id = 100;
+p.name = &quot;铁蛋&quot;;
+方式4：使用字面量的方式创建
+var p = {
+    id:110,
+    name:&quot;狗娃&quot;,
+    say:function{
+      alert(this.name + &quot;呵呵&quot;);
+    }
+}
+</code></pre><h3 id="prototype"><a href="#prototype" class="headerlink" title="prototype"></a>prototype</h3><pre><code>1.prototype是函数的一个必备属性
+2.prototype的值是一个对象
+3.可以任意修改函数的prototype属性的值
+4.一个对象会自动用有这个对象的构造函数的prototpye的成员属性和方法
+ Array.prototype.getMax = function(){
+var max = this[0];
+for(var index = 1; index&lt;this.length ; index++){
+    if(this[index]&gt;max){
+        max = this[index];    
+    }    
+}
+return max;
+}
+
+
+Array.prototype.searchEle = function(target){
+    for(var i = 0 ; i&lt;this.length ; i++){
+        if(target==this[i]){
+            return i;    
+        }    
+    }
+    return -1;
+
+}
+
+
+
+//var arr = new Array(12,4,17,9);
+var arr = [12,4,17,9];
+var max = arr.getMax();
+var index = arr.searchEle(9);
+document.write(&quot;最大值：&quot;+ max+&quot;&lt;br/&gt;&quot;);
+document.write(&quot;索引值：&quot;+ index+&quot;&lt;br/&gt;&quot;);    
+</code></pre><h3 id="Bom编程"><a href="#Bom编程" class="headerlink" title="Bom编程"></a>Bom编程</h3><pre><code>   浏览器对象模型: 浏览器对象模型中把浏览器的各个部分都用一个对象来描述，
+   如果想要操作浏览器的一些属性，我们就可以通过浏览器对象模型的对象来操作
+
+window 代表了新开一个窗口
+   常用方法：
+   open() 打开新窗口并装入给定的URL的文档
+
+   resizeBy 改变窗口当前的位置，指定X与Y
+
+   resizeTo 将窗口的大小更改为指定的宽度和高度值
+
+   moveBy() 相对于原来的窗口移动指定的值
+
+   moveTo() 相对于整个屏幕移动
+
+   setInterval() 每经过指定的时间就可以执行指定的代码，单位ms
+
+   clearInterval() 取消定时任务
+
+   setTimeout() 经过指定的时间后，执行一次指定代码，单位ms
+
+注意细节：
+   window的一些方法调用可以省略window的对象
+
+事件
+   注册事件的方式:
+   方式1：直接在html元素上注册
+          &lt;body onload=&quot;ready()&quot;&gt;
+          function ready)(){
+            代码体;
+          }
+   方式2：可以在js代码找到对应的对象再注册      推荐 
+          var bodyNode = document.getElementById(&quot;body&quot;);
+          bodyNode.onload  = function{
+          }
+   常用的事件:
+   鼠标点击相关：
+   onclick 在用户用鼠标左键单击对象时触发。 
+   ondblclick 当用户双击对象时触发。 
+   onmousedown 当用户用任何鼠标按钮单击对象时触发。 
+   onmouseup 当用户在鼠标位于对象之上时释放鼠标按钮时触发。 
+
+   鼠标移动相关：
+   onmouseout  当用户将鼠标指针移出对象边界时触发。 
+   onmousemove 当用户将鼠标划过对象时触发。 
+
+   焦点相关的：
+   onblur 在对象失去输入焦点时触发。 
+   onfocus 当对象获得焦点时触发。
+
+   其他：
+   onchange 当对象或选中区的内容改变时触发。 
+   onload 在浏览器完成对象的装载后立即触发。 
+   onsubmit 当表单将要被提交时触发。 
+
+
+Location 代表了地址栏对象
+   href 设置以及获取地址栏的对象
+
+   reload() 刷新当前页面
+
+Screen 代表了整个屏幕对象
+   availHeight 获取系统屏幕的工作区域高度
+   availWidth 获取屏幕的工作区域宽度
+   height 获取屏幕的垂直分辨率
+   width 获取屏幕的水平分辨率
+</code></pre><h3 id="Dom编程"><a href="#Dom编程" class="headerlink" title="Dom编程"></a>Dom编程</h3><pre><code>    文档对象模型：一个html页面被浏览器加载的时候，浏览器就会对整个html页面上
+    的所有变迁都会创建一个对应的对象进行描述，
+    我们在浏览器上看到的信息只不过就是这些html对象的属性信息而已。
+    我们只要能找到对应的对象操作对象的属性，则可以改变浏览器的当前显示内容。
+
+    document.all 获取html文件中的所有标签节点
+
+    document.links 获取文档中所有含有href属性的标签
+
+通过html因素的标签属性找节点
+    document.getElementById(&quot;html元素的id&quot;) 
+    document.getElementsByTagName(&quot;标签名&quot;) 
+    document.getElementsByName(&quot;html元素的name&quot;)
+
+通过关系(父子关系、兄弟关系)找标签。
+    parentNode    获取当前元素的父节点。
+    childNodes    获取当前元素的所有下一级子元素。
+    firstChild    获取当前节点的第一个子节点。
+    lastChild    获取当前节点的最后一个子节点。
+    ------------------------------------------------------------    
+    nextSibling        获取当前节点的下一个节点。（兄节点）
+    previousSibling    获取当前节点的上一个节点。（弟节点）
+
+
+ 注意细节: 
+    InnerHTml是用来设置标签题的内容，value死用以设置标签的value属性值
+    获取子节点的时候包括空文本和注释文本，可以通过便标签的类型判断筛选
+    文本类型： 3
+    注释类型: 8
+    标签节点类型: 1
+
+创建、插入节点
+
+    document.createElement(&quot;标签名&quot;)        创建新元素节点
+    elt.setAttribute(&quot;属性名&quot;, &quot;属性值&quot;)    设置属性
+    elt.appendChild(e)                        添加元素到elt中最后的位置
+
+    elt.insertBefore(newNode,oldNode); 在child之前
+    elt必须是oldNode的直接父节点
+
+    elt.removeChild(eChild) 删除指定节点
+    elt必须是child的直接父节点
+</code></pre><h3 id="正则表达式"><a href="#正则表达式" class="headerlink" title="正则表达式"></a>正则表达式</h3><pre><code>方式1: 
+    /正则表达式/模式
+    var str = &quot;hello1123&quot;
+    var reg = /^[a-z0-9]+/;
+
+
+方式2:
+    new RegExp(&quot;正则表达式&quot;,模式);
+
+常用的两个方法
+    test方法 匹配，使用正则对象去匹配字符串，成功则返回true，否则false
+
+    exec方法 查找，根据正则表达式查找字符串符合规则的内容
+
+模式
+    g 全文查找
+    i 忽略大小写
+</code></pre><hr>
+<p><strong>版权声明：本文为博主原创文章，转载请注明出处<a href="https://kidsea.github.io/" target="_blank" rel="external">KidSea</a></strong></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Java/" rel="tag">#Java</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/08/28/如光/" rel="next" title="如光">
+                <i class="fa fa-chevron-left"></i> 如光
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/08/30/java学习之路-4/" rel="prev" title="java学习之路-4">
+                java学习之路-4 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <div class="ds-share flat" data-thread-key="2016/08/28/java学习之路-3/"
+     data-title="java学习之路-3"
+     data-content=""
+     data-url="http://yoursite.com/2016/08/28/java学习之路-3/">
+  <div class="ds-share-inline">
+    <ul  class="ds-share-icons-16">
+
+      <li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+      <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+      <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+      <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+      <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+
+    </ul>
+    <div class="ds-share-icons-more">
+    </div>
+  </div>
+</div>
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/08/28/java学习之路-3/"
+           data-title="java学习之路-3" data-url="http://yoursite.com/2016/08/28/java学习之路-3/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/james.jpg"
+               alt="yuxuehai" />
+          <p class="site-author-name" itemprop="name">yuxuehai</p>
+          <p class="site-description motion-element" itemprop="description">I belive I can fly</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">49</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">11</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/KidSea" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              友情链接
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://opiece.me/" title="Chillax" target="_blank">Chillax</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://hukai.me/" title="hukai" target="_blank">hukai</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://www.csdn.net/" title="CSDN" target="_blank">CSDN</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://duanqz.github.io/" title="启智观" target="_blank">启智观</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#内容"><span class="nav-number">2.</span> <span class="nav-text">内容</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#JavaScrip"><span class="nav-number">2.1.</span> <span class="nav-text">JavaScrip</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#javascript的历史"><span class="nav-number">2.1.1.</span> <span class="nav-text">javascript的历史</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#协议"><span class="nav-number">2.1.2.</span> <span class="nav-text">协议</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#javascript的特点："><span class="nav-number">2.1.3.</span> <span class="nav-text">javascript的特点：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#javascript与java之间区别-："><span class="nav-number">2.1.4.</span> <span class="nav-text">javascript与java之间区别 ：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#如何编写javascript的代码。"><span class="nav-number">2.1.5.</span> <span class="nav-text">如何编写javascript的代码。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#网页的注释："><span class="nav-number">2.1.6.</span> <span class="nav-text">网页的注释：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#变量的声明："><span class="nav-number">2.1.7.</span> <span class="nav-text">变量的声明：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#运算符"><span class="nav-number">2.1.8.</span> <span class="nav-text">运算符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#控制流程语句"><span class="nav-number">2.1.9.</span> <span class="nav-text">控制流程语句</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#函数"><span class="nav-number">2.1.10.</span> <span class="nav-text">函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#字符串对象"><span class="nav-number">2.1.11.</span> <span class="nav-text">字符串对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Date对象"><span class="nav-number">2.1.12.</span> <span class="nav-text">Date对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Number对象"><span class="nav-number">2.1.13.</span> <span class="nav-text">Number对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Math对象"><span class="nav-number">2.1.14.</span> <span class="nav-text">Math对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Array数组对象"><span class="nav-number">2.1.15.</span> <span class="nav-text">Array数组对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#自定义对象"><span class="nav-number">2.1.16.</span> <span class="nav-text">自定义对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#prototype"><span class="nav-number">2.1.17.</span> <span class="nav-text">prototype</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Bom编程"><span class="nav-number">2.1.18.</span> <span class="nav-text">Bom编程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Dom编程"><span class="nav-number">2.1.19.</span> <span class="nav-text">Dom编程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#正则表达式"><span class="nav-number">2.1.20.</span> <span class="nav-text">正则表达式</span></a></li></ol></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">yuxuehai</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+<div class="busuanzi-count">
+
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv"><i class="fa fa-user"></i><span class="busuanzi-value" id="busuanzi_value_site_uv"></span></span>
+  
+
+  
+    <span class="site-pv"><i class="fa fa-eye"></i><span class="busuanzi-value" id="busuanzi_value_site_pv"></span></span>
+  
+  
+</div>
+
+
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"kidsea"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+       search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="popoverlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+    'use strict';
+    $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+            // get the contents from search data
+            isfetched = true;
+            $('.popup').detach().appendTo('.header-inner');
+            var datas = $( "entry", xmlResponse ).map(function() {
+                return {
+                    title: $( "title", this ).text(),
+                    content: $("content",this).text(),
+                    url: $( "url" , this).text()
+                };
+            }).get();
+            var $input = document.getElementById(search_id);
+            var $resultContent = document.getElementById(content_id);
+            $input.addEventListener('input', function(){
+                var matchcounts = 0;
+                var str='<ul class=\"search-result-list\">';
+                var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                $resultContent.innerHTML = "";
+                if (this.value.trim().length > 1) {
+                // perform local searching
+                datas.forEach(function(data) {
+                    var isMatch = true;
+                    var content_index = [];
+                    var data_title = data.title.trim().toLowerCase();
+                    var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                    var data_url = data.url;
+                    var index_title = -1;
+                    var index_content = -1;
+                    var first_occur = -1;
+                    // only match artiles with not empty titles and contents
+                    if(data_title != '' && data_content != '') {
+                        keywords.forEach(function(keyword, i) {
+                            index_title = data_title.indexOf(keyword);
+                            index_content = data_content.indexOf(keyword);
+                            if( index_title < 0 && index_content < 0 ){
+                                isMatch = false;
+                            } else {
+                                if (index_content < 0) {
+                                    index_content = 0;
+                                }
+                                if (i == 0) {
+                                    first_occur = index_content;
+                                }
+                            }
+                        });
+                    }
+                    // show search results
+                    if (isMatch) {
+                        matchcounts += 1;
+                        str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                        var content = data.content.trim().replace(/<[^>]+>/g,"");
+                        if (first_occur >= 0) {
+                            // cut out 100 characters
+                            var start = first_occur - 20;
+                            var end = first_occur + 80;
+                            if(start < 0){
+                                start = 0;
+                            }
+                            if(start == 0){
+                                end = 50;
+                            }
+                            if(end > content.length){
+                                end = content.length;
+                            }
+                            var match_content = content.substring(start, end);
+                            // highlight all keywords
+                            keywords.forEach(function(keyword){
+                                var regS = new RegExp(keyword, "gi");
+                                match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                            });
+
+                            str += "<p class=\"search-result\">" + match_content +"...</p>"
+                        }
+                        str += "</li>";
+                    }
+                })};
+                str += "</ul>";
+                if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+                if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+                $resultContent.innerHTML = str;
+            });
+            proceedsearch();
+        }
+    });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".popoverlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+  
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("4eyaSbRt4Gxv0uJLw1stS8o3-gzGzoHsz", "mJcxoCODhi155s3ypExw4OT6");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+</body>
+</html>

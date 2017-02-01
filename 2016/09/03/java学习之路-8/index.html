@@ -1,0 +1,1131 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Java," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/lufei.jpg?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="前言
+java学习之路—–&amp;gt;会话管理">
+<meta property="og:type" content="article">
+<meta property="og:title" content="java学习之路-8">
+<meta property="og:url" content="http://yoursite.com/2016/09/03/java学习之路-8/index.html">
+<meta property="og:site_name" content="KidSea's Blog">
+<meta property="og:description" content="前言
+java学习之路—–&amp;gt;会话管理">
+<meta property="og:updated_time" content="2016-09-03T13:16:17.805Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="java学习之路-8">
+<meta name="twitter:description" content="前言
+java学习之路—–&amp;gt;会话管理">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/09/03/java学习之路-8/"/>
+
+  <title> java学习之路-8 | KidSea's Blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?a19b4052e92d3054ac7023476b52e8a9";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta custom-logo">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">KidSea's Blog</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                java学习之路-8
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-09-03T21:02:20+08:00" content="2016-09-03">
+              2016-09-03
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/09/03/java学习之路-8/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/09/03/java学习之路-8/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2016/09/03/java学习之路-8/" class="leancloud_visitors" data-flag-title="java学习之路-8">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+              &nbsp; | &nbsp;
+              <span class="page-pv"><i class="fa fa-file-o"></i>
+              <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+              </span>
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><hr>
+<p><strong>java学习之路—–&gt;会话管理</strong></p>
+<a id="more"></a>
+<h1 id="内容"><a href="#内容" class="headerlink" title="内容"></a>内容</h1><hr>
+<h2 id="会话管理"><a href="#会话管理" class="headerlink" title="会话管理"></a>会话管理</h2><h3 id="生活中的会话"><a href="#生活中的会话" class="headerlink" title="生活中的会话"></a>生活中的会话</h3><pre><code>我： 小张，你会跳小苹果码？
+小张： 会，怎么了？
+我： 公司年会上要表演节目，你教教我把
+小张：没问题，一顿饭而已。
+我： OK。
+。。。。。。。。
+
+在这次生活中的会话中产生通话记录（会话数据）
+</code></pre><h3 id="软件中的会话"><a href="#软件中的会话" class="headerlink" title="软件中的会话"></a>软件中的会话</h3><p>一次会话： 打开浏览器 -&gt; 访问一些服务器内容 -&gt; 关闭浏览器</p>
+<h4 id="登录场景："><a href="#登录场景：" class="headerlink" title="登录场景："></a>登录场景：</h4><pre><code>打开浏览器 -&gt; 浏览到登陆页面 -&gt; 输入用户名和密码 -&gt; 访问到用户主页(显示用户
+名)
+修改密码（输入原密码）
+修改收货地址
+.......
+
+问题：在此处登录会话过程中产生的数据（用户会话数据）如何保存下来呢？
+</code></pre><h4 id="购物场景："><a href="#购物场景：" class="headerlink" title="购物场景："></a>购物场景：</h4><pre><code>打开浏览器 -&gt; 浏览商品列表  -&gt; 加入购物车(把商品信息保存下来)  -&gt; 关闭
+ 浏览器
+打开浏览器-&gt;  直接进入购物车 -&gt; 查看到上次加入购物车的商品 -&gt; 下订单 
+ -&gt; 支付
+
+问题： 在购物会话过程中，如何保存商品信息？？
+
+会话管理： 管理浏览器客户端 和 服务器端之间会话过程中产生的会话数据。
+
+域对象： 实现资源之间的数据共享。
+
+request域对象
+context域对象
+</code></pre><h4 id="登录场景：-1"><a href="#登录场景：-1" class="headerlink" title="登录场景："></a>登录场景：</h4><pre><code>小张： 输入“张三” （保存数据： context.setAttribute(&quot;name&quot;,&quot;张三&quot;)）
+-&gt; 用户主页（显示“张三”）
+小李： 输入“李四”(保存数据：context.setAttribute(&quot;name&quot;,&quot;李四&quot;)) -&gt;     
+用户主页（显示“李四”）
+
+问题： context是所有用户公有的资源！！！会覆盖数据。
+
+小张： 输入“张三”（保存数据： request.setAttribute(&quot;name&quot;,&quot;张三&quot;)）
+- &gt; 用户主页（显示“张三”）                    
+问题： 一定要使用转发技术来跳转页面！！！
+
+解决办法： 可以使用session域对象来保存会话数据！！！
+</code></pre><h3 id="会话技术"><a href="#会话技术" class="headerlink" title="会话技术"></a>会话技术</h3><p>Cookie技术：会话数据保存在浏览器客户端<br>Session技术：会话数据保存在服务器端</p>
+<h3 id="Cookie技术"><a href="#Cookie技术" class="headerlink" title="Cookie技术"></a>Cookie技术</h3><h4 id="Cookie技术核心"><a href="#Cookie技术核心" class="headerlink" title="Cookie技术核心"></a>Cookie技术核心</h4><p>Cookie类：用以存储会话数据</p>
+<pre><code>1）构造Cookie对象
+    Cookie(java.lang.String name, java.lang.String value)
+2）设置cookie
+    void setPath(java.lang.String uri)   ：设置cookie的有效访问路径
+    void setMaxAge(int expiry) ： 设置cookie的有效时间
+    void setValue(java.lang.String newValue) ：设置cookie的值
+3）发送cookie到浏览器端保存
+    void response.addCookie(Cookie cookie)  : 发送cookie
+4）服务器接收cookie
+    Cookie[] request.getCookies()  : 接收cookie
+</code></pre><h4 id="Cookie原理"><a href="#Cookie原理" class="headerlink" title="Cookie原理"></a>Cookie原理</h4><pre><code>1）服务器创建cookie对象，把会话数据存储到cookie对象中。
+        new Cookie(&quot;name&quot;,&quot;value&quot;);
+2）    服务器发送cookie信息到浏览器
+        response.addCookie(cookie);
+
+举例： set-cookie: name=eric  (隐藏发送了一个set-cookie名称的响应头)
+3）浏览器得到服务器发送的cookie，然后保存在浏览器端。
+4）浏览器在下次访问服务器时，会带着cookie信息
+        举例： cookie: name=eric  (隐藏带着一个叫cookie名称的请求头)
+5）服务器接收到浏览器带来的cookie信息
+        request.getCookies();    
+</code></pre><h4 id="Cookie的细节"><a href="#Cookie的细节" class="headerlink" title="Cookie的细节"></a>Cookie的细节</h4><pre><code>1）void setPath(java.lang.String uri)   ：设置cookie的有效访问路径。
+   有效路径指的是cookie的有效路径保存在哪里，那么浏览器在有效路径下访问服务
+   器时就会带着cookie信息，否则不带cookie信息。
+
+2）void setMaxAge(int expiry) ： 设置cookie的有效时间。
+        正整数：表示cookie数据保存浏览器的缓存目录（硬盘中），数值表示保存的
+        时间。
+        负整数：表示cookie数据保存浏览器的内存中。浏览器关闭cookie就丢失
+        了！！
+        零：表示删除同名的cookie数据
+3）Cookie数据类型只能保存非中文字符串类型的。
+   可以保存多个cookie，但是浏览器一般只允许存放300个Cookie，每个站点最多存
+   放20个Cookie，每个Cookie的大小限制为4KB。
+</code></pre><h3 id="Session技术"><a href="#Session技术" class="headerlink" title="Session技术"></a>Session技术</h3><h4 id="引入"><a href="#引入" class="headerlink" title="引入"></a>引入</h4><pre><code>Cookie的局限：
+    1）Cookie只能存字符串类型。不能保存对象
+    2）只能存非中文。
+    3）1个Cookie的容量不超过4KB。
+
+如果要保存非字符串，超过4kb内容，只能使用session技术！！！
+
+Session特点：
+        会话数据保存在服务器端。（内存中）                
+</code></pre><h4 id="Session核心技术"><a href="#Session核心技术" class="headerlink" title="Session核心技术"></a>Session核心技术</h4><pre><code>HttpSession类：用于保存会话数据
+
+1）创建或得到session对象
+    HttpSession getSession()  
+    HttpSession getSession(boolean create)  
+2）设置session对象
+    void setMaxInactiveInterval(int interval)  ： 设置session的有效时
+    间
+    void invalidate()     ： 销毁session对象
+    java.lang.String getId()  ： 得到session编号
+3）保存会话数据到session对象
+    void setAttribute(java.lang.String name, java.lang.Object value)  
+    ： 保存数据
+    java.lang.Object getAttribute(java.lang.String name)  ： 获取数据
+    void removeAttribute(java.lang.String name) ： 清除数据        
+</code></pre><h4 id="Session技术原理"><a href="#Session技术原理" class="headerlink" title="Session技术原理"></a>Session技术原理</h4><pre><code>问题： 服务器能够识别不同的浏览者！！！
+现象：
+
+前提： 在哪个session域对象保存数据，就必须从哪个域对象取出！！！！
+浏览器1：(给s1分配一个唯一的标记：s001,把s001发送给浏览器)
+        1）创建session对象，保存会话数据
+                HttpSession session = request.getSession(); 
+                --保存会话数据 s1
+浏览器1    的新窗口（带着s001的标记到服务器查询，s001-&gt;s1,返回s1）    
+        1）得到session对象的会话数据
+                HttpSession session = request.getSession();   
+                --可以取出  s1
+
+新的浏览器1：(没有带s001,不能返回s1)
+        1）得到session对象的会话数据
+                HttpSession session = request.getSession();   
+                --不可以取出  s2
+
+浏览器2：(没有带s001,不能返回s1)
+        1）得到session对象的会话数据
+                HttpSession session = request.getSession();  
+                --不可以取出  s3
+
+代码解读：HttpSession session = request.getSession();
+
+1）第一次访问创建session对象，给session对象分配一个唯一的ID，叫JSESSIONID
+        new HttpSession();
+2）把JSESSIONID作为Cookie的值发送给浏览器保存
+        Cookie cookie = new Cookie(&quot;JSESSIONID&quot;, sessionID);
+        response.addCookie(cookie);
+3）第二次访问的时候，浏览器带着JSESSIONID的cookie访问服务器
+4）服务器得到JSESSIONID，在服务器的内存中搜索是否存放对应编号的session对
+象。
+        if(找到){
+            return map.get(sessionID);
+        }
+        Map&lt;String,HttpSession&gt;]
+
+        &lt;&quot;s001&quot;, s1&gt;
+        &lt;&quot;s001,&quot;s2&gt;
+5）如果找到对应编号的session对象，直接返回该对象
+
+6）如果找不到对应编号的session对象，创建新的session对象，继续走1的流程
+
+结论：通过JSESSION的cookie值在服务器找session对象！！！！！    
+</code></pre><h4 id="Session细节"><a href="#Session细节" class="headerlink" title="Session细节"></a>Session细节</h4><pre><code>1）java.lang.String getId()  ： 得到session编号
+2）两个getSession方法：
+    getSession(true) / getSession()  : 创建或得到session
+        对象。没有匹配的session编号，自动创建新的session对象。
+    getSession(false):得到session对象。没有匹配的session编号，
+    返回null
+3）void setMaxInactiveInterval(int interval)  ： 设置session的有效
+时间
+            session对象销毁时间：
+                3.1 默认情况30分服务器自动回收
+                3.2 修改session回收时间
+                3.3 全局修改session有效时间
+                3.4.手动销毁session对象
+                    void invalidate()     ： 销毁session对象
+4）如何避免浏览器的JSESSIONID的cookie随着浏览器关闭而丢失的问题                        
+       /**
+         * 手动发送一个硬盘保存的cookie给浏览器
+         */
+        Cookie c = new Cookie(&quot;JSESSIONID&quot;,session.getId());
+        c.setMaxAge(60*60);
+        response.addCookie(c);    
+</code></pre><hr>
+<p><strong>版权声明：本文为博主原创文章，转载请注明出处<a href="https://kidsea.github.io/" target="_blank" rel="external">KidSea</a></strong></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Java/" rel="tag">#Java</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/09/02/java学习之路-7/" rel="next" title="java学习之路-7">
+                <i class="fa fa-chevron-left"></i> java学习之路-7
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/09/04/java学习之路-9/" rel="prev" title="java学习之路-9">
+                java学习之路-9 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <div class="ds-share flat" data-thread-key="2016/09/03/java学习之路-8/"
+     data-title="java学习之路-8"
+     data-content=""
+     data-url="http://yoursite.com/2016/09/03/java学习之路-8/">
+  <div class="ds-share-inline">
+    <ul  class="ds-share-icons-16">
+
+      <li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+      <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+      <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+      <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+      <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+
+    </ul>
+    <div class="ds-share-icons-more">
+    </div>
+  </div>
+</div>
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/09/03/java学习之路-8/"
+           data-title="java学习之路-8" data-url="http://yoursite.com/2016/09/03/java学习之路-8/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/james.jpg"
+               alt="yuxuehai" />
+          <p class="site-author-name" itemprop="name">yuxuehai</p>
+          <p class="site-description motion-element" itemprop="description">I belive I can fly</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">49</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">11</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/KidSea" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              友情链接
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://opiece.me/" title="Chillax" target="_blank">Chillax</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://hukai.me/" title="hukai" target="_blank">hukai</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://www.csdn.net/" title="CSDN" target="_blank">CSDN</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://duanqz.github.io/" title="启智观" target="_blank">启智观</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#内容"><span class="nav-number">2.</span> <span class="nav-text">内容</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#会话管理"><span class="nav-number">2.1.</span> <span class="nav-text">会话管理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#生活中的会话"><span class="nav-number">2.1.1.</span> <span class="nav-text">生活中的会话</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#软件中的会话"><span class="nav-number">2.1.2.</span> <span class="nav-text">软件中的会话</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#登录场景："><span class="nav-number">2.1.2.1.</span> <span class="nav-text">登录场景：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#购物场景："><span class="nav-number">2.1.2.2.</span> <span class="nav-text">购物场景：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#登录场景：-1"><span class="nav-number">2.1.2.3.</span> <span class="nav-text">登录场景：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#会话技术"><span class="nav-number">2.1.3.</span> <span class="nav-text">会话技术</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Cookie技术"><span class="nav-number">2.1.4.</span> <span class="nav-text">Cookie技术</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Cookie技术核心"><span class="nav-number">2.1.4.1.</span> <span class="nav-text">Cookie技术核心</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Cookie原理"><span class="nav-number">2.1.4.2.</span> <span class="nav-text">Cookie原理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Cookie的细节"><span class="nav-number">2.1.4.3.</span> <span class="nav-text">Cookie的细节</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Session技术"><span class="nav-number">2.1.5.</span> <span class="nav-text">Session技术</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#引入"><span class="nav-number">2.1.5.1.</span> <span class="nav-text">引入</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Session核心技术"><span class="nav-number">2.1.5.2.</span> <span class="nav-text">Session核心技术</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Session技术原理"><span class="nav-number">2.1.5.3.</span> <span class="nav-text">Session技术原理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Session细节"><span class="nav-number">2.1.5.4.</span> <span class="nav-text">Session细节</span></a></li></ol></li></ol></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">yuxuehai</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+<div class="busuanzi-count">
+
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv"><i class="fa fa-user"></i><span class="busuanzi-value" id="busuanzi_value_site_uv"></span></span>
+  
+
+  
+    <span class="site-pv"><i class="fa fa-eye"></i><span class="busuanzi-value" id="busuanzi_value_site_pv"></span></span>
+  
+  
+</div>
+
+
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"kidsea"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+       search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="popoverlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+    'use strict';
+    $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+            // get the contents from search data
+            isfetched = true;
+            $('.popup').detach().appendTo('.header-inner');
+            var datas = $( "entry", xmlResponse ).map(function() {
+                return {
+                    title: $( "title", this ).text(),
+                    content: $("content",this).text(),
+                    url: $( "url" , this).text()
+                };
+            }).get();
+            var $input = document.getElementById(search_id);
+            var $resultContent = document.getElementById(content_id);
+            $input.addEventListener('input', function(){
+                var matchcounts = 0;
+                var str='<ul class=\"search-result-list\">';
+                var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                $resultContent.innerHTML = "";
+                if (this.value.trim().length > 1) {
+                // perform local searching
+                datas.forEach(function(data) {
+                    var isMatch = true;
+                    var content_index = [];
+                    var data_title = data.title.trim().toLowerCase();
+                    var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                    var data_url = data.url;
+                    var index_title = -1;
+                    var index_content = -1;
+                    var first_occur = -1;
+                    // only match artiles with not empty titles and contents
+                    if(data_title != '' && data_content != '') {
+                        keywords.forEach(function(keyword, i) {
+                            index_title = data_title.indexOf(keyword);
+                            index_content = data_content.indexOf(keyword);
+                            if( index_title < 0 && index_content < 0 ){
+                                isMatch = false;
+                            } else {
+                                if (index_content < 0) {
+                                    index_content = 0;
+                                }
+                                if (i == 0) {
+                                    first_occur = index_content;
+                                }
+                            }
+                        });
+                    }
+                    // show search results
+                    if (isMatch) {
+                        matchcounts += 1;
+                        str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                        var content = data.content.trim().replace(/<[^>]+>/g,"");
+                        if (first_occur >= 0) {
+                            // cut out 100 characters
+                            var start = first_occur - 20;
+                            var end = first_occur + 80;
+                            if(start < 0){
+                                start = 0;
+                            }
+                            if(start == 0){
+                                end = 50;
+                            }
+                            if(end > content.length){
+                                end = content.length;
+                            }
+                            var match_content = content.substring(start, end);
+                            // highlight all keywords
+                            keywords.forEach(function(keyword){
+                                var regS = new RegExp(keyword, "gi");
+                                match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                            });
+
+                            str += "<p class=\"search-result\">" + match_content +"...</p>"
+                        }
+                        str += "</li>";
+                    }
+                })};
+                str += "</ul>";
+                if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+                if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+                $resultContent.innerHTML = str;
+            });
+            proceedsearch();
+        }
+    });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".popoverlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+  
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("4eyaSbRt4Gxv0uJLw1stS8o3-gzGzoHsz", "mJcxoCODhi155s3ypExw4OT6");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+</body>
+</html>

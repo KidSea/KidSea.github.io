@@ -1,0 +1,1109 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="C语言," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/lufei.jpg?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="前言
+这是C语言的一些笔记，我会陆续上传到博客，希望对大家的学习以及复习有些帮助.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C语言学习-基础-1">
+<meta property="og:url" content="http://yoursite.com/2016/08/23/C语言学习/index.html">
+<meta property="og:site_name" content="KidSea's Blog">
+<meta property="og:description" content="前言
+这是C语言的一些笔记，我会陆续上传到博客，希望对大家的学习以及复习有些帮助.">
+<meta property="og:updated_time" content="2016-08-24T04:54:10.348Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="C语言学习-基础-1">
+<meta name="twitter:description" content="前言
+这是C语言的一些笔记，我会陆续上传到博客，希望对大家的学习以及复习有些帮助.">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/08/23/C语言学习/"/>
+
+  <title> C语言学习-基础-1 | KidSea's Blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?a19b4052e92d3054ac7023476b52e8a9";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta custom-logo">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">KidSea's Blog</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                C语言学习-基础-1
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-08-23T13:15:05+08:00" content="2016-08-23">
+              2016-08-23
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/08/23/C语言学习/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/08/23/C语言学习/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2016/08/23/C语言学习/" class="leancloud_visitors" data-flag-title="C语言学习-基础-1">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+              &nbsp; | &nbsp;
+              <span class="page-pv"><i class="fa fa-file-o"></i>
+              <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+              </span>
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><hr>
+<p><strong>这是C语言的一些笔记，我会陆续上传到博客，希望对大家的学习以及复习有些帮助.</strong></p>
+<a id="more"></a>
+<h2 id="内容"><a href="#内容" class="headerlink" title="内容"></a>内容</h2><hr>
+<h3 id="【1】定义变量"><a href="#【1】定义变量" class="headerlink" title="【1】定义变量"></a>【1】定义变量</h3><pre><code>数据类型 变量名；
+</code></pre><h3 id="【2】bool"><a href="#【2】bool" class="headerlink" title="【2】bool"></a>【2】bool</h3><pre><code>#include &lt;stdbool.h&gt;
+</code></pre><h3 id="【3】char"><a href="#【3】char" class="headerlink" title="【3】char"></a>【3】char</h3><pre><code>1--- 占1个字节
+
+2--- signed char a；            -128 ~ 127
+
+          0000 0000    0
+          0111 1111    127
+          1111 1111    -127
+          1000 0000    -128
+3--- unsigned char b；        0~255
+</code></pre><h3 id="【4】数据的存储"><a href="#【4】数据的存储" class="headerlink" title="【4】数据的存储"></a>【4】数据的存储</h3><pre><code>存储时：    源码         反码        补码
+
+正数    0000 0101  0000 0101    0000 0101    char a = 5；
+
+负数    1000 0101  1111 1010    1111 1011    char b = -5；
+
+反码：符号位不变，其它位取反
+补码：反码加一
+
+读取时：    补码          反码       源码
+</code></pre><h3 id="【5】"><a href="#【5】" class="headerlink" title="【5】"></a>【5】</h3><pre><code>char c = 129；
+    （存储）因为是正数，源码、反码、补码相同
+      源码：1000 0001
+      反码：1000 0001
+      补码：1000 0001
+
+    （读取）因为是signed类型，最高位为符号位
+      补码：1000 0001
+      反码：1000 0000
+      补码：1111 1111    （-127）
+
+ unsigned char d = -1；
+        （存储）
+      源码：1000 0001
+      反码：1111 1110
+      补码：1111 1111
+
+        （读取）因为是unsigned类型，都是正数
+      补码：1111 1111
+      反码：1111 1111
+      源码：1111 1111（255）
+</code></pre><h3 id="【6】整形数据"><a href="#【6】整形数据" class="headerlink" title="【6】整形数据"></a>【6】整形数据</h3><pre><code>1--- int   占4个字节    
+2--- short 占2个字节
+3--- long  占4字节（32位系统）
+</code></pre><h3 id="【7】浮点型数据"><a href="#【7】浮点型数据" class="headerlink" title="【7】浮点型数据"></a>【7】浮点型数据</h3><pre><code>1--- float
+    1&gt; 12.45
+    2&gt; 15e-3    《==》 15*10^-3
+    3&gt; 占4字节
+
+2--- double
+    1&gt; 占8字节
+</code></pre><h3 id="【8】printf"><a href="#【8】printf" class="headerlink" title="【8】printf"></a>【8】printf</h3><pre><code>%d    整形
+%c    字符型&apos;A&apos;
+%s    字符串
+%f    浮点型    
+</code></pre><h3 id="【9】常量"><a href="#【9】常量" class="headerlink" title="【9】常量"></a>【9】常量</h3><pre><code>1--- 整数形式
+    34  034  0x34
+
+2--- 浮点型
+    23.34
+
+3--- 指数型
+    13e+5        《==》 13*10^5
+
+4--- 字符型
+    ‘A’
+
+5--- 字符串常量
+    “hello”
+     &quot;A&quot;
+    //字符串以‘\0’作为结束标志
+
+6--- 定义宏
+    1--- #define N 5
+    2--- 对一个常量进行命名
+</code></pre><h3 id="【10】强制类型转换"><a href="#【10】强制类型转换" class="headerlink" title="【10】强制类型转换"></a>【10】强制类型转换</h3><pre><code>float a = 32， b = 45；
+
+printf（“%d\n”,（int)(a+b）);
+</code></pre><h3 id="【11】运算符"><a href="#【11】运算符" class="headerlink" title="【11】运算符"></a>【11】运算符</h3><pre><code>1--- 算数运算符
+    +  -  *  /  %（参与运算必须是整形数据）  
+    ++(自增)  --（自减）
+
+2--- 关系运算符
+    1. 结果只有两个：1 或 0
+    2. &gt;   &gt;=  &lt;   &lt;=   ==   !=
+
+3--- 逻辑运算符
+    1. 结果只有两个：1 或 0
+    2. 短路原则：当一个等式可以决定整个等式的结果，就不去执行其它运算
+        &amp;&amp;    与：一假则假
+        ||    或：一真则真
+        ！    非
+4--- 位运算符
+    1&gt; 取反    ~
+    2&gt; 位与    &amp;
+    3&gt; 位或 |
+    4&gt; 异或 ^   相同为0， 不同为1
+            b    0000 0101
+            c    0000 0011
+            ——————————
+            d    0000 0110
+    5&gt; 位右移
+        d &gt;&gt; 1        //向右移动1位
+
+        d / 2^n
+
+       位左移
+        d &lt;&lt; 2        //向左移动2位
+
+        d * 2^n
+5--- 复合运算符
+    算数运算符、位运算符
+</code></pre><h3 id="【12】三步运算-完成数据交换"><a href="#【12】三步运算-完成数据交换" class="headerlink" title="【12】三步运算,完成数据交换"></a>【12】三步运算,完成数据交换</h3><pre><code>a ^= b;
+b ^= a;
+a ^= b;
+
+    1--- 参与运算的是变量
+    2--- 针对于基本数据类型
+    3--- 变量需要交替互换
+</code></pre><h3 id="【13】条件运算符"><a href="#【13】条件运算符" class="headerlink" title="【13】条件运算符"></a>【13】条件运算符</h3><pre><code>1--- &lt;表达式1&gt;  ?  &lt;表达式2&gt;  :  &lt;表达式3&gt;
+2--- 
+    表达式1为真，执行表达式2；
+    表达式1为假，执行表达式3；
+</code></pre><p>###【14】逗号表达式</p>
+<pre><code>逗号表达式的结果与最后一个表达式有关
+</code></pre><h3 id="【15】sizeof"><a href="#【15】sizeof" class="headerlink" title="【15】sizeof"></a>【15】sizeof</h3><pre><code>求一个数据或类型占用空间的大小，以字节为单位
+</code></pre><h3 id="【16】优先级"><a href="#【16】优先级" class="headerlink" title="【16】优先级"></a>【16】优先级</h3><pre><code>1    （）
+2    ++ -- ~ ！    从右向左
+4    * / %
+5    + -
+    关系运算符
+    位运算
+    逻辑运算
+    赋值运算    从右向左
+    ，
+</code></pre><h3 id="【17】存储模型"><a href="#【17】存储模型" class="headerlink" title="【17】存储模型"></a>【17】存储模型</h3><pre><code>&lt;存储类型&gt;    &lt;数据类型 &gt;    &lt;变量名&gt; ； 
+
+1--- 生命期：与程序同步，与函数同步
+2--- 作用域
+
+    auto    默认存储类型
+
+    static  1&gt; 与程序同步
+        2&gt; 默认初始化为0
+        3&gt; 只初始化一次
+</code></pre><p><strong>版权声明：本文为博主原创文章，转载请注明出处<a href="https://kidsea.github.io/" target="_blank" rel="external">KidSea</a></strong></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/C语言/" rel="tag">#C语言</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/08/21/my-new-post/" rel="next" title="my new post">
+                <i class="fa fa-chevron-left"></i> my new post
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/08/23/JavaScrip发展史/" rel="prev" title="JavaScrip发展史">
+                JavaScrip发展史 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <div class="ds-share flat" data-thread-key="2016/08/23/C语言学习/"
+     data-title="C语言学习-基础-1"
+     data-content=""
+     data-url="http://yoursite.com/2016/08/23/C语言学习/">
+  <div class="ds-share-inline">
+    <ul  class="ds-share-icons-16">
+
+      <li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+      <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+      <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+      <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+      <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+
+    </ul>
+    <div class="ds-share-icons-more">
+    </div>
+  </div>
+</div>
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/08/23/C语言学习/"
+           data-title="C语言学习-基础-1" data-url="http://yoursite.com/2016/08/23/C语言学习/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/james.jpg"
+               alt="yuxuehai" />
+          <p class="site-author-name" itemprop="name">yuxuehai</p>
+          <p class="site-description motion-element" itemprop="description">I belive I can fly</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">49</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">11</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/KidSea" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              友情链接
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://opiece.me/" title="Chillax" target="_blank">Chillax</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://hukai.me/" title="hukai" target="_blank">hukai</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://www.csdn.net/" title="CSDN" target="_blank">CSDN</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://duanqz.github.io/" title="启智观" target="_blank">启智观</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#内容"><span class="nav-number">2.</span> <span class="nav-text">内容</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#【1】定义变量"><span class="nav-number">2.1.</span> <span class="nav-text">【1】定义变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#【2】bool"><span class="nav-number">2.2.</span> <span class="nav-text">【2】bool</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#【3】char"><span class="nav-number">2.3.</span> <span class="nav-text">【3】char</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#【4】数据的存储"><span class="nav-number">2.4.</span> <span class="nav-text">【4】数据的存储</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#【5】"><span class="nav-number">2.5.</span> <span class="nav-text">【5】</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#【6】整形数据"><span class="nav-number">2.6.</span> <span class="nav-text">【6】整形数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#【7】浮点型数据"><span class="nav-number">2.7.</span> <span class="nav-text">【7】浮点型数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#【8】printf"><span class="nav-number">2.8.</span> <span class="nav-text">【8】printf</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#【9】常量"><span class="nav-number">2.9.</span> <span class="nav-text">【9】常量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#【10】强制类型转换"><span class="nav-number">2.10.</span> <span class="nav-text">【10】强制类型转换</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#【11】运算符"><span class="nav-number">2.11.</span> <span class="nav-text">【11】运算符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#【12】三步运算-完成数据交换"><span class="nav-number">2.12.</span> <span class="nav-text">【12】三步运算,完成数据交换</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#【13】条件运算符"><span class="nav-number">2.13.</span> <span class="nav-text">【13】条件运算符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#【15】sizeof"><span class="nav-number">2.14.</span> <span class="nav-text">【15】sizeof</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#【16】优先级"><span class="nav-number">2.15.</span> <span class="nav-text">【16】优先级</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#【17】存储模型"><span class="nav-number">2.16.</span> <span class="nav-text">【17】存储模型</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">yuxuehai</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+<div class="busuanzi-count">
+
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv"><i class="fa fa-user"></i><span class="busuanzi-value" id="busuanzi_value_site_uv"></span></span>
+  
+
+  
+    <span class="site-pv"><i class="fa fa-eye"></i><span class="busuanzi-value" id="busuanzi_value_site_pv"></span></span>
+  
+  
+</div>
+
+
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"kidsea"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+       search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="popoverlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+    'use strict';
+    $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+            // get the contents from search data
+            isfetched = true;
+            $('.popup').detach().appendTo('.header-inner');
+            var datas = $( "entry", xmlResponse ).map(function() {
+                return {
+                    title: $( "title", this ).text(),
+                    content: $("content",this).text(),
+                    url: $( "url" , this).text()
+                };
+            }).get();
+            var $input = document.getElementById(search_id);
+            var $resultContent = document.getElementById(content_id);
+            $input.addEventListener('input', function(){
+                var matchcounts = 0;
+                var str='<ul class=\"search-result-list\">';
+                var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                $resultContent.innerHTML = "";
+                if (this.value.trim().length > 1) {
+                // perform local searching
+                datas.forEach(function(data) {
+                    var isMatch = true;
+                    var content_index = [];
+                    var data_title = data.title.trim().toLowerCase();
+                    var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                    var data_url = data.url;
+                    var index_title = -1;
+                    var index_content = -1;
+                    var first_occur = -1;
+                    // only match artiles with not empty titles and contents
+                    if(data_title != '' && data_content != '') {
+                        keywords.forEach(function(keyword, i) {
+                            index_title = data_title.indexOf(keyword);
+                            index_content = data_content.indexOf(keyword);
+                            if( index_title < 0 && index_content < 0 ){
+                                isMatch = false;
+                            } else {
+                                if (index_content < 0) {
+                                    index_content = 0;
+                                }
+                                if (i == 0) {
+                                    first_occur = index_content;
+                                }
+                            }
+                        });
+                    }
+                    // show search results
+                    if (isMatch) {
+                        matchcounts += 1;
+                        str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                        var content = data.content.trim().replace(/<[^>]+>/g,"");
+                        if (first_occur >= 0) {
+                            // cut out 100 characters
+                            var start = first_occur - 20;
+                            var end = first_occur + 80;
+                            if(start < 0){
+                                start = 0;
+                            }
+                            if(start == 0){
+                                end = 50;
+                            }
+                            if(end > content.length){
+                                end = content.length;
+                            }
+                            var match_content = content.substring(start, end);
+                            // highlight all keywords
+                            keywords.forEach(function(keyword){
+                                var regS = new RegExp(keyword, "gi");
+                                match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                            });
+
+                            str += "<p class=\"search-result\">" + match_content +"...</p>"
+                        }
+                        str += "</li>";
+                    }
+                })};
+                str += "</ul>";
+                if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+                if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+                $resultContent.innerHTML = str;
+            });
+            proceedsearch();
+        }
+    });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".popoverlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+  
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("4eyaSbRt4Gxv0uJLw1stS8o3-gzGzoHsz", "mJcxoCODhi155s3ypExw4OT6");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+</body>
+</html>
