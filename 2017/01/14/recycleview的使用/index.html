@@ -99,7 +99,7 @@
 <meta property="og:image" content="http://yoursite.com/images/2017-1-14-5.png">
 <meta property="og:image" content="http://yoursite.com/images/2017-1-14-6.png">
 <meta property="og:image" content="http://yoursite.com/images/2017-1-14-7.gif">
-<meta property="og:updated_time" content="2017-01-14T13:50:03.507Z">
+<meta property="og:updated_time" content="2017-02-10T14:51:06.783Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="RecyckerView的用法">
 <meta name="twitter:description" content="前言
@@ -362,134 +362,29 @@
 </ol>
 <h3 id="RecyclerView的简单使用"><a href="#RecyclerView的简单使用" class="headerlink" title="RecyclerView的简单使用"></a>RecyclerView的简单使用</h3><p>&#160;&#160;&#160;虽说相对于以前的ListView，RecyclerView基本上没有新增的功能，但在功能的具体实现和使用的方法上两者却有着很大的区别。要使用RecyclerView，需要先了解这几个个元素：LayoutManager，RecyclerView.Adapter，Itemanimator以及itemDecoration。LayoutManager控制RecyclerView的布局以及资源的回收，RecyclerView.Adapter用于设置数据，ItemAnimator用于创建列表的Item动画，而ItemDecoration则用于绘制列表子项额外的内容。以上四个均为RecyclerView中的抽象类，带有最基本的接口和参数，开发者可以通过继承以上几个类进行扩展实现不同的功能效果。下面首先通过附件中的SimpleDemo介绍一下RecyclerVIew的使用方法：</p>
 <h4 id="1-定义布局文件"><a href="#1-定义布局文件" class="headerlink" title="1. 定义布局文件"></a>1. 定义布局文件</h4><p>&#160;&#160;&#160;activity_main.xml的主要布局如下：</p>
-<pre><code>&lt;android.support.v7.widget.RecyclerView
-android:id=&quot;@+id/recyclerview_vertical&quot;
-android:layout_width=&quot;match_parent&quot;
-android:layout_height=&quot;wrap_content&quot;
-android:scrollbars=&quot;vertical&quot; /&gt;
-</code></pre><p>&#160;&#160;&#160;RecyclerView是android.support.v7包下提供的控件,要使用RecyclerView可以直接把源码上整个的v7包导入到工程中， 或者把当前的API升级到21，在sdk/extras/android/support/v7目录下找到android-support-v7-recyclerview.jar（其实也可以直接从网上的Demo中直接copy对应的jar包过去，不过应当注意最近的版本中部分接口已经做了相应的变化 ,应下载最新的jar包），将其导入到工程内即可。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">android.support.v7.widget.RecyclerView</span></span></div><div class="line"><span class="attr">android:id</span>=<span class="string">"@+id/recyclerview_vertical"</span></div><div class="line"><span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></div><div class="line"><span class="attr">android:layout_height</span>=<span class="string">"wrap_content"</span></div><div class="line"><span class="attr">android:scrollbars</span>=<span class="string">"vertical"</span> /&gt;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;RecyclerView是android.support.v7包下提供的控件,要使用RecyclerView可以直接把源码上整个的v7包导入到工程中， 或者把当前的API升级到21，在sdk/extras/android/support/v7目录下找到android-support-v7-recyclerview.jar（其实也可以直接从网上的Demo中直接copy对应的jar包过去，不过应当注意最近的版本中部分接口已经做了相应的变化 ,应下载最新的jar包），将其导入到工程内即可。</p>
 <h4 id="2-设置RecyclerView-Adapter"><a href="#2-设置RecyclerView-Adapter" class="headerlink" title="2. 设置RecyclerView.Adapter"></a>2. 设置RecyclerView.Adapter</h4><p>&#160;&#160;&#160;Demo中的SimpleAdapter.java中的主要代码如下：</p>
-<pre><code>    //定义ViewHolder，包含两个控件
-public static class ViewHolder extends RecyclerView.ViewHolder{
-
-    public TextView mTextView;
-    public ImageView mImageView;
-
-    public ViewHolder(View itemView) {
-        super(itemView);
-    }
-}
-
-@Override
-public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-        View view = View.inflate(viewGroup.getContext(), R.layout.item_layout, null);
-        // 创建ViewHolder
-        ViewHolder holder = new ViewHolder(view);
-        holder.mImageView = (ImageView)view.findViewById(R.id.id_index_item_image);
-        holder.mTextView = (TextView)view.findViewById(R.id.id_index_item_text);
-        return holder;
-}
-
-@Override
-public void onBindViewHolder(ViewHolder viewHolder,int i) {
-    //设置TextView内容
-    viewHolder.mTextView.setText(mData[i]);
-    //设置ImageView资源
-    viewHolder.mImageView.setImageResource(R.drawable.mail);        
-}
-</code></pre><h4 id="3-定义Decoration"><a href="#3-定义Decoration" class="headerlink" title="3. 定义Decoration"></a>3. 定义Decoration</h4><p>&#160;&#160;&#160;Decoration.java的主要代码如下：</p>
-<pre><code>    @Override
-public void onDrawOver(Canvas c, RecyclerView parent) {
-    if (mDivider == null) {
-        super.onDrawOver(c, parent);
-        return;
-    }
-    //为横向布局的RecyclerView的每个Item设置下划线
-    if (getOrientation(parent) == LinearLayoutManager.VERTICAL) {
-        final int left = parent.getPaddingLeft();
-        final int right = parent.getWidth() - parent.getPaddingRight();
-        final int childCount = parent.getChildCount();
-
-        for (int i = 1; i &lt; childCount; i++) {
-            final View child = parent.getChildAt(i);
-            final RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child
-                    .getLayoutParams();
-            final int size = mDivider.getIntrinsicHeight();
-            final int top = child.getTop() - params.topMargin;
-            final int bottom = top + size;
-            mDivider.setBounds(left, top, right, bottom);
-            mDivider.draw(c);
-        }
-</code></pre><h4 id="4-初始化操作"><a href="#4-初始化操作" class="headerlink" title="4. 初始化操作"></a>4. 初始化操作</h4><p>&#160;&#160;&#160;在MainActivity.java的主要代码如下：</p>
-<pre><code>mRecyclerView = (RecyclerView)findViewById(R.id.recyclerview_vertical);
-    SimpleAdapter simpleAdapter = new SimpleAdapter(dataset, this);
-    mRecyclerView.setAdapter(simpleAdapter);
-    // 创建一个线性布局管理器
-    LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-    layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-    // 设置布局管理器&amp;#160;&amp;#160;&amp;#160;
-    mRecyclerView.setLayoutManager(layoutManager);
-    mRecyclerView.addItemDecoration(new Decoration(this));
-</code></pre><p>&#160;&#160;&#160;Demo中实现的效果如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//定义ViewHolder，包含两个控件</span></div><div class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">ViewHolder</span> <span class="keyword">extends</span> <span class="title">RecyclerView</span>.<span class="title">ViewHolder</span></span>&#123;</div><div class="line"></div><div class="line">    <span class="keyword">public</span> TextView mTextView;</div><div class="line">    <span class="keyword">public</span> ImageView mImageView;</div><div class="line">    </div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">ViewHolder</span><span class="params">(View itemView)</span> </span>&#123;</div><div class="line">    	<span class="keyword">super</span>(itemView);</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">public</span> ViewHolder <span class="title">onCreateViewHolder</span><span class="params">(ViewGroup viewGroup, <span class="keyword">int</span> i)</span> </span>&#123;</div><div class="line">    View view = View.inflate(viewGroup.getContext(), R.layout.item_layout, <span class="keyword">null</span>);</div><div class="line">    <span class="comment">// 创建ViewHolder</span></div><div class="line">    ViewHolder holder = <span class="keyword">new</span> ViewHolder(view);</div><div class="line">    holder.mImageView = (ImageView)view.findViewById(R.id.id_index_item_image);</div><div class="line">    holder.mTextView = (TextView)view.findViewById(R.id.id_index_item_text);</div><div class="line">    <span class="keyword">return</span> holder;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onBindViewHolder</span><span class="params">(ViewHolder viewHolder,<span class="keyword">int</span> i)</span> </span>&#123;</div><div class="line">	<span class="comment">//设置TextView内容</span></div><div class="line">	viewHolder.mTextView.setText(mData[i]);</div><div class="line">	<span class="comment">//设置ImageView资源</span></div><div class="line">	viewHolder.mImageView.setImageResource(R.drawable.mail);		</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="3-定义Decoration"><a href="#3-定义Decoration" class="headerlink" title="3. 定义Decoration"></a>3. 定义Decoration</h4><p>&#160;&#160;&#160;Decoration.java的主要代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onDrawOver</span><span class="params">(Canvas c, RecyclerView parent)</span> </span>&#123;</div><div class="line">    <span class="keyword">if</span> (mDivider == <span class="keyword">null</span>) &#123;</div><div class="line">        <span class="keyword">super</span>.onDrawOver(c, parent);</div><div class="line">        <span class="keyword">return</span>;</div><div class="line">    &#125;</div><div class="line">    <span class="comment">//为横向布局的RecyclerView的每个Item设置下划线</span></div><div class="line">    <span class="keyword">if</span> (getOrientation(parent) == LinearLayoutManager.VERTICAL) &#123;</div><div class="line">        <span class="keyword">final</span> <span class="keyword">int</span> left = parent.getPaddingLeft();</div><div class="line">        <span class="keyword">final</span> <span class="keyword">int</span> right = parent.getWidth() - parent.getPaddingRight();</div><div class="line">        <span class="keyword">final</span> <span class="keyword">int</span> childCount = parent.getChildCount();</div><div class="line">    </div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; childCount; i++) &#123;</div><div class="line">            <span class="keyword">final</span> View child = parent.getChildAt(i);</div><div class="line">            <span class="keyword">final</span> RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child</div><div class="line">                    .getLayoutParams();</div><div class="line">            <span class="keyword">final</span> <span class="keyword">int</span> size = mDivider.getIntrinsicHeight();</div><div class="line">            <span class="keyword">final</span> <span class="keyword">int</span> top = child.getTop() - params.topMargin;</div><div class="line">            <span class="keyword">final</span> <span class="keyword">int</span> bottom = top + size;</div><div class="line">            mDivider.setBounds(left, top, right, bottom);</div><div class="line">            mDivider.draw(c);</div><div class="line">        &#125;</div></pre></td></tr></table></figure>
+<h4 id="4-初始化操作"><a href="#4-初始化操作" class="headerlink" title="4. 初始化操作"></a>4. 初始化操作</h4><p>&#160;&#160;&#160;在MainActivity.java的主要代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">mRecyclerView = (RecyclerView)findViewById(R.id.recyclerview_vertical);</div><div class="line">SimpleAdapter simpleAdapter = <span class="keyword">new</span> SimpleAdapter(dataset, <span class="keyword">this</span>);</div><div class="line">mRecyclerView.setAdapter(simpleAdapter);</div><div class="line"><span class="comment">// 创建一个线性布局管理器</span></div><div class="line">LinearLayoutManager layoutManager = <span class="keyword">new</span> LinearLayoutManager(<span class="keyword">this</span>);</div><div class="line">layoutManager.setOrientation(LinearLayoutManager.VERTICAL);</div><div class="line"><span class="comment">// 设置布局管理器&amp;#160;&amp;#160;&amp;#160;</span></div><div class="line">mRecyclerView.setLayoutManager(layoutManager);</div><div class="line">mRecyclerView.addItemDecoration(<span class="keyword">new</span> Decoration(<span class="keyword">this</span>));</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;Demo中实现的效果如下：</p>
 <p><img src="/images/2017-1-14-1.jpg" alt="image"></p>
 <h3 id="RecyclerView的四大组件"><a href="#RecyclerView的四大组件" class="headerlink" title="RecyclerView的四大组件"></a>RecyclerView的四大组件</h3><h4 id="Adapter"><a href="#Adapter" class="headerlink" title="Adapter"></a>Adapter</h4><p>&#160;&#160;&#160;RecyclerView使用的Adapter与ListView使用的BaseAdapter类似，但是，前者定义的Adapter必须继承自RecyclerView.Adapter，内部必须重写三个方法，oncreateViewHolder（）onbindViewHolder（）getItemCount（）,onCreateViewHolder（）类似于BaseAdapter中的getview（）,ListView可以选择使用ViewHolder（）但RecyclerView为了回收资源，必须使用ViewHolder。先对比两者子类部分代码：</p>
-<pre><code>@Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        ViewHolder holder = null;
-        //如果缓存convertView为空，则需要创建View
-        if(convertView == null)
-        {
-            holder = new ViewHolder();
-            //根据自定义的Item布局加载布局
-            convertView = mInflater.inflate(R.layout.list_item, null);
-            holder.img = (ImageViewShadow)convertView.findViewById(R.id.img);
-            holder.title = (TextView)convertView.findViewById(R.id.tv);
-            holder.info = (TextView)convertView.findViewById(R.id.info);
-            //将设置好的布局保存到缓存中，并将其设置在Tag里，以便后面方便取出Tag
-            convertView.setTag(holder);
-        }else
-        {
-            holder = (ViewHolder)convertView.getTag();
-        }
-
-        Drawable D = StrokeDrawableUtils.createStrokeDrawable(getResources().getDrawable(R.drawable.mail), getResources());
-        holder.img.setImageDrawable(D);
-        ho.setText((String)data.get(position).get(&quot;title&quot;));
-        holder.info.setText((String)data.get(position).get(&quot;info&quot;));
-
-        return convertView;
-    }    
-</code></pre><hr>
-<pre><code>@Override
-public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-    View view = mInflater.inflate(R.layout.activity_index_item,
-            viewGroup, false);
-    //创建viewHolder对象和绑定viewHolder內的所有组件
-    ViewHolder viewHolder = new ViewHolder(view);
-
-    viewHolder.mImg = (ImageView) view
-            .findViewById(R.id.id_index_gallery_item_image);
-    viewHolder.mTxt = (TextView)view.findViewById(R.id.id_index_gallery_item_text);
-    return viewHolder;
-}
-
-@Override
-public void onBindViewHolder(final ViewHolder viewHolder, final int i) {
-    viewHolder.mImg.setImageResource(mDatas.get(i));
-    viewHolder.mTxt.setText(String.valueOf(i));
-    ....
-
-    }
-</code></pre><p>&#160;&#160;&#160;对比以上代码，可以看出在RecyclerView中， ViewHolder直接充当缓存的单位，然后convertView作为ViewHolder的成员变量保持在ViewHolder中，也就是说，假设没有屏幕显示10个条目，则会创建10个ViewHolder缓存起来，每次复用的是ViewHolder，所以他把getView这个方法变为了onCreateViewHolder，而ListView的复用机制则是利用静态的holder把conertiew里面包含的所有组件保存起来，并通过setTag将其与conertView捆绑在一起，convertView是复用对象。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">public</span> View <span class="title">getView</span><span class="params">(<span class="keyword">int</span> position, View convertView, ViewGroup parent)</span> </span>&#123;</div><div class="line">    ViewHolder holder = <span class="keyword">null</span>;</div><div class="line">    <span class="comment">//如果缓存convertView为空，则需要创建View</span></div><div class="line">    <span class="keyword">if</span>(convertView == <span class="keyword">null</span>)</div><div class="line">    &#123;</div><div class="line">        holder = <span class="keyword">new</span> ViewHolder();</div><div class="line">        <span class="comment">//根据自定义的Item布局加载布局</span></div><div class="line">        convertView = mInflater.inflate(R.layout.list_item, <span class="keyword">null</span>);</div><div class="line">        holder.img = (ImageViewShadow)convertView.findViewById(R.id.img);</div><div class="line">        holder.title = (TextView)convertView.findViewById(R.id.tv);</div><div class="line">        holder.info = (TextView)convertView.findViewById(R.id.info);</div><div class="line">        <span class="comment">//将设置好的布局保存到缓存中，并将其设置在Tag里，以便后面方便取出Tag</span></div><div class="line">        convertView.setTag(holder);</div><div class="line">    &#125;<span class="keyword">else</span></div><div class="line">    &#123;</div><div class="line">        holder = (ViewHolder)convertView.getTag();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    Drawable D = StrokeDrawableUtils.createStrokeDrawable(getResources().getDrawable(R.drawable.mail), getResources());</div><div class="line">    holder.img.setImageDrawable(D);</div><div class="line">    ho.setText((String)data.get(position).get(<span class="string">"title"</span>));</div><div class="line">    holder.info.setText((String)data.get(position).get(<span class="string">"info"</span>));</div><div class="line"></div><div class="line">    <span class="keyword">return</span> convertView;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<hr>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">public</span> ViewHolder <span class="title">onCreateViewHolder</span><span class="params">(ViewGroup viewGroup, <span class="keyword">int</span> i)</span> </span>&#123;</div><div class="line">    View view = mInflater.inflate(R.layout.activity_index_item,</div><div class="line">            viewGroup, <span class="keyword">false</span>);</div><div class="line">    <span class="comment">//创建viewHolder对象和绑定viewHolder內的所有组件</span></div><div class="line">    ViewHolder viewHolder = <span class="keyword">new</span> ViewHolder(view);</div><div class="line"></div><div class="line">    viewHolder.mImg = (ImageView) view</div><div class="line">            .findViewById(R.id.id_index_gallery_item_image);</div><div class="line">    viewHolder.mTxt = (TextView)view.findViewById(R.id.id_index_gallery_item_text);</div><div class="line">    <span class="keyword">return</span> viewHolder;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onBindViewHolder</span><span class="params">(<span class="keyword">final</span> ViewHolder viewHolder, <span class="keyword">final</span> <span class="keyword">int</span> i)</span> </span>&#123;</div><div class="line">    viewHolder.mImg.setImageResource(mDatas.get(i));</div><div class="line">    viewHolder.mTxt.setText(String.valueOf(i));</div><div class="line">    ....</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;对比以上代码，可以看出在RecyclerView中， ViewHolder直接充当缓存的单位，然后convertView作为ViewHolder的成员变量保持在ViewHolder中，也就是说，假设没有屏幕显示10个条目，则会创建10个ViewHolder缓存起来，每次复用的是ViewHolder，所以他把getView这个方法变为了onCreateViewHolder，而ListView的复用机制则是利用静态的holder把conertiew里面包含的所有组件保存起来，并通过setTag将其与conertView捆绑在一起，convertView是复用对象。</p>
 <h4 id="ItemDecoration"><a href="#ItemDecoration" class="headerlink" title="ItemDecoration"></a>ItemDecoration</h4><p>&#160;&#160;&#160;Decoration意为修饰，android的开发文档中有这样的说明：ItemDecoration允许程序添加自定义的绘画或者布局边距，常用于分割列表子项，突显视觉上的界限。这类似于listView中的devider，但listView中所画的分割线是在Listview内部实现，对于开发者来说，灵活性较低。在新的RecyclerView中很好的解决这个问题，RecycView把对Decoration的控制交给了开发者，RecyclerView默认不带Decoration，但继承自RecyclerView.ItemDecoration开发者通过重写public void onDrawOver(Canvas c, RecyclerView parent)和public void getItemOffsets(Rect outRect, int itemPosition, RecyclerView parent)等，结合CardView的使用可以实现不错的视觉效果，下面为默认模式和加入简单划线对比：</p>
 <p> <img src="/images/2017-1-14-3.png" alt="image"> <img src="/images/2017-1-14-2.png" alt="image"></p>
 <h4 id="LayoutManager"><a href="#LayoutManager" class="headerlink" title="LayoutManager"></a>LayoutManager</h4><p>&#160;&#160;&#160;这个类决定视图被放在画面中哪个位置，但这只是它的众多职责之一。它可以管理滚动和循环利用，ListView则不能设置为横向。在最新的support v7 中LayoutManager有三个实现类，LinearlayoutManager,GridLayoutManager和StaggeredGridLayoutManager，LayoutManager可以模拟列表的视图，但是没有页眉和页尾。开发者可以仿照原生给出的LinearLayoutManager代码创建一个BaseLayoutManager，并且基于此进行扩展。而在Android L以前，为了给LIstView后期进行扩展，ListVIew的主体功能实现都放在AbsListView，然后通过ListView，和GridVIew实现不同的布局，而在RecyclerVIew中则可以通过设置不同的LayoutManager达到此效果。下面给出RecyclerVIew不同的布局效果：</p>
 <p> <img src="/images/2017-1-14-4.png" alt="image">  <img src="/images/2017-1-14-5.png" alt="image"><br> <img src="/images/2017-1-14-6.png" alt="image"></p>
 <p>&#160;&#160;&#160;另外需要说明一下，使用RecylerView时必须加入LayoutManager，否则会出现报错。</p>
 <h4 id="ItemAnimator"><a href="#ItemAnimator" class="headerlink" title="ItemAnimator"></a>ItemAnimator</h4><p>&#160;&#160;&#160;在ListView中我们通常在Adatper 的getview（）的时候对特定的item做动画。在RecyclerView中加入了新的实现方法。ItemAnimator同样是RecyclerView中的的抽象类，在V7包中给出了默认的实现类DefaultItemAnimator（渐隐），开发者同样的可以通过继承RecyclerView.ItemAnimator,参考DefaultAnimator建立BaseItemAnimator，然后对其进行扩展打造不同的动画效果，使用时通过调用Recycler.Adapter中的notifyItemChanged（）notifyItemInserted（）等方法触发，如果是使用默认的动画效果，直接添加如下代码即可。</p>
-<pre><code>final DefaultItemAnimator defaultItemAnimator = new DefaultItemAnimator();
-recyclerView.setItemAnimator(defaultItemAnimator);
-</code></pre><p> <img src="/images/2017-1-14-7.gif" alt="image"></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">final</span> DefaultItemAnimator defaultItemAnimator = <span class="keyword">new</span> DefaultItemAnimator();</div><div class="line">recyclerView.setItemAnimator(defaultItemAnimator);</div></pre></td></tr></table></figure>
+<p> <img src="/images/2017-1-14-7.gif" alt="image"></p>
 <hr>
 <p><strong>版权声明：本文为博主原创文章，转载请注明出处<a href="https://kidsea.github.io/" target="_blank" rel="external">KidSea</a></strong></p>
 
@@ -624,7 +519,7 @@ recyclerView.setItemAnimator(defaultItemAnimator);
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">50</span>
+              <span class="site-state-item-count">49</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
