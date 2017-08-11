@@ -1,0 +1,1128 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="安卓," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/lufei.jpg?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="前言
+&amp;#160;&amp;#160;&amp;#160;之前在处理系统字体问题的时候，可借鉴的资料很少，遇到了很多坑，不得不了解Android字体加载原理，现抽空写一篇总结，来加深自己对这块的理解。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android字体加载原理总结">
+<meta property="og:url" content="http://yoursite.com/2017/08/12/Android字体加载原理总结/index.html">
+<meta property="og:site_name" content="Leslie's Blog">
+<meta property="og:description" content="前言
+&amp;#160;&amp;#160;&amp;#160;之前在处理系统字体问题的时候，可借鉴的资料很少，遇到了很多坑，不得不了解Android字体加载原理，现抽空写一篇总结，来加深自己对这块的理解。">
+<meta property="og:updated_time" content="2017-08-11T16:10:25.304Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android字体加载原理总结">
+<meta name="twitter:description" content="前言
+&amp;#160;&amp;#160;&amp;#160;之前在处理系统字体问题的时候，可借鉴的资料很少，遇到了很多坑，不得不了解Android字体加载原理，现抽空写一篇总结，来加深自己对这块的理解。">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/08/12/Android字体加载原理总结/"/>
+
+
+
+
+
+  <title> Android字体加载原理总结 | Leslie's Blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?a19b4052e92d3054ac7023476b52e8a9";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta custom-logo">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Leslie's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocapitalize="off" autocomplete="off" autocorrect="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/08/12/Android字体加载原理总结/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yuxuehai">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/james.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Leslie's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Android字体加载原理总结
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-12T00:07:12+08:00">
+                2017-08-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/08/12/Android字体加载原理总结/" class="leancloud_visitors" data-flag-title="Android字体加载原理总结">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><hr>
+<p>&#160;&#160;&#160;之前在处理系统字体问题的时候，可借鉴的资料很少，遇到了很多坑，不得不了解Android字体加载原理，现抽空写一篇总结，来加深自己对这块的理解。</p>
+<a id="more"></a>
+<h2 id="内容"><a href="#内容" class="headerlink" title="内容"></a>内容</h2><hr>
+<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>&#160;&#160;&#160;Android字体系统是由底层的Android 2D图形引擎Skia来实现的，Android3.0之后逐渐使用了新的硬件绘图模块hwui，在5.0之后正式取代了Skia，因此不同版本的系统其字体加载机制有些差异，按照Google的API Level来看，大体可以分为三个阶段：</p>
+<ol>
+<li>Android4.0以下的系统</li>
+<li>Android4.0到Android4.4的系统</li>
+<li>Android5.0以上的系统</li>
+</ol>
+<p>&#160;&#160;&#160;当然这每个阶段中，可能也存在些许小差异，但大方向是没变化的，本文主要对Android5.0以上的系统的字体加载机制进行描述，围绕系统字体配置文件解析与字体加载相关内容，不涉及系统运行库的实现细节。</p>
+<blockquote>
+<p>注：浏览器及webView中的字体有单独的字体系统</p>
+</blockquote>
+<p>&#160;&#160;&#160;下面将从Java层面、Native层面、文件配置系统三个部分来阐述Android字体加载原理。</p>
+<h3 id="Java层面"><a href="#Java层面" class="headerlink" title="Java层面"></a>Java层面</h3><p>&#160;&#160;&#160;有研究过Android的人大概都有了解，Android的Java层封装了构建应用程序时可能会用到的各种Api。而在字体这部分，起主要作用的是android.graphics.Typeface，其主要负责字体加载以及对上层提供创建字体功能的调用，下面将着重分析该类的调用过程。</p>
+<p>&#160;&#160;&#160;首先，在Android启动的过程中，ZygoteInit类中的main()方法会调用加载方法preload()，对各种类、链接库、资源等进行初始化，具体代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String argv[])</span> </span>&#123;</div><div class="line">    ...</div><div class="line">    </div><div class="line">    registerZygoteSocket(socketName);</div><div class="line">    Trace.traceBegin(Trace.TRACE_TAG_DALVIK, <span class="string">"ZygotePreload"</span>);</div><div class="line">    EventLog.writeEvent(LOG_BOOT_PROGRESS_PRELOAD_START,</div><div class="line">        SystemClock.uptimeMillis());</div><div class="line">    <span class="comment">//调用加载方法</span></div><div class="line">    preload();</div><div class="line">    EventLog.writeEvent(LOG_BOOT_PROGRESS_PRELOAD_END,</div><div class="line">        SystemClock.uptimeMillis());</div><div class="line">    Trace.traceEnd(Trace.TRACE_TAG_DALVIK);</div><div class="line">    </div><div class="line">    ...</div><div class="line">    </div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">//主要用于加载并初始化各种类、链接库、资源等。</span></div><div class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">preload</span><span class="params">()</span> </span>&#123;</div><div class="line">    Log.d(TAG, <span class="string">"begin preload"</span>);</div><div class="line">    <span class="comment">//Systrace开始tag</span></div><div class="line">    Trace.traceBegin(Trace.TRACE_TAG_DALVIK, <span class="string">"BeginIcuCachePinning"</span>);</div><div class="line">    <span class="comment">//开始Icu缓存开销</span></div><div class="line">    beginIcuCachePinning();</div><div class="line">    <span class="comment">//Systrace结束tag</span></div><div class="line">    Trace.traceEnd(Trace.TRACE_TAG_DALVIK);</div><div class="line">    Trace.traceBegin(Trace.TRACE_TAG_DALVIK, <span class="string">"PreloadClasses"</span>);</div><div class="line">    <span class="comment">//预加载Classes</span></div><div class="line">    preloadClasses();</div><div class="line">    Trace.traceEnd(Trace.TRACE_TAG_DALVIK);</div><div class="line">    Trace.traceBegin(Trace.TRACE_TAG_DALVIK, <span class="string">"PreloadResources"</span>);</div><div class="line">    <span class="comment">//预加载resources</span></div><div class="line">    preloadResources();</div><div class="line">    Trace.traceEnd(Trace.TRACE_TAG_DALVIK);</div><div class="line">    Trace.traceBegin(Trace.TRACE_TAG_DALVIK, <span class="string">"PreloadOpenGL"</span>);</div><div class="line">    <span class="comment">//预加载openGL</span></div><div class="line">    preloadOpenGL();</div><div class="line">    Trace.traceEnd(Trace.TRACE_TAG_DALVIK);</div><div class="line">    <span class="comment">//加载分享库</span></div><div class="line">    preloadSharedLibraries();</div><div class="line">    <span class="comment">//加载文本资源</span></div><div class="line">    preloadTextResources();</div><div class="line">    <span class="comment">// Ask the WebViewFactory to do any initialization that must run in the zygote process,</span></div><div class="line">    <span class="comment">// for memory sharing purposes.、</span></div><div class="line">    WebViewFactory.prepareWebViewInZygote();</div><div class="line">    endIcuCachePinning();</div><div class="line">    warmUpJcaProviders();</div><div class="line">    Log.d(TAG, <span class="string">"end preload"</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;其中preloadClasses()方法会加载并初始化一些系统常用的API类，这些类都是位于frameworks/base/preloaded-classes文件中，当然也包括Typeface类。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * Performs Zygote process initialization. Loads and initializes</div><div class="line"> * commonly used classes.</div><div class="line"> *</div><div class="line"> * Most classes only cause a few hundred bytes to be allocated, but</div><div class="line"> * a few will allocate a dozen Kbytes (in one case, 500+K).</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">preloadClasses</span><span class="params">()</span> </span>&#123;</div><div class="line">        </div><div class="line">    ...    </div><div class="line">        </div><div class="line">    InputStream is;</div><div class="line">    <span class="keyword">try</span> &#123;</div><div class="line">        is = <span class="keyword">new</span> FileInputStream(PRELOADED_CLASSES);</div><div class="line">    &#125; <span class="keyword">catch</span> (FileNotFoundException e) &#123;</div><div class="line">        Log.e(TAG, <span class="string">"Couldn't find "</span> + PRELOADED_CLASSES + <span class="string">"."</span>);</div><div class="line">        <span class="keyword">return</span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    ...</div><div class="line">    </div><div class="line">    <span class="keyword">try</span> &#123;</div><div class="line">    BufferedReader br</div><div class="line">        = <span class="keyword">new</span> BufferedReader(<span class="keyword">new</span> InputStreamReader(is), <span class="number">256</span>);</div><div class="line">    </div><div class="line">    <span class="keyword">int</span> count = <span class="number">0</span>;</div><div class="line">    String line;</div><div class="line">    <span class="keyword">while</span> ((line = br.readLine()) != <span class="keyword">null</span>) &#123;</div><div class="line">        <span class="comment">// Skip comments and blank lines.</span></div><div class="line">        line = line.trim();</div><div class="line">        <span class="keyword">if</span> (line.startsWith(<span class="string">"#"</span>) || line.equals(<span class="string">""</span>)) &#123;</div><div class="line">            <span class="keyword">continue</span>;</div><div class="line">        &#125;</div><div class="line">    </div><div class="line">        Trace.traceBegin(Trace.TRACE_TAG_DALVIK, <span class="string">"PreloadClass "</span> + line);</div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">            <span class="keyword">if</span> (<span class="keyword">false</span>) &#123;</div><div class="line">                Log.v(TAG, <span class="string">"Preloading "</span> + line + <span class="string">"..."</span>);</div><div class="line">            &#125;</div><div class="line">            <span class="comment">// Load and explicitly initialize the given class. Use</span></div><div class="line">            <span class="comment">// Class.forName(String, boolean, ClassLoader) to avoid repeated stack lookups</span></div><div class="line">            <span class="comment">// (to derive the caller's class-loader). Use true to force initialization, and</span></div><div class="line">            <span class="comment">// null for the boot classpath class-loader (could as well cache the</span></div><div class="line">            <span class="comment">// class-loader of this class in a variable).</span></div><div class="line">            Class.forName(line, <span class="keyword">true</span>, <span class="keyword">null</span>);</div><div class="line">            count++;</div><div class="line">            </div><div class="line">    ...</div><div class="line">    </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;从上面的代码可以看到，Android通过反射机制Class.forName(“android.graphics.Typeface”)加载了Typeface类，在加载的同时，会调用类中的static方法块。如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">static</span> &#123;</div><div class="line">    <span class="comment">//初始化系统字体</span></div><div class="line">    init();</div><div class="line">    <span class="comment">// Set up defaults and typefaces exposed in public API</span></div><div class="line">    DEFAULT         = create((String) <span class="keyword">null</span>, <span class="number">0</span>);</div><div class="line">    DEFAULT_BOLD    = create((String) <span class="keyword">null</span>, Typeface.BOLD);</div><div class="line">    SANS_SERIF      = create(<span class="string">"sans-serif"</span>, <span class="number">0</span>);</div><div class="line">    SERIF           = create(<span class="string">"serif"</span>, <span class="number">0</span>);</div><div class="line">    MONOSPACE       = create(<span class="string">"monospace"</span>, <span class="number">0</span>);</div><div class="line"></div><div class="line">    sDefaults = <span class="keyword">new</span> Typeface[] &#123;</div><div class="line">        DEFAULT,</div><div class="line">        DEFAULT_BOLD,</div><div class="line">        create((String) <span class="keyword">null</span>, Typeface.ITALIC),</div><div class="line">        create((String) <span class="keyword">null</span>, Typeface.BOLD_ITALIC),</div><div class="line">    &#125;;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Typeface <span class="title">create</span><span class="params">(String familyName, <span class="keyword">int</span> style)</span> </span>&#123;</div><div class="line">    <span class="keyword">if</span> (sSystemFontMap != <span class="keyword">null</span>) &#123;</div><div class="line">        <span class="keyword">return</span> create(sSystemFontMap.get(familyName), style);</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Typeface <span class="title">create</span><span class="params">(Typeface family, <span class="keyword">int</span> style)</span> </span>&#123;</div><div class="line"></div><div class="line">    ...</div><div class="line"></div><div class="line">    typeface = <span class="keyword">new</span> Typeface(nativeCreateFromTypeface(ni, style));</div><div class="line"></div><div class="line">    ...</div><div class="line">    <span class="keyword">return</span> typeface;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;在上面的static方法块中，最终通过调用Native层方法nativeCreateFromTypeface()，来初始化系统字体并且设置默认的系统字体以及字体样式，可以从上面的方法看出系统默认创建sans-serif（无衬线字体），serif（衬线字体），monospace（等宽字体）三种字体，并且通过create第一个参数为null，来创建默认字体的四种style：normal，bold，italic，bolditalic。</p>
+<blockquote>
+<p>注：这里需要注意的是，Android4.x版本的系统与Android5.0以上的版本所调用的API基本一致，但是native层确有很大的变，这是由于5.0以上的系统添加了一个新的方法init()，其主要实现了解析系统字体配置文件，并据此加载系统字体。而Android4.x版本是在native层实现的。</p>
+</blockquote>
+<p>&#160;&#160;&#160;因为现在Android阵营已经基本上都是5.0以上的系统了，所以5.0以下版本的加载不在解释。下面我们来看init()方法的具体逻辑：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="comment">/*</span></div><div class="line"> * (non-Javadoc)</div><div class="line"> *</div><div class="line"> * This should only be called once, from the static class initializer block.</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">init</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="comment">// Load font config and initialize Minikin state</span></div><div class="line">    <span class="comment">//获取系统字体配置文件位置放置于system/etc目录下</span></div><div class="line">    File systemFontConfigLocation = getSystemFontConfigLocation();</div><div class="line">    <span class="comment">//获取配置文件fonts.xml</span></div><div class="line">    File configFilename = <span class="keyword">new</span> File(systemFontConfigLocation, FONTS_CONFIG);</div><div class="line">    <span class="comment">//以下代码是对fonts.xml的解析，即是对系统字体的解析</span></div><div class="line">    <span class="keyword">try</span> &#123;</div><div class="line">        FileInputStream fontsIn = <span class="keyword">new</span> FileInputStream(configFilename);</div><div class="line">        FontListParser.Config fontConfig = FontListParser.parse(fontsIn);</div><div class="line"></div><div class="line">        Map&lt;String, ByteBuffer&gt; bufferForPath = <span class="keyword">new</span> HashMap&lt;String, ByteBuffer&gt;();</div><div class="line">        <span class="comment">//用来承载fonts.xml中的每个family节点</span></div><div class="line">        List&lt;FontFamily&gt; familyList = <span class="keyword">new</span> ArrayList&lt;FontFamily&gt;();</div><div class="line">        <span class="comment">// Note that the default typeface is always present in the fallback list;</span></div><div class="line">        <span class="comment">// this is an enhancement from pre-Minikin behavior.</span></div><div class="line">        <span class="comment">//从每个family节点中解析字体样式，这里解析系统默认字体</span></div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; fontConfig.families.size(); i++) &#123;</div><div class="line">            FontListParser.Family f = fontConfig.families.get(i);</div><div class="line">            <span class="keyword">if</span> (i == <span class="number">0</span> || f.name == <span class="keyword">null</span>) &#123;</div><div class="line">                familyList.add(makeFamilyFromParsed(f, bufferForPath));</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        <span class="comment">//系统默认字体集合</span></div><div class="line">        sFallbackFonts = familyList.toArray(<span class="keyword">new</span> FontFamily[familyList.size()]);</div><div class="line">        <span class="comment">//设置默认系统字体</span></div><div class="line">        setDefault(Typeface.createFromFamilies(sFallbackFonts));</div><div class="line">        <span class="comment">//这里加载系统字体，包括默认字体</span></div><div class="line">        Map&lt;String, Typeface&gt; systemFonts = <span class="keyword">new</span> HashMap&lt;String, Typeface&gt;();</div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; fontConfig.families.size(); i++) &#123;</div><div class="line">            Typeface typeface;</div><div class="line">            FontListParser.Family f = fontConfig.families.get(i);</div><div class="line">            <span class="keyword">if</span> (f.name != <span class="keyword">null</span>) &#123;</div><div class="line">                <span class="keyword">if</span> (i == <span class="number">0</span>) &#123;</div><div class="line">                    <span class="comment">// The first entry is the default typeface; no sense in</span></div><div class="line">                    <span class="comment">// duplicating the corresponding FontFamily.</span></div><div class="line">                    typeface = sDefaultTypeface;</div><div class="line">                &#125; <span class="keyword">else</span> &#123;</div><div class="line">                    <span class="comment">//从每个family节点中解析字体</span></div><div class="line">                    FontFamily fontFamily = makeFamilyFromParsed(f, bufferForPath);</div><div class="line">                    FontFamily[] families = &#123; fontFamily &#125;;</div><div class="line">                    typeface = Typeface.createFromFamiliesWithDefault(families);</div><div class="line">                &#125;</div><div class="line">                <span class="comment">//解析的字体添加到系统字体中</span></div><div class="line">                systemFonts.put(f.name, typeface);</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        <span class="comment">//通过权重别号解析字体，别名必须与字体对应</span></div><div class="line">        <span class="keyword">for</span> (FontListParser.Alias alias : fontConfig.aliases) &#123;</div><div class="line">            Typeface base = systemFonts.get(alias.toName);</div><div class="line">            Typeface newFace = base;</div><div class="line">            <span class="keyword">int</span> weight = alias.weight;</div><div class="line">            <span class="keyword">if</span> (weight != <span class="number">400</span>) &#123;</div><div class="line">                newFace = <span class="keyword">new</span> Typeface(nativeCreateWeightAlias(base.native_instance, weight));</div><div class="line">            &#125;</div><div class="line">            systemFonts.put(alias.name, newFace);</div><div class="line">        &#125;</div><div class="line">        <span class="comment">//系统字体集合</span></div><div class="line">        sSystemFontMap = systemFonts;</div><div class="line"></div><div class="line">    &#125; <span class="keyword">catch</span> (RuntimeException e) &#123;</div><div class="line">        Log.w(TAG, <span class="string">"Didn't create default family (most likely, non-Minikin build)"</span>, e);</div><div class="line">        <span class="comment">// <span class="doctag">TODO:</span> normal in non-Minikin case, remove or make error when Minikin-only</span></div><div class="line">    &#125; <span class="keyword">catch</span> (FileNotFoundException e) &#123;</div><div class="line">        Log.e(TAG, <span class="string">"Error opening "</span> + configFilename, e);</div><div class="line">    &#125; <span class="keyword">catch</span> (IOException e) &#123;</div><div class="line">        Log.e(TAG, <span class="string">"Error reading "</span> + configFilename, e);</div><div class="line">    &#125; <span class="keyword">catch</span> (XmlPullParserException e) &#123;</div><div class="line">        Log.e(TAG, <span class="string">"XML parse exception for "</span> + configFilename, e);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;通过以上代码，可以看出，系统解析过程中，一共有三种字体模式。一种的是系统默认字体；一种是系统字体，所有字体，包括自己添加的字体；一种是设置别名的字体，字体的衍生。而这三种字体都会在init()中被加载，而它们加载主要涉及以下方法。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="comment">//通过family节点解析FontFamily</span></div><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> FontFamily <span class="title">makeFamilyFromParsed</span><span class="params">(FontListParser.Family family,</span></span></div><div class="line">        Map&lt;String, ByteBuffer&gt; bufferForPath) &#123;</div><div class="line">    <span class="comment">//这里的lang表示国家缩写，variant表示字体的排列格式一般有compact与elegant两种</span></div><div class="line">    FontFamily fontFamily = <span class="keyword">new</span> FontFamily(family.lang, family.variant);</div><div class="line">    <span class="keyword">for</span> (FontListParser.Font font : family.fonts) &#123;</div><div class="line">        ByteBuffer fontBuffer = bufferForPath.get(font.fontName);</div><div class="line">        <span class="keyword">if</span> (fontBuffer == <span class="keyword">null</span>) &#123;</div><div class="line">            <span class="keyword">try</span> (FileInputStream file = <span class="keyword">new</span> FileInputStream(font.fontName)) &#123;</div><div class="line">                FileChannel fileChannel = file.getChannel();</div><div class="line">                <span class="keyword">long</span> fontSize = fileChannel.size();</div><div class="line">                fontBuffer = fileChannel.map(FileChannel.MapMode.READ_ONLY, <span class="number">0</span>, fontSize);</div><div class="line">                bufferForPath.put(font.fontName, fontBuffer);</div><div class="line">            &#125; <span class="keyword">catch</span> (IOException e) &#123;</div><div class="line">                Log.e(TAG, <span class="string">"Error mapping font file "</span> + font.fontName);</div><div class="line">                <span class="keyword">continue</span>;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">if</span> (!fontFamily.addFontWeightStyle(fontBuffer, font.ttcIndex, font.axes,</div><div class="line">                font.weight, font.isItalic)) &#123;</div><div class="line">            Log.e(TAG, <span class="string">"Error creating font "</span> + font.fontName + <span class="string">"#"</span> + font.ttcIndex);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> fontFamily;</div><div class="line">&#125;</div><div class="line"><span class="comment">/*</span></div><div class="line">以下是通过不同的格式解析出不同的family</div><div class="line">*/</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="title">FontFamily</span><span class="params">()</span> </span>&#123;</div><div class="line">    mNativePtr = nCreateFamily(<span class="keyword">null</span>, <span class="number">0</span>);</div><div class="line">    <span class="keyword">if</span> (mNativePtr == <span class="number">0</span>) &#123;</div><div class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> IllegalStateException(<span class="string">"error creating native FontFamily"</span>);</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="title">FontFamily</span><span class="params">(String lang, String variant)</span> </span>&#123;</div><div class="line">    <span class="keyword">int</span> varEnum = <span class="number">0</span>;</div><div class="line">    <span class="keyword">if</span> (<span class="string">"compact"</span>.equals(variant)) &#123;</div><div class="line">        varEnum = <span class="number">1</span>;</div><div class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (<span class="string">"elegant"</span>.equals(variant)) &#123;</div><div class="line">        varEnum = <span class="number">2</span>;</div><div class="line">    &#125;</div><div class="line">    mNativePtr = nCreateFamily(lang, varEnum);</div><div class="line">    <span class="keyword">if</span> (mNativePtr == <span class="number">0</span>) &#123;</div><div class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> IllegalStateException(<span class="string">"error creating native FontFamily"</span>);</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">finalize</span><span class="params">()</span> <span class="keyword">throws</span> Throwable </span>&#123;</div><div class="line">    <span class="keyword">try</span> &#123;</div><div class="line">        nUnrefFamily(mNativePtr);</div><div class="line">    &#125; <span class="keyword">finally</span> &#123;</div><div class="line">        <span class="keyword">super</span>.finalize();</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">addFont</span><span class="params">(String path, <span class="keyword">int</span> ttcIndex)</span> </span>&#123;</div><div class="line">    <span class="keyword">try</span> (FileInputStream file = <span class="keyword">new</span> FileInputStream(path)) &#123;</div><div class="line">        FileChannel fileChannel = file.getChannel();</div><div class="line">        <span class="keyword">long</span> fontSize = fileChannel.size();</div><div class="line">        ByteBuffer fontBuffer = fileChannel.map(FileChannel.MapMode.READ_ONLY, <span class="number">0</span>, fontSize);</div><div class="line">        <span class="keyword">return</span> nAddFont(mNativePtr, fontBuffer, ttcIndex);</div><div class="line">    &#125; <span class="keyword">catch</span> (IOException e) &#123;</div><div class="line">        Log.e(TAG, <span class="string">"Error mapping font file "</span> + path);</div><div class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">addFontWeightStyle</span><span class="params">(ByteBuffer font, <span class="keyword">int</span> ttcIndex, List&lt;FontListParser.Axis&gt; axes,</span></span></div><div class="line">        <span class="keyword">int</span> weight, <span class="keyword">boolean</span> style) &#123;</div><div class="line">    <span class="keyword">return</span> nAddFontWeightStyle(mNativePtr, font, ttcIndex, axes, weight, style);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">addFontFromAsset</span><span class="params">(AssetManager mgr, String path)</span> </span>&#123;</div><div class="line">    <span class="keyword">return</span> nAddFontFromAsset(mNativePtr, mgr, path);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">native</span> <span class="keyword">long</span> <span class="title">nCreateFamily</span><span class="params">(String lang, <span class="keyword">int</span> variant)</span></span>;</div><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">native</span> <span class="keyword">void</span> <span class="title">nUnrefFamily</span><span class="params">(<span class="keyword">long</span> nativePtr)</span></span>;</div><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">native</span> <span class="keyword">boolean</span> <span class="title">nAddFont</span><span class="params">(<span class="keyword">long</span> nativeFamily, ByteBuffer font, <span class="keyword">int</span> ttcIndex)</span></span>;</div><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">native</span> <span class="keyword">boolean</span> <span class="title">nAddFontWeightStyle</span><span class="params">(<span class="keyword">long</span> nativeFamily, ByteBuffer font,</span></span></div><div class="line">        <span class="keyword">int</span> ttcIndex, List&lt;FontListParser.Axis&gt; listOfAxis,</div><div class="line">        <span class="keyword">int</span> weight, <span class="keyword">boolean</span> isItalic);</div><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">native</span> <span class="keyword">boolean</span> <span class="title">nAddFontFromAsset</span><span class="params">(<span class="keyword">long</span> nativeFamily, AssetManager mgr,</span></span></div><div class="line">        String path);</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * Create a new typeface from an array of font families.</div><div class="line"> *</div><div class="line"> * <span class="doctag">@param</span> families array of font families</div><div class="line"> * <span class="doctag">@hide</span></div><div class="line"> */</div><div class="line"><span class="comment">//通过FontFamily解析创建字体</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Typeface <span class="title">createFromFamilies</span><span class="params">(FontFamily[] families)</span> </span>&#123;</div><div class="line">    <span class="keyword">long</span>[] ptrArray = <span class="keyword">new</span> <span class="keyword">long</span>[families.length];</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; families.length; i++) &#123;</div><div class="line">        ptrArray[i] = families[i].mNativePtr;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">new</span> Typeface(nativeCreateFromArray(ptrArray));</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * Create a new typeface from an array of font families, including</div><div class="line"> * also the font families in the fallback list.</div><div class="line"> *</div><div class="line"> * <span class="doctag">@param</span> families array of font families</div><div class="line"> * <span class="doctag">@hide</span></div><div class="line"> */</div><div class="line"><span class="comment">//通过FontFamily解析创建字体</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Typeface <span class="title">createFromFamiliesWithDefault</span><span class="params">(FontFamily[] families)</span> </span>&#123;</div><div class="line">    <span class="keyword">long</span>[] ptrArray = <span class="keyword">new</span> <span class="keyword">long</span>[families.length + sFallbackFonts.length];</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; families.length; i++) &#123;</div><div class="line">        ptrArray[i] = families[i].mNativePtr;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; sFallbackFonts.length; i++) &#123;</div><div class="line">        ptrArray[i + families.length] = sFallbackFonts[i].mNativePtr;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">new</span> Typeface(nativeCreateFromArray(ptrArray));</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;从上面的代码可看到，系统通过解析/system/etc/fonts.xml（字体配置文件），然后接收Native层方法回调上来的值，来创建指定的Typeface即字体，保存在sSystemFontMap中。而相关native方法列表以及注册(在frameworks/base/core/jni/android/graphics/Typeface.cpp中注册)如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">native</span> <span class="keyword">long</span> <span class="title">nativeCreateFromTypeface</span><span class="params">(<span class="keyword">long</span> native_instance, <span class="keyword">int</span> style)</span></span>;</div><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">native</span> <span class="keyword">long</span> <span class="title">nativeCreateWeightAlias</span><span class="params">(<span class="keyword">long</span> native_instance, <span class="keyword">int</span> weight)</span></span>;</div><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">native</span> <span class="keyword">void</span> <span class="title">nativeUnref</span><span class="params">(<span class="keyword">long</span> native_instance)</span></span>;</div><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">native</span> <span class="keyword">int</span>  <span class="title">nativeGetStyle</span><span class="params">(<span class="keyword">long</span> native_instance)</span></span>;</div><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">native</span> <span class="keyword">long</span> <span class="title">nativeCreateFromArray</span><span class="params">(<span class="keyword">long</span>[] familyArray)</span></span>;</div><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">native</span> <span class="keyword">void</span> <span class="title">nativeSetDefault</span><span class="params">(<span class="keyword">long</span> native_instance)</span></span>;</div><div class="line"></div><div class="line"><span class="comment">///////////////////////////////////////////////////////////////////////////////</span></div><div class="line"></div><div class="line"><span class="keyword">static</span> <span class="keyword">const</span> JNINativeMethod gTypefaceMethods[] = &#123;</div><div class="line">    &#123; <span class="string">"nativeCreateFromTypeface"</span>, <span class="string">"(JI)J"</span>, (<span class="keyword">void</span>*)Typeface_createFromTypeface &#125;,</div><div class="line">    &#123; <span class="string">"nativeCreateWeightAlias"</span>,  <span class="string">"(JI)J"</span>, (<span class="keyword">void</span>*)Typeface_createWeightAlias &#125;,</div><div class="line">    &#123; <span class="string">"nativeUnref"</span>,              <span class="string">"(J)V"</span>,  (<span class="keyword">void</span>*)Typeface_unref &#125;,</div><div class="line">    &#123; <span class="string">"nativeGetStyle"</span>,           <span class="string">"(J)I"</span>,  (<span class="keyword">void</span>*)Typeface_getStyle &#125;,</div><div class="line">    &#123; <span class="string">"nativeCreateFromArray"</span>,    <span class="string">"([J)J"</span>,</div><div class="line">                                           (<span class="keyword">void</span>*)Typeface_createFromArray &#125;,</div><div class="line">    &#123; <span class="string">"nativeSetDefault"</span>,         <span class="string">"(J)V"</span>,   (<span class="keyword">void</span>*)Typeface_setDefault &#125;,</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">register_android_graphics_Typeface</span><span class="params">(JNIEnv* env)</span></span></div><div class="line">&#123;</div><div class="line">    <span class="keyword">return</span> RegisterMethodsOrDie(env, <span class="string">"android/graphics/Typeface"</span>, gTypefaceMethods,</div><div class="line">                                NELEM(gTypefaceMethods));</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;最终，通过这一层的关系，调用到Native层的方法。</p>
+<p>&#160;&#160;&#160;到此，字体加载Java层面就结束了，下面将调用Native层的方法。</p>
+<h3 id="Native层面"><a href="#Native层面" class="headerlink" title="Native层面"></a>Native层面</h3><p>&#160;&#160;&#160;Native层主要是skia图形引擎的Android移植版，项目源码位于external\skia目录下。</p>
+<p>&#160;&#160;&#160;在Android4.X版本中主要是用skia来进行软件绘制，所以解析配置文件并加载字体是在skia中完成，这里不在描述过程，可以参看相关博客中的描述。而由于绘制性能等问题，Android5.0之后使用了新的硬件绘图模块hwui，hwui主要则是使用opengles来进行gpu硬件绘图，提升整个系统的绘制性能。</p>
+<p>&#160;&#160;&#160;在上述Java层调用过程后，字体加载指向了Native层。在Native层调用首先进入jni/android/graphics/Typeface.cpp，调用对应的方法，然后进入hwui/Typeface.h和hwui/Typeface.cpp中定制的函数，从而解析配置文件并加载字体。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//jni/android/graphics/Typeface.cpp</span></div><div class="line"></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"jni.h"</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"core_jni_helpers.h"</span></span></div><div class="line"></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"GraphicsJNI.h"</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"ScopedPrimitiveArray.h"</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"SkTypeface.h"</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;android_runtime/android_util_AssetManager.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;androidfw/AssetManager.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;hwui/Typeface.h&gt;</span></span></div><div class="line"></div><div class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> android;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">static</span> jlong <span class="title">Typeface_createFromTypeface</span><span class="params">(JNIEnv* env, jobject, jlong familyHandle, jint style)</span> </span>&#123;</div><div class="line">    Typeface* family = <span class="keyword">reinterpret_cast</span>&lt;Typeface*&gt;(familyHandle);</div><div class="line">    Typeface* face = Typeface::createFromTypeface(family, (SkTypeface::Style)style);</div><div class="line">    <span class="comment">// <span class="doctag">TODO:</span> the following logic shouldn't be necessary, the above should always succeed.</span></div><div class="line">    <span class="comment">// Try to find the closest matching font, using the standard heuristic</span></div><div class="line">    <span class="keyword">if</span> (<span class="literal">NULL</span> == face) &#123;</div><div class="line">        face = Typeface::createFromTypeface(family, (SkTypeface::Style)(style ^ SkTypeface::kItalic));</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; <span class="literal">NULL</span> == face &amp;&amp; i &lt; <span class="number">4</span>; i++) &#123;</div><div class="line">        face = Typeface::createFromTypeface(family, (SkTypeface::Style)i);</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">reinterpret_cast</span>&lt;jlong&gt;(face);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">static</span> jlong <span class="title">Typeface_createWeightAlias</span><span class="params">(JNIEnv* env, jobject, jlong familyHandle, jint weight)</span> </span>&#123;</div><div class="line">    Typeface* family = <span class="keyword">reinterpret_cast</span>&lt;Typeface*&gt;(familyHandle);</div><div class="line">    Typeface* face = Typeface::createWeightAlias(family, weight);</div><div class="line">    <span class="keyword">return</span> <span class="keyword">reinterpret_cast</span>&lt;jlong&gt;(face);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Typeface_unref</span><span class="params">(JNIEnv* env, jobject obj, jlong faceHandle)</span> </span>&#123;</div><div class="line">    Typeface* face = <span class="keyword">reinterpret_cast</span>&lt;Typeface*&gt;(faceHandle);</div><div class="line">    <span class="keyword">if</span> (face != <span class="literal">NULL</span>) &#123;</div><div class="line">        face-&gt;unref();</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">static</span> jint <span class="title">Typeface_getStyle</span><span class="params">(JNIEnv* env, jobject obj, jlong faceHandle)</span> </span>&#123;</div><div class="line">    Typeface* face = <span class="keyword">reinterpret_cast</span>&lt;Typeface*&gt;(faceHandle);</div><div class="line">    <span class="keyword">return</span> face-&gt;fSkiaStyle;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">static</span> jlong <span class="title">Typeface_createFromArray</span><span class="params">(JNIEnv *env, jobject, jlongArray familyArray)</span> </span>&#123;</div><div class="line">    <span class="function">ScopedLongArrayRO <span class="title">families</span><span class="params">(env, familyArray)</span></span>;</div><div class="line">    <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;FontFamily*&gt; familyVec;</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">size_t</span> i = <span class="number">0</span>; i &lt; families.size(); i++) &#123;</div><div class="line">        FontFamily* family = <span class="keyword">reinterpret_cast</span>&lt;FontFamily*&gt;(families[i]);</div><div class="line">        familyVec.push_back(family);</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">reinterpret_cast</span>&lt;jlong&gt;(Typeface::createFromFamilies(familyVec));</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Typeface_setDefault</span><span class="params">(JNIEnv *env, jobject, jlong faceHandle)</span> </span>&#123;</div><div class="line">    Typeface* face = <span class="keyword">reinterpret_cast</span>&lt;Typeface*&gt;(faceHandle);</div><div class="line">    <span class="keyword">return</span> Typeface::setDefault(face);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//hwui/Typeface.h</span></div><div class="line"></div><div class="line"><span class="meta">#<span class="meta-keyword">ifndef</span> _ANDROID_GRAPHICS_TYPEFACE_IMPL_H_</span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> _ANDROID_GRAPHICS_TYPEFACE_IMPL_H_</span></div><div class="line"></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"SkTypeface.h"</span></span></div><div class="line"></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cutils/compiler.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;minikin/FontCollection.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></div><div class="line"></div><div class="line"><span class="keyword">namespace</span> android &#123;</div><div class="line"></div><div class="line"><span class="keyword">struct</span> ANDROID_API Typeface &#123;</div><div class="line">    FontCollection *fFontCollection;</div><div class="line"></div><div class="line">    <span class="comment">// style used for constructing and querying Typeface objects</span></div><div class="line">    SkTypeface::Style fSkiaStyle;</div><div class="line">    <span class="comment">// base weight in CSS-style units, 100..900</span></div><div class="line">    <span class="keyword">int</span> fBaseWeight;</div><div class="line"></div><div class="line">    <span class="comment">// resolved style actually used for rendering</span></div><div class="line">    FontStyle fStyle;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">void</span> <span class="title">unref</span><span class="params">()</span></span>;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">static</span> Typeface* <span class="title">resolveDefault</span><span class="params">(Typeface* src)</span></span>;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">static</span> Typeface* <span class="title">createFromTypeface</span><span class="params">(Typeface* src, SkTypeface::Style style)</span></span>;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">static</span> Typeface* <span class="title">createWeightAlias</span><span class="params">(Typeface* src, <span class="keyword">int</span> baseweight)</span></span>;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">static</span> Typeface* <span class="title">createFromFamilies</span><span class="params">(<span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;FontFamily*&gt;&amp; families)</span></span>;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">setDefault</span><span class="params">(Typeface* face)</span></span>;</div><div class="line">&#125;;</div><div class="line">&#125;</div><div class="line"><span class="meta">#<span class="meta-keyword">endif</span>  <span class="comment">// _ANDROID_GRAPHICS_TYPEFACE_IMPL_H_</span></span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;Native层的c/c++方法调用比较复杂，通过一系列的调用，返回值给Java层，这里就不在阐述，有兴趣的人可以自己下个源码深入理解下，到这里Android的字体加载原理基本完成了，不得不感叹Google工程师的丰功伟绩。</p>
+<h3 id="文件配置系统"><a href="#文件配置系统" class="headerlink" title="文件配置系统"></a>文件配置系统</h3><p>&#160;&#160;&#160;前面介绍的是加载的原理，现在简单的描述下字体加载过程中所用到的字体加载文件。</p>
+<p>&#160;&#160;&#160;在4.x版本的系统字体配置文件位于system/etc/system_fonts.xml，备用字体配置文件位于system/etc/fallback_fonts.xml和vendor/etc/fallback_fonts.xml。而5.0以上的版本的系统字体及备用字体配置均位于system/etc/fonts.xml文件中，下面展示部分fonts.xml内容。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="tag">&lt;<span class="name">familyset</span> <span class="attr">version</span>=<span class="string">"22"</span>&gt;</span></div><div class="line">    <span class="comment">&lt;!-- first font is default --&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">family</span> <span class="attr">name</span>=<span class="string">"sans-serif"</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">font</span> <span class="attr">weight</span>=<span class="string">"100"</span> <span class="attr">style</span>=<span class="string">"normal"</span>&gt;</span>Roboto-Thin.ttf<span class="tag">&lt;/<span class="name">font</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">font</span> <span class="attr">weight</span>=<span class="string">"100"</span> <span class="attr">style</span>=<span class="string">"italic"</span>&gt;</span>Roboto-ThinItalic.ttf<span class="tag">&lt;/<span class="name">font</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">font</span> <span class="attr">weight</span>=<span class="string">"300"</span> <span class="attr">style</span>=<span class="string">"normal"</span>&gt;</span>Roboto-Light.ttf<span class="tag">&lt;/<span class="name">font</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">font</span> <span class="attr">weight</span>=<span class="string">"300"</span> <span class="attr">style</span>=<span class="string">"italic"</span>&gt;</span>Roboto-LightItalic.ttf<span class="tag">&lt;/<span class="name">font</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">font</span> <span class="attr">weight</span>=<span class="string">"400"</span> <span class="attr">style</span>=<span class="string">"normal"</span>&gt;</span>Roboto-Regular.ttf<span class="tag">&lt;/<span class="name">font</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">font</span> <span class="attr">weight</span>=<span class="string">"400"</span> <span class="attr">style</span>=<span class="string">"italic"</span>&gt;</span>Roboto-Italic.ttf<span class="tag">&lt;/<span class="name">font</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">font</span> <span class="attr">weight</span>=<span class="string">"500"</span> <span class="attr">style</span>=<span class="string">"normal"</span>&gt;</span>Roboto-Medium.ttf<span class="tag">&lt;/<span class="name">font</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">font</span> <span class="attr">weight</span>=<span class="string">"500"</span> <span class="attr">style</span>=<span class="string">"italic"</span>&gt;</span>Roboto-MediumItalic.ttf<span class="tag">&lt;/<span class="name">font</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">font</span> <span class="attr">weight</span>=<span class="string">"900"</span> <span class="attr">style</span>=<span class="string">"normal"</span>&gt;</span>Roboto-Black.ttf<span class="tag">&lt;/<span class="name">font</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">font</span> <span class="attr">weight</span>=<span class="string">"900"</span> <span class="attr">style</span>=<span class="string">"italic"</span>&gt;</span>Roboto-BlackItalic.ttf<span class="tag">&lt;/<span class="name">font</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">font</span> <span class="attr">weight</span>=<span class="string">"700"</span> <span class="attr">style</span>=<span class="string">"normal"</span>&gt;</span>Roboto-Bold.ttf<span class="tag">&lt;/<span class="name">font</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">font</span> <span class="attr">weight</span>=<span class="string">"700"</span> <span class="attr">style</span>=<span class="string">"italic"</span>&gt;</span>Roboto-BoldItalic.ttf<span class="tag">&lt;/<span class="name">font</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">family</span>&gt;</span></div><div class="line"></div><div class="line">    <span class="comment">&lt;!-- Note that aliases must come after the fonts they reference. --&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">alias</span> <span class="attr">name</span>=<span class="string">"sans-serif-thin"</span> <span class="attr">to</span>=<span class="string">"sans-serif"</span> <span class="attr">weight</span>=<span class="string">"100"</span> /&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">alias</span> <span class="attr">name</span>=<span class="string">"sans-serif-light"</span> <span class="attr">to</span>=<span class="string">"sans-serif"</span> <span class="attr">weight</span>=<span class="string">"300"</span> /&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">alias</span> <span class="attr">name</span>=<span class="string">"sans-serif-medium"</span> <span class="attr">to</span>=<span class="string">"sans-serif"</span> <span class="attr">weight</span>=<span class="string">"500"</span> /&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">alias</span> <span class="attr">name</span>=<span class="string">"sans-serif-black"</span> <span class="attr">to</span>=<span class="string">"sans-serif"</span> <span class="attr">weight</span>=<span class="string">"900"</span> /&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">alias</span> <span class="attr">name</span>=<span class="string">"arial"</span> <span class="attr">to</span>=<span class="string">"sans-serif"</span> /&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">alias</span> <span class="attr">name</span>=<span class="string">"helvetica"</span> <span class="attr">to</span>=<span class="string">"sans-serif"</span> /&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">alias</span> <span class="attr">name</span>=<span class="string">"tahoma"</span> <span class="attr">to</span>=<span class="string">"sans-serif"</span> /&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">alias</span> <span class="attr">name</span>=<span class="string">"verdana"</span> <span class="attr">to</span>=<span class="string">"sans-serif"</span> /&gt;</span></div><div class="line">    </div><div class="line">...</div><div class="line"></div><div class="line">    <span class="comment">&lt;!-- fallback fonts --&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">family</span> <span class="attr">lang</span>=<span class="string">"und-Arab"</span> <span class="attr">variant</span>=<span class="string">"elegant"</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">font</span> <span class="attr">weight</span>=<span class="string">"400"</span> <span class="attr">style</span>=<span class="string">"normal"</span>&gt;</span>NotoNaskhArabic-Regular.ttf<span class="tag">&lt;/<span class="name">font</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">font</span> <span class="attr">weight</span>=<span class="string">"700"</span> <span class="attr">style</span>=<span class="string">"normal"</span>&gt;</span>NotoNaskhArabic-Bold.ttf<span class="tag">&lt;/<span class="name">font</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">family</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">family</span> <span class="attr">lang</span>=<span class="string">"und-Arab"</span> <span class="attr">variant</span>=<span class="string">"compact"</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">font</span> <span class="attr">weight</span>=<span class="string">"400"</span> <span class="attr">style</span>=<span class="string">"normal"</span>&gt;</span>NotoNaskhArabicUI-Regular.ttf<span class="tag">&lt;/<span class="name">font</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">font</span> <span class="attr">weight</span>=<span class="string">"700"</span> <span class="attr">style</span>=<span class="string">"normal"</span>&gt;</span>NotoNaskhArabicUI-Bold.ttf<span class="tag">&lt;/<span class="name">font</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">family</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">family</span> <span class="attr">lang</span>=<span class="string">"und-Ethi"</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">font</span> <span class="attr">weight</span>=<span class="string">"400"</span> <span class="attr">style</span>=<span class="string">"normal"</span>&gt;</span>NotoSansEthiopic-Regular.ttf<span class="tag">&lt;/<span class="name">font</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">font</span> <span class="attr">weight</span>=<span class="string">"700"</span> <span class="attr">style</span>=<span class="string">"normal"</span>&gt;</span>NotoSansEthiopic-Bold.ttf<span class="tag">&lt;/<span class="name">font</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">family</span>&gt;</span></div><div class="line">    <span class="comment">&lt;!-- 简体中文字体 --&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">family</span> <span class="attr">lang</span>=<span class="string">"zh-Hans"</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">font</span> <span class="attr">weight</span>=<span class="string">"400"</span> <span class="attr">style</span>=<span class="string">"normal"</span>&gt;</span>NotoSansSC-Regular.otf<span class="tag">&lt;/<span class="name">font</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">family</span>&gt;</span></div><div class="line">    <span class="comment">&lt;!-- 繁体中文字体 --&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">family</span> <span class="attr">lang</span>=<span class="string">"zh-Hant"</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">font</span> <span class="attr">weight</span>=<span class="string">"400"</span> <span class="attr">style</span>=<span class="string">"normal"</span>&gt;</span>NotoSansTC-Regular.otf<span class="tag">&lt;/<span class="name">font</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">family</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;如上所示，第一个family节点为系统默认字体。nameset节点的各个name子节点定义可用的字体名称，fileset节点的file子节点分别对应normal、bold、italic、bold-italic四种字体样式，如果file节点个数少于四个，相应字体样式会对应已有兄弟file节点的字体文件。family属性中lang代表国家的缩写，系统在切换语言的时候会从加载的字体中匹配国家的缩写，从而调出对于的系统字体、variant属性指的是字体的排列格式通常有compact(紧凑型)以及(简洁型)。</p>
+<p>&#160;&#160;&#160;fallback_fonts配置了系统备用字体。只有在系统内置字体中找不到相应字符时，才会到备用字体中去寻找，family节点的顺序对应搜索顺序，搜索匹配规则采用BCP47的定义。</p>
+<p>&#160;&#160;&#160;5.0以后的字体配置文件与之前版本的相比，最大的一个改进是将之前字体样式中的单一bold样式改为各种不同过的weight，这样可以更加细粒度的控制字重。</p>
+<h3 id="为系统添加新的字体"><a href="#为系统添加新的字体" class="headerlink" title="为系统添加新的字体"></a>为系统添加新的字体</h3><p>&#160;&#160;&#160;现在的手机产商都对Android系统进行了定制，当然也会加上属于自己的字体，下面简单描述下添加新字体的流程，以缅甸字体为例。</p>
+<p><strong>&#160;&#160;&#160;1.在frameworks/base/data/fonts/fonts.xml中添加字体节点</strong></p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">family</span> <span class="attr">lang</span>=<span class="string">"my"</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">font</span> <span class="attr">weight</span>=<span class="string">"400"</span> <span class="attr">style</span>=<span class="string">"normal"</span>&gt;</span>ZawgyiOne.ttf<span class="tag">&lt;/<span class="name">font</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">family</span>&gt;</span></div></pre></td></tr></table></figure>
+<p><strong>&#160;&#160;&#160;2.在frameworks/base/data/fonts/fonts.mk的最后加入新加的字体文件</strong></p>
+<figure class="highlight mk"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">PRODUCT_COPY_FILES := \</div><div class="line">    frameworks/base/data/fonts/fonts.xml:$(TARGET_COPY_OUT_SYSTEM)/etc/fonts.xml</div><div class="line"></div><div class="line">PRODUCT_PACKAGES := \</div><div class="line">    DroidSansFallback.ttf \</div><div class="line">    DroidSansMono.ttf \</div><div class="line">    AndroidClock.ttf \</div><div class="line">    DINPro-Black.otf \</div><div class="line">    DINPro-Bold.otf \</div><div class="line">    DINPro-Light.otf \</div><div class="line">    DINPro-Medium.otf \</div><div class="line">    DINPro-Regular.otf \</div><div class="line">    Flyme-Light.ttf \</div><div class="line">    ZawgyiOne.ttf</div></pre></td></tr></table></figure>
+<p><strong>&#160;&#160;&#160;3.在frameworks/base/data/fonts/Android.mk的font_src_files最后加入新加的字体文件</strong></p>
+<figure class="highlight mk"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">font_src_files := \</div><div class="line">    AndroidClock.ttf \</div><div class="line">    Flyme-Light.ttf \</div><div class="line">    ZawgyiOne.ttf</div></pre></td></tr></table></figure>
+<p><strong>&#160;&#160;&#160;4.将下载的字体放入frameworks/base/data/fonts下</strong></p>
+<p>&#160;&#160;&#160;其中第2、第3步是为了让字体能够编译进入系统中。</p>
+<h2 id="参考博客"><a href="#参考博客" class="headerlink" title="参考博客"></a>参考博客</h2><p><strong>&#160;&#160;&#160;<a href="http://blog.csdn.net/yangzhiloveyou/article/details/21867095" target="_blank" rel="external">knight</a></strong></p>
+<p><strong>&#160;&#160;&#160;<a href="http://blog.csdn.net/flyeek/article/details/44057999" target="_blank" rel="external">flyeek</a></strong></p>
+<hr>
+<p><strong>版权声明：本文为博主原创文章，转载请注明出处<a href="https://kidsea.github.io/" target="_blank" rel="external">KidSea</a></strong></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/安卓/" rel="tag"># 安卓</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/07/12/浅析onWindowsFocusChanged()方法/" rel="next" title="浅析onWindowsFocusChanged()方法">
+                <i class="fa fa-chevron-left"></i> 浅析onWindowsFocusChanged()方法
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+  <a class="jiathis_button_tsina"></a>
+  <a class="jiathis_button_tqq"></a>
+  <a class="jiathis_button_weixin"></a>
+  <a class="jiathis_button_cqq"></a>
+  <a class="jiathis_button_douban"></a>
+  <a class="jiathis_button_renren"></a>
+  <a class="jiathis_button_qzone"></a>
+  <a class="jiathis_button_kaixin001"></a>
+  <a class="jiathis_button_copy"></a>
+  <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank"></a>
+  <a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+  var jiathis_config={
+    hideMore:false
+  }
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8yNzk3MC80NTQ3"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/james.jpg"
+               alt="yuxuehai" />
+          <p class="site-author-name" itemprop="name">yuxuehai</p>
+           
+              <p class="site-description motion-element" itemprop="description">I belive I can fly</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">55</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/KidSea" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              友情链接
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://opiece.me/" title="Chillax" target="_blank">Chillax</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://hukai.me/" title="hukai" target="_blank">hukai</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://www.csdn.net/" title="CSDN" target="_blank">CSDN</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://duanqz.github.io/" title="启智观" target="_blank">启智观</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#内容"><span class="nav-number">2.</span> <span class="nav-text">内容</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#概述"><span class="nav-number">2.1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Java层面"><span class="nav-number">2.2.</span> <span class="nav-text">Java层面</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Native层面"><span class="nav-number">2.3.</span> <span class="nav-text">Native层面</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#文件配置系统"><span class="nav-number">2.4.</span> <span class="nav-text">文件配置系统</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#为系统添加新的字体"><span class="nav-number">2.5.</span> <span class="nav-text">为系统添加新的字体</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考博客"><span class="nav-number">3.</span> <span class="nav-text">参考博客</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">yuxuehai</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+      search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.popup').toggle();
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+      $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = $( "entry", xmlResponse ).map(function() {
+            return {
+              title: $( "title", this ).text(),
+              content: $("content",this).text(),
+              url: $( "url" , this).text()
+            };
+          }).get();
+          var $input = document.getElementById(search_id);
+          var $resultContent = document.getElementById(content_id);
+          $input.addEventListener('input', function(){
+            var matchcounts = 0;
+            var str='<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length > 1) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var content_index = [];
+                var data_title = data.title.trim().toLowerCase();
+                var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                var data_url = decodeURIComponent(data.url);
+                var index_title = -1;
+                var index_content = -1;
+                var first_occur = -1;
+                // only match artiles with not empty titles and contents
+                if(data_title != '') {
+                  keywords.forEach(function(keyword, i) {
+                    index_title = data_title.indexOf(keyword);
+                    index_content = data_content.indexOf(keyword);
+                    if( index_title >= 0 || index_content >= 0 ){
+                      isMatch = true;
+                      if (i == 0) {
+                        first_occur = index_content;
+                      }
+                    }
+
+                  });
+                }
+                // show search results
+                if (isMatch) {
+                  matchcounts += 1;
+                  str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                  var content = data.content.trim().replace(/<[^>]+>/g,"");
+                  if (first_occur >= 0) {
+                    // cut out 100 characters
+                    var start = first_occur - 20;
+                    var end = first_occur + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if(start == 0){
+                      end = 50;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    var match_content = content.substring(start, end);
+                    // highlight all keywords
+                    keywords.forEach(function(keyword){
+                      var regS = new RegExp(keyword, "gi");
+                      match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                    });
+
+                    str += "<p class=\"search-result\">" + match_content +"...</p>"
+                  }
+                  str += "</li>";
+                }
+              })};
+            str += "</ul>";
+            if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+            if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+            $resultContent.innerHTML = str;
+          });
+          proceedsearch();
+        }
+      });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("4eyaSbRt4Gxv0uJLw1stS8o3-gzGzoHsz", "mJcxoCODhi155s3ypExw4OT6");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
