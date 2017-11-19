@@ -1,0 +1,1162 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="安卓," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/lufei.jpg?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="Android语言切换原理前言&amp;#160;&amp;#160;&amp;#160;之前因为系统有些国家使用的字体乱码的原因，研究了下Android系统字体加载相关的知识，写了一篇Android系统字体加载流程的总结，浅析Android字体加载原理，然而系统的字体与系统当前的语言有密切的关系，因此抽空了解了下Android系统语言切换的流程，写下总结，加深印象。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android语言切换原理">
+<meta property="og:url" content="http://yoursite.com/2017/11/19/Android语言切换原理/index.html">
+<meta property="og:site_name" content="Leslie's Blog">
+<meta property="og:description" content="Android语言切换原理前言&amp;#160;&amp;#160;&amp;#160;之前因为系统有些国家使用的字体乱码的原因，研究了下Android系统字体加载相关的知识，写了一篇Android系统字体加载流程的总结，浅析Android字体加载原理，然而系统的字体与系统当前的语言有密切的关系，因此抽空了解了下Android系统语言切换的流程，写下总结，加深印象。">
+<meta property="og:image" content="http://yoursite.com/images/2017-11-19-1.png">
+<meta property="og:image" content="http://yoursite.com/images/2017-11-19-2.png">
+<meta property="og:image" content="http://yoursite.com/images/2017-11-19-3.png">
+<meta property="og:updated_time" content="2017-11-19T12:55:52.591Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android语言切换原理">
+<meta name="twitter:description" content="Android语言切换原理前言&amp;#160;&amp;#160;&amp;#160;之前因为系统有些国家使用的字体乱码的原因，研究了下Android系统字体加载相关的知识，写了一篇Android系统字体加载流程的总结，浅析Android字体加载原理，然而系统的字体与系统当前的语言有密切的关系，因此抽空了解了下Android系统语言切换的流程，写下总结，加深印象。">
+<meta name="twitter:image" content="http://yoursite.com/images/2017-11-19-1.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/11/19/Android语言切换原理/"/>
+
+
+
+
+
+  <title> Android语言切换原理 | Leslie's Blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?a19b4052e92d3054ac7023476b52e8a9";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta custom-logo">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Leslie's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocapitalize="off" autocomplete="off" autocorrect="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/11/19/Android语言切换原理/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yuxuehai">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/james.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Leslie's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Android语言切换原理
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-19T20:55:06+08:00">
+                2017-11-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/11/19/Android语言切换原理/" class="leancloud_visitors" data-flag-title="Android语言切换原理">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Android语言切换原理"><a href="#Android语言切换原理" class="headerlink" title="Android语言切换原理"></a>Android语言切换原理</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>&#160;&#160;&#160;之前因为系统有些国家使用的字体乱码的原因，研究了下Android系统字体加载相关的知识，写了一篇Android系统字体加载流程的总结，<a href="http://blog.csdn.net/a282255307/article/details/76870441" target="_blank" rel="external">浅析Android字体加载原理</a>，然而系统的字体与系统当前的语言有密切的关系，因此抽空了解了下Android系统语言切换的流程，写下总结，加深印象。</p>
+<a id="more"></a>
+<h2 id="Android语言切换流程分析"><a href="#Android语言切换流程分析" class="headerlink" title="Android语言切换流程分析"></a>Android语言切换流程分析</h2><h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>&#160;&#160;&#160;有过Android开发经验的人，应该都知道Android有一套成熟的国际化机制，通常应用或系统要走出海外，都要进行国际化适配，而Android语言切换依赖于国际化适配，但这里，我们不深入了解Android国际化的原理，有兴趣的读者可以自行Google或者百度，下面对Android语言切换流程进行分析。</p>
+<h3 id="Android多语言描述"><a href="#Android多语言描述" class="headerlink" title="Android多语言描述"></a>Android多语言描述</h3><p>&#160;&#160;&#160;有关Android系统本地化的介绍，请查看官网，<a href="https://developer.android.com/guide/topics/resources/localization.html" target="_blank" rel="external">本地化</a>。</p>
+<p>&#160;&#160;&#160;对于Android语言切换接口，在Android 6.0及以前的语言设置都是单一的语言，只能选一种语言，见下图。</p>
+<p><img src="/images/2017-11-19-1.png" alt="6.0系统"></p>
+<p>&#160;&#160;&#160;Android7.0系统以上，则是更人性化了，允许用户在设置中选择多个语言，如下图，用户可以根据自己的喜好选择语言列表，并将默认的语言拖拽到首项，设为系统默认语言。</p>
+<p><img src="/images/2017-11-19-2.png" alt="7.0系统"></p>
+<p>&#160;&#160;&#160;这么做的目的是为了一些国家使用多种语言，比如印度，印度语是第一母语，英语则为其第二母语，这样的话，在系统捏添加这两个语言后，会加载相应的语言资源，当第一语言没有相应资源时，会去第二语言中查找，而7.0以下的系统就只能加载一种语言下的资源文件，存在很大的限制，这里就不做扩展，有兴趣的读者可以自行了解。</p>
+<h3 id="Android多语言切换"><a href="#Android多语言切换" class="headerlink" title="Android多语言切换"></a>Android多语言切换</h3><p>&#160;&#160;&#160;如上所述，Android在不同的系统版本为用户提供不同的语言切换功能，因此在切换流程过中，调用的接口也不同，如Android6.0及以下，设置切换语言的接口调用的是<strong>updateLocale(Locale locale)</strong>，如Android7.0以上，设置切换语言的接口调用的是<strong>updateLocales(LocaleList locales)</strong>，但是大致的流程还是保持一致，多的只是文件存放位置的变化，下面笔者将以Android7.0的流程进行分析，7.0以下的，读者可自行分析。</p>
+<blockquote>
+<p>注：从上面的两个接口，也可以看出，高版本系统与低版本系统加载语言的区别，前者是加载多个语言的列表，后者是加载一个语言。</p>
+</blockquote>
+<p>&#160;&#160;&#160;如上所述，当用户在设置中选择对应的语言后，Android会首先调frameworks/base/com/android/internal/app/LocalePicker.java中的updateLocales(LocaleList locales)方法。</p>
+<blockquote>
+<p>注：如果你不想用Android7.0以上的语言切换功能，可以考虑自己实现updateLocale(Locale locale)方法。</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * Requests the system to update the list of system locales.</div><div class="line"> * Note that the system looks halted for a while during the Locale migration,</div><div class="line"> * so the caller need to take care of it.</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">updateLocales</span><span class="params">(LocaleList locales)</span> </span>&#123;</div><div class="line">    <span class="keyword">try</span> &#123;</div><div class="line">        <span class="comment">//获取am</span></div><div class="line">        <span class="keyword">final</span> IActivityManager am = ActivityManagerNative.getDefault();</div><div class="line">        <span class="comment">//获取am配置对象</span></div><div class="line">        <span class="keyword">final</span> Configuration config = am.getConfiguration();</div><div class="line"></div><div class="line">        <span class="comment">//为配置对象重新设置语言</span></div><div class="line">        config.setLocales(locales);</div><div class="line">        <span class="comment">//重置标志位</span></div><div class="line">        config.userSetLocale = <span class="keyword">true</span>;</div><div class="line"></div><div class="line">        am.updatePersistentConfiguration(config);</div><div class="line">        <span class="comment">// Trigger the dirty bit for the Settings Provider.</span></div><div class="line">        BackupManager.dataChanged(<span class="string">"com.android.providers.settings"</span>);</div><div class="line">    &#125; <span class="keyword">catch</span> (RemoteException e) &#123;</div><div class="line">        <span class="comment">// Intentionally left blank</span></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;Google对该方法的介绍是，当更新系统语言列表的时候，就会调用这个方法。从上方展示的源码来看,该方法首先会调用ActivityManagerNative.getDefault()来获取ActivityManagerServices(以下简称AMS)在本地的代理，从而调用AMS中的updatePersistentConfiguration()并传入创建好的配置对象(Configuration)。</p>
+<blockquote>
+<p>注：这里是ActivityManagerNative使用远程代理通过Binder条用AMS的同名方法，由于Android的代理机制十分复杂，这里不继续介绍Android代理机制。</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">updatePersistentConfiguration</span><span class="params">(Configuration values)</span> </span>&#123;</div><div class="line">    <span class="comment">//强制权限校验</span></div><div class="line">    enforceCallingPermission(android.Manifest.permission.CHANGE_CONFIGURATION,</div><div class="line">            <span class="string">"updateConfiguration()"</span>);</div><div class="line">    <span class="comment">//强制写入设置权限</span></div><div class="line">    enforceWriteSettingsPermission(<span class="string">"updateConfiguration()"</span>);</div><div class="line">    <span class="keyword">if</span> (values == <span class="keyword">null</span>) &#123;</div><div class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> NullPointerException(<span class="string">"Configuration must not be null"</span>);</div><div class="line">    &#125;</div><div class="line">    <span class="comment">//获取调用用户的ID</span></div><div class="line">    <span class="keyword">int</span> userId = UserHandle.getCallingUserId();</div><div class="line"></div><div class="line">    <span class="keyword">synchronized</span>(<span class="keyword">this</span>) &#123;</div><div class="line">        <span class="comment">//调用方法</span></div><div class="line">        updatePersistentConfigurationLocked(values, userId);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;可以看出，该方法首先进行了权限校验，权限赋予，然后调用updatePersistentConfigurationLocked()方法，继续看下这个方法。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">updatePersistentConfigurationLocked</span><span class="params">(Configuration values, @UserIdInt <span class="keyword">int</span> userId)</span> </span>&#123;</div><div class="line">    <span class="comment">//清除Binder调用标识</span></div><div class="line">    <span class="keyword">final</span> <span class="keyword">long</span> origId = Binder.clearCallingIdentity();</div><div class="line">    <span class="keyword">try</span> &#123;</div><div class="line">        <span class="comment">//重要方法</span></div><div class="line">        updateConfigurationLocked(values, <span class="keyword">null</span>, <span class="keyword">false</span>, <span class="keyword">true</span>, userId, <span class="keyword">false</span> <span class="comment">/* deferResume */</span>);</div><div class="line">    &#125; <span class="keyword">finally</span> &#123;</div><div class="line">        Binder.restoreCallingIdentity(origId);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;这个方法只是清除了Binder标识，并调用了updateConfigurationLocked()方法，该方法非常重要，注意这里的传参，继续往下看。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * Do either or both things: (1) change the current configuration, and (2)</div><div class="line"> * make sure the given activity is running with the (now) current</div><div class="line"> * configuration.  Returns true if the activity has been left running, or</div><div class="line"> * false if &lt;var&gt;starting&lt;/var&gt; is being destroyed to match the new</div><div class="line"> * configuration.</div><div class="line"> *</div><div class="line"> * <span class="doctag">@param</span> userId is only used when persistent parameter is set to true to persist configuration</div><div class="line"> *               for that particular user</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">boolean</span> <span class="title">updateConfigurationLocked</span><span class="params">(Configuration values, ActivityRecord starting,</span></span></div><div class="line">        <span class="keyword">boolean</span> initLocale, <span class="keyword">boolean</span> persistent, <span class="keyword">int</span> userId, <span class="keyword">boolean</span> deferResume) &#123;</div><div class="line">    <span class="keyword">int</span> changes = <span class="number">0</span>;</div><div class="line"></div><div class="line">    ...</div><div class="line">    </div><div class="line">    <span class="keyword">if</span> (values != <span class="keyword">null</span>) &#123;</div><div class="line">        Configuration newConfig = <span class="keyword">new</span> Configuration(mConfiguration);</div><div class="line">        changes = newConfig.updateFrom(values);</div><div class="line">        <span class="keyword">if</span> (changes != <span class="number">0</span>) &#123;</div><div class="line">            <span class="keyword">if</span> (DEBUG_SWITCH || DEBUG_CONFIGURATION) Slog.i(TAG_CONFIGURATION,</div><div class="line">                    <span class="string">"Updating configuration to: "</span> + values);</div><div class="line"></div><div class="line">            EventLog.writeEvent(EventLogTags.CONFIGURATION_CHANGED, changes);</div><div class="line"></div><div class="line">            <span class="keyword">if</span> (!initLocale &amp;&amp; !values.getLocales().isEmpty() &amp;&amp; values.userSetLocale) &#123;</div><div class="line">                <span class="comment">//得到选择的国家语言列表</span></div><div class="line">                <span class="keyword">final</span> LocaleList locales = values.getLocales();</div><div class="line">                <span class="keyword">int</span> bestLocaleIndex = <span class="number">0</span>;</div><div class="line">                <span class="keyword">if</span> (locales.size() &gt; <span class="number">1</span>) &#123;</div><div class="line">                    <span class="keyword">if</span> (mSupportedSystemLocales == <span class="keyword">null</span>) &#123;</div><div class="line">                        <span class="comment">//获取系统支持国家语言列表</span></div><div class="line">                        mSupportedSystemLocales =</div><div class="line">                                Resources.getSystem().getAssets().getLocales();</div><div class="line">                    &#125;</div><div class="line">                    <span class="comment">//匹配国家，获取选择默认国家语言下标</span></div><div class="line">                    bestLocaleIndex = Math.max(<span class="number">0</span>,</div><div class="line">                            locales.getFirstMatchIndex(mSupportedSystemLocales));</div><div class="line">                &#125;</div><div class="line">                SystemProperties.set(<span class="string">"persist.sys.locale"</span>,</div><div class="line">                        locales.get(bestLocaleIndex).toLanguageTag());</div><div class="line">                <span class="comment">//设置为选择的国家语言为默认国家语言</span></div><div class="line">                LocaleList.setDefault(locales, bestLocaleIndex);</div><div class="line">                <span class="comment">//发送消息通知挂载守护进程国家语言变更</span></div><div class="line">                mHandler.sendMessage(mHandler.obtainMessage(SEND_LOCALE_TO_MOUNT_DAEMON_MSG,</div><div class="line">                        locales.get(bestLocaleIndex)));</div><div class="line">            &#125;</div><div class="line"></div><div class="line">            ...</div><div class="line">            </div><div class="line">            <span class="comment">// Make sure all resources in our process are updated</span></div><div class="line">            <span class="comment">// right now, so that anyone who is going to retrieve</span></div><div class="line">            <span class="comment">// resource values after we return will be sure to get</span></div><div class="line">            <span class="comment">// the new ones.  This is especially important during</span></div><div class="line">            <span class="comment">// boot, where the first config change needs to guarantee</span></div><div class="line">            <span class="comment">// all resources have that config before following boot</span></div><div class="line">            <span class="comment">// code is executed.</span></div><div class="line">            <span class="comment">//更新资源配置</span></div><div class="line">            mSystemThread.applyConfigurationToResources(configCopy);</div><div class="line">            <span class="comment">//如果有配置改动，就发送该消息通知配置改动</span></div><div class="line">            <span class="keyword">if</span> (persistent &amp;&amp; Settings.System.hasInterestingConfigurationChanges(changes)) &#123;</div><div class="line">                Message msg = mHandler.obtainMessage(UPDATE_CONFIGURATION_MSG);</div><div class="line">                msg.obj = <span class="keyword">new</span> Configuration(configCopy);</div><div class="line">                msg.arg1 = userId;</div><div class="line">                mHandler.sendMessage(msg);</div><div class="line">            &#125;</div><div class="line">            </div><div class="line">            ...</div><div class="line">            </div><div class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i=mLruProcesses.size()-<span class="number">1</span>; i&gt;=<span class="number">0</span>; i--) &#123;</div><div class="line">                ProcessRecord app = mLruProcesses.get(i);</div><div class="line">                <span class="keyword">try</span> &#123;</div><div class="line">                    <span class="keyword">if</span> (app.thread != <span class="keyword">null</span>) &#123;</div><div class="line">                        <span class="keyword">if</span> (DEBUG_CONFIGURATION) Slog.v(TAG_CONFIGURATION, <span class="string">"Sending to proc "</span></div><div class="line">                                + app.processName + <span class="string">" new config "</span> + mConfiguration);</div><div class="line">                        app.thread.scheduleConfigurationChanged(configCopy);</div><div class="line">                    &#125;</div><div class="line">                &#125; <span class="keyword">catch</span> (Exception e) &#123;</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">            </div><div class="line">            ...</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;从Google给的注释说明可以看到，这个方法的最重要的作用如下：</p>
+<ol>
+<li>更新当前系统的配置到最新的配置；</li>
+<li>保证所有的Activity都能更新到改变后的配置。</li>
+</ol>
+<blockquote>
+<p>注：在更新或者清除configuration时，是通过changes位标记法来确认是configuration中的哪一项。</p>
+</blockquote>
+<p>&#160;&#160;&#160;继续来看Android是如何进行配置更新的。首先调用updateFrom()，方法来更新配置，我们先看看这个方法。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * Copies the fields from delta into this Configuration object, keeping</div><div class="line"> * track of which ones have changed. Any undefined fields in &#123;<span class="doctag">@code</span> delta&#125;</div><div class="line"> * are ignored and not copied in to the current Configuration.</div><div class="line"> *</div><div class="line"> * <span class="doctag">@return</span> a bit mask of the changed fields, as per &#123;<span class="doctag">@link</span> #diff&#125;</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="meta">@Config</span> <span class="function"><span class="keyword">int</span> <span class="title">updateFrom</span><span class="params">(@NonNull Configuration delta)</span> </span>&#123;</div><div class="line">    <span class="comment">//变化项</span></div><div class="line">    <span class="keyword">int</span> changed = <span class="number">0</span>;</div><div class="line">    </div><div class="line">    ...</div><div class="line">    <span class="comment">//当有语言列表变化时，走这</span></div><div class="line">    <span class="keyword">if</span> (!delta.mLocaleList.isEmpty() &amp;&amp; !mLocaleList.equals(delta.mLocaleList)) &#123;</div><div class="line">        changed |= ActivityInfo.CONFIG_LOCALE;</div><div class="line">        mLocaleList = delta.mLocaleList;</div><div class="line">        <span class="comment">// delta.locale can't be null, since delta.mLocaleList is not empty.</span></div><div class="line">        <span class="keyword">if</span> (!delta.locale.equals(locale)) &#123;</div><div class="line">            locale = (Locale) delta.locale.clone();</div><div class="line">            <span class="comment">// If locale has changed, then layout direction is also changed ...</span></div><div class="line">            changed |= ActivityInfo.CONFIG_LAYOUT_DIRECTION;</div><div class="line">            <span class="comment">// ... and we need to update the layout direction (represented by the first</span></div><div class="line">            <span class="comment">// 2 most significant bits in screenLayout).</span></div><div class="line">            setLayoutDirection(locale);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    ...</div><div class="line">    </div><div class="line">    <span class="keyword">if</span> (delta.userSetLocale &amp;&amp; (!userSetLocale || ((changed &amp; ActivityInfo.CONFIG_LOCALE) != <span class="number">0</span>)))</div><div class="line">    &#123;</div><div class="line">        changed |= ActivityInfo.CONFIG_LOCALE;</div><div class="line">        userSetLocale = <span class="keyword">true</span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">return</span> changed;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;从以上可以看到，当我们修改了语言列表，那么返回的变化项change一定大于0。继续回到updateConfigurationLocked()方法中，由于change不为0，并且根据前面的传参，updateConfigurationLocked()方法将从变更的国家语言列表中获取默认国家语言下标，然后设置默认国家语言以及默认国家列表，并发送消息通知挂载守护进程国家语言的变化，其中设置默认情况的代码如下。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//设置默认国家语言以及国家语言列表</span></div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * This may be used directly by system processes to set the default locale list for apps. For</div><div class="line"> * such uses, the default locale list would always come from the user preferences, but the</div><div class="line"> * default locale may have been chosen to be a locale other than the first locale in the locale</div><div class="line"> * list (based on the locales the app supports).</div><div class="line"> *</div><div class="line"> * &#123;<span class="doctag">@hide</span>&#125;</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">setDefault</span><span class="params">(@NonNull @Size(min=<span class="number">1</span>)</span> LocaleList locales, <span class="keyword">int</span> localeIndex) </span>&#123;</div><div class="line">    <span class="keyword">if</span> (locales == <span class="keyword">null</span>) &#123;</div><div class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> NullPointerException(<span class="string">"locales is null"</span>);</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">if</span> (locales.isEmpty()) &#123;</div><div class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException(<span class="string">"locales is empty"</span>);</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">synchronized</span> (sLock) &#123;</div><div class="line">        sLastDefaultLocale = locales.get(localeIndex);</div><div class="line">        Locale.setDefault(sLastDefaultLocale);</div><div class="line">        sLastExplicitlySetLocaleList = locales;</div><div class="line">        sDefaultLocaleList = locales;</div><div class="line">        <span class="keyword">if</span> (localeIndex == <span class="number">0</span>) &#123;</div><div class="line">            sDefaultAdjustedLocaleList = sDefaultLocaleList;</div><div class="line">        &#125; <span class="keyword">else</span> &#123;</div><div class="line">            sDefaultAdjustedLocaleList = <span class="keyword">new</span> LocaleList(</div><div class="line">                    sLastDefaultLocale, sDefaultLocaleList);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;再此之后，系统进程会首先通知Configuration改变，所以mSystemThread即系统的ActivityThread类对象调用applyConfigurationToResources()确保自己所在的进程资源更新到最新(主要指framework-res.apk中的资源，也就是上面所说的updateConfigurationLocked()方法的第一个重要作用)，以便任何人检索资源的时候拿到的都是最新的资源，然后发送通知更新用户配置。</p>
+<blockquote>
+<p>注：这里是系统更新配置资源，后面将对pplyConfigurationToResources()方法进行描述。</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="comment">// Make sure all resources in our process are updated</span></div><div class="line"><span class="comment">// right now, so that anyone who is going to retrieve</span></div><div class="line"><span class="comment">// resource values after we return will be sure to get</span></div><div class="line"><span class="comment">// the new ones.  This is especially important during</span></div><div class="line"><span class="comment">// boot, where the first config change needs to guarantee</span></div><div class="line"><span class="comment">// all resources have that config before following boot</span></div><div class="line"><span class="comment">// code is executed.</span></div><div class="line"><span class="comment">//更新资源配置</span></div><div class="line">mSystemThread.applyConfigurationToResources(configCopy);</div><div class="line"><span class="comment">//如果有配置改动，就发送该消息通知配置改动</span></div><div class="line"><span class="keyword">if</span> (persistent &amp;&amp; Settings.System.hasInterestingConfigurationChanges(changes)) &#123;</div><div class="line">    Message msg = mHandler.obtainMessage(UPDATE_CONFIGURATION_MSG);</div><div class="line">    msg.obj = <span class="keyword">new</span> Configuration(configCopy);</div><div class="line">    msg.arg1 = userId;</div><div class="line">    mHandler.sendMessage(msg);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;继续往下看，以下是遍历每个应用，通知其配置的改变。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//保存所有应用的进程</span></div><div class="line"><span class="keyword">final</span> ArrayList&lt;ProcessRecord&gt; mLruProcesses = <span class="keyword">new</span> ArrayList&lt;ProcessRecord&gt;();</div><div class="line"></div><div class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i=mLruProcesses.size()-<span class="number">1</span>; i&gt;=<span class="number">0</span>; i--) &#123;</div><div class="line">    ProcessRecord app = mLruProcesses.get(i);</div><div class="line">    <span class="keyword">try</span> &#123;</div><div class="line">        <span class="keyword">if</span> (app.thread != <span class="keyword">null</span>) &#123;</div><div class="line">            <span class="keyword">if</span> (DEBUG_CONFIGURATION) Slog.v(TAG_CONFIGURATION, <span class="string">"Sending to proc "</span></div><div class="line">                    + app.processName + <span class="string">" new config "</span> + mConfiguration);</div><div class="line">            app.thread.scheduleConfigurationChanged(configCopy);</div><div class="line">        &#125;</div><div class="line">    &#125; <span class="keyword">catch</span> (Exception e) &#123;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">void</span> <span class="title">scheduleConfigurationChanged</span><span class="params">(Configuration config)</span></span></div><div class="line">        <span class="keyword">throws</span> RemoteException &#123;</div><div class="line">    Parcel data = Parcel.obtain();</div><div class="line">    data.writeInterfaceToken(IApplicationThread.descriptor);</div><div class="line">    config.writeToParcel(data, <span class="number">0</span>);</div><div class="line">    mRemote.transact(SCHEDULE_CONFIGURATION_CHANGED_TRANSACTION, data, <span class="keyword">null</span>,</div><div class="line">            IBinder.FLAG_ONEWAY);</div><div class="line">    data.recycle();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;可以看到，mLruProcesses中保存的是所有运行的进程，Android中，每个应用运行时都对应于一个进程，因此这里包含了所有运行的应用。我们注意到这里循环调用了app.thread.scheduleConfigurationChanged(configCopy)，app.thread对应于每个应用的线程，其作用是通知各个应用进程Configuration改变。跳转后会发现，这里其实又是通过binder调用跨进程方法，在这里是调用ActivityThread.java中私有ApplicationThread的方法，查看该方法。</p>
+<blockquote>
+<p>注：ApplicationThread是ActivityThread的内部类，也是一个Binder对象，这边用以等待AMS发送消息。</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">scheduleConfigurationChanged</span><span class="params">(Configuration config)</span> </span>&#123;</div><div class="line">    updatePendingConfiguration(config);</div><div class="line">    <span class="comment">//发送消息给对应的主线程</span></div><div class="line">    sendMessage(H.CONFIGURATION_CHANGED, config);</div><div class="line">&#125;</div><div class="line"></div><div class="line">...</div><div class="line"></div><div class="line"><span class="keyword">case</span> CONFIGURATION_CHANGED:</div><div class="line">    Trace.traceBegin(Trace.TRACE_TAG_ACTIVITY_MANAGER, <span class="string">"configChanged"</span>);</div><div class="line">    mCurDefaultDisplayDpi = ((Configuration)msg.obj).densityDpi;</div><div class="line">    mUpdatingSystemConfig = <span class="keyword">true</span>;</div><div class="line">    <span class="comment">//接收到AMS发来的数据</span></div><div class="line">    handleConfigurationChanged((Configuration)msg.obj, <span class="keyword">null</span>);</div><div class="line">    mUpdatingSystemConfig = <span class="keyword">false</span>;</div><div class="line">    Trace.traceEnd(Trace.TRACE_TAG_ACTIVITY_MANAGER);</div><div class="line">    <span class="keyword">break</span>;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;这里ApplicationThread接收到AMS的信息后，会发送消息CONFIGURATION_CHANGED给对应应用的ActivityThread。ActivityThread收到CONFIGURATION_CHANGED消息后，其会调用handleConfigurationChanged()方法。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="function"><span class="keyword">final</span> <span class="keyword">void</span> <span class="title">handleConfigurationChanged</span><span class="params">(Configuration config, CompatibilityInfo compat)</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="keyword">int</span> configDiff = <span class="number">0</span>;</div><div class="line"></div><div class="line">    <span class="keyword">synchronized</span> (mResourcesManager) &#123;</div><div class="line">        ...</div><div class="line">        </div><div class="line">        <span class="comment">//将资源配置修改应用到资源中</span></div><div class="line">        mResourcesManager.applyConfigurationToResourcesLocked(config, compat);</div><div class="line">        <span class="comment">//更新语言列表</span></div><div class="line">        updateLocaleListFromAppContext(mInitialApplication.getApplicationContext(),</div><div class="line">                mResourcesManager.getConfiguration().getLocales());</div><div class="line"></div><div class="line">        ...</div><div class="line">    &#125;</div><div class="line">    <span class="comment">//组件修改回调对象</span></div><div class="line">    ArrayList&lt;ComponentCallbacks2&gt; callbacks = collectComponentCallbacks(<span class="keyword">false</span>, config);</div><div class="line"></div><div class="line">    freeTextLayoutCachesIfNeeded(configDiff);</div><div class="line">    <span class="keyword">if</span> (callbacks != <span class="keyword">null</span>) &#123;framework-res.apk</div><div class="line">        <span class="keyword">final</span> <span class="keyword">int</span> N = callbacks.size();</div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;N; i++) &#123;</div><div class="line">            ComponentCallbacks2 cb = callbacks.get(i);</div><div class="line">            <span class="keyword">if</span> (cb <span class="keyword">instanceof</span> Activity) &#123;</div><div class="line">                <span class="comment">// If callback is an Activity - call corresponding method to consider override</span></div><div class="line">                <span class="comment">// config and avoid onConfigurationChanged if it hasn't changed.</span></div><div class="line">                Activity a = (Activity) cb;</div><div class="line">                <span class="comment">//Activity回调响应</span></div><div class="line">                performConfigurationChangedForActivity(mActivities.get(a.getActivityToken()),</div><div class="line">                        config, REPORT_TO_ACTIVITY);</div><div class="line">            &#125; <span class="keyword">else</span> &#123;</div><div class="line">                <span class="comment">//其他回调响应</span></div><div class="line">                performConfigurationChanged(cb, <span class="keyword">null</span>, config, <span class="keyword">null</span>, REPORT_TO_ACTIVITY);</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;在handleConfigurationChanged()方法中，也会调用applyConfigurationToResourcesLocked()方法，去更新每个应用的配置资源(也就是上述updateConfigurationLocked()方法的第二个重要作用)。</p>
+<p>&#160;&#160;&#160;也就是说，不管是系统资源还是应用资源的更新都要调用applyConfigurationToResourcesLocked()方法。按字面意思，大概的作用就是将资源配置修改应用到资源中，而资源文件就包含语言资源文件、图片资源、布局资源等，查看其代码。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">boolean</span> <span class="title">applyConfigurationToResourcesLocked</span><span class="params">(@NonNull Configuration config,</span></span></div><div class="line">                                                         @Nullable CompatibilityInfo compat) &#123;</div><div class="line">                                                         </div><div class="line">    <span class="keyword">private</span> <span class="keyword">final</span> ArrayMap&lt;ResourcesKey, WeakReference&lt;ResourcesImpl&gt;&gt; mResourceImpls =</div><div class="line">            <span class="keyword">new</span> ArrayMap&lt;&gt;();</div><div class="line">            </div><div class="line">    <span class="keyword">try</span> &#123;</div><div class="line">        </div><div class="line">        ...</div><div class="line">        </div><div class="line">        <span class="comment">//获取更新项</span></div><div class="line">        <span class="keyword">int</span> changes = mResConfiguration.updateFrom(config);</div><div class="line">        <span class="comment">// Things might have changed in display manager, so clear the cached displays.</span></div><div class="line">        mDisplays.clear();</div><div class="line">        </div><div class="line">        ...</div><div class="line">        </div><div class="line">        <span class="comment">//更新系统资源配置</span></div><div class="line">        Resources.updateSystemConfiguration(config, defaultDisplayMetrics, compat);</div><div class="line">        <span class="comment">//通知配置文件修改,清理缓存，如Icon和String</span></div><div class="line">        ApplicationPackageManager.configurationChanged();</div><div class="line">        <span class="comment">//Slog.i(TAG, "Configuration changed in " + currentPackageName());</span></div><div class="line"></div><div class="line">        Configuration tmpConfig = <span class="keyword">null</span>;</div><div class="line">        </div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = mResourceImpls.size() - <span class="number">1</span>; i &gt;= <span class="number">0</span>; i--) &#123;</div><div class="line">            ResourcesKey key = mResourceImpls.keyAt(i);</div><div class="line">            ResourcesImpl r = mResourceImpls.valueAt(i).get();</div><div class="line">            <span class="keyword">if</span> (r != <span class="keyword">null</span>) &#123;</div><div class="line">                    </div><div class="line">                    ...</div><div class="line">                        </div><div class="line">                    r.updateConfiguration(tmpConfig, dm, compat);</div><div class="line">                &#125; <span class="keyword">else</span> &#123;</div><div class="line">                    r.updateConfiguration(config, dm, compat);</div><div class="line">                &#125;</div><div class="line">                <span class="comment">//Slog.i(TAG, "Updated app resources " + v.getKey()</span></div><div class="line">                <span class="comment">//        + " " + r + ": " + r.getConfiguration());</span></div><div class="line">            &#125; <span class="keyword">else</span> &#123;</div><div class="line">                <span class="comment">//Slog.i(TAG, "Removing old resources " + v.getKey());</span></div><div class="line">                mResourceImpls.removeAt(i);</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="keyword">return</span> changes != <span class="number">0</span>;</div><div class="line">    &#125; <span class="keyword">finally</span> &#123;</div><div class="line">        Trace.traceEnd(Trace.TRACE_TAG_RESOURCES);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;按照上面的说法，系统进程以及应用进程会分别调用applyConfigurationToResourcesLocked()方法来更新配置。</p>
+<p>&#160;&#160;&#160;当系统进程执行该方法时，Resources.updateSystemConfiguration()会更新系统资源配置(frameworks-res.apk)，在执行完ApplicationPackageManager.configurationChanged()方法后，会清除进程的资源缓存，如Icon与String，并移除其他旧的资源，最终加载新的系统资源。</p>
+<blockquote>
+<p>注：这里并未对更新细节进行详细描述，如有兴趣可以自行研究下。</p>
+</blockquote>
+<p>&#160;&#160;&#160;当应用进程执行该方法时，会通知应用进程更新资源配置，并且实现ComponentCallbacks2接口的组件，如Activity、Services、Application等会被记录，并在handleConfigurationChanged()中被遍历回调通知更新资源配置，因此我们再回到handleConfigurationChanged()方法中。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="comment">//组件修改回调对象</span></div><div class="line">ArrayList&lt;ComponentCallbacks2&gt; callbacks = collectComponentCallbacks(<span class="keyword">false</span>, config);</div><div class="line"></div><div class="line">freeTextLayoutCachesIfNeeded(configDiff);</div><div class="line"><span class="keyword">if</span> (callbacks != <span class="keyword">null</span>) &#123;</div><div class="line">    <span class="keyword">final</span> <span class="keyword">int</span> N = callbacks.size();</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;N; i++) &#123;</div><div class="line">        ComponentCallbacks2 cb = callbacks.get(i);</div><div class="line">        <span class="keyword">if</span> (cb <span class="keyword">instanceof</span> Activity) &#123;</div><div class="line">            <span class="comment">// If callback is an Activity - call corresponding method to consider override</span></div><div class="line">            <span class="comment">// config and avoid onConfigurationChanged if it hasn't changed.</span></div><div class="line">            Activity a = (Activity) cb;</div><div class="line">            <span class="comment">//Activity回调响应</span></div><div class="line">            performConfigurationChangedForActivity(mActivities.get(a.getActivityToken()),</div><div class="line">                    config, REPORT_TO_ACTIVITY);</div><div class="line">        &#125; <span class="keyword">else</span> &#123;</div><div class="line">            <span class="comment">//其他回调响应</span></div><div class="line">            performConfigurationChanged(cb, <span class="keyword">null</span>, config, <span class="keyword">null</span>, REPORT_TO_ACTIVITY);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;从上面可以看出，在回调中，如果是Activity，则回调performConfigurationChangedForActivity()方法，如果是Services、Application等，回调performConfigurationChanged()方法，按注释解释，这样做是为了Activity在更新配置时重写配置和避免没有修改时回调onConfigurationChanged()方法，但不管是什么组件，最终都是调用performConfigurationChanged()方法，我们来具体看下这个方法。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">performConfigurationChanged</span><span class="params">(ComponentCallbacks2 cb,</span></span></div><div class="line">                                         IBinder activityToken,</div><div class="line">                                         Configuration newConfig,</div><div class="line">                                         Configuration amOverrideConfig,</div><div class="line">                                         <span class="keyword">boolean</span> reportToActivity) &#123;</div><div class="line">    <span class="comment">// Only for Activity objects, check that they actually call up to their</span></div><div class="line">    <span class="comment">// superclass implementation.  ComponentCallbacks2 is an interface, so</span></div><div class="line">    <span class="comment">// we check the runtime type and act accordingly.</span></div><div class="line">    Activity activity = (cb <span class="keyword">instanceof</span> Activity) ? (Activity) cb : <span class="keyword">null</span>;</div><div class="line">    <span class="keyword">if</span> (activity != <span class="keyword">null</span>) &#123;</div><div class="line">        activity.mCalled = <span class="keyword">false</span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">boolean</span> shouldChangeConfig = <span class="keyword">false</span>;</div><div class="line">    <span class="keyword">if</span> ((activity == <span class="keyword">null</span>) || (activity.mCurrentConfig == <span class="keyword">null</span>)) &#123;</div><div class="line">        shouldChangeConfig = <span class="keyword">true</span>;</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">        <span class="comment">// If the new config is the same as the config this Activity is already</span></div><div class="line">        <span class="comment">// running with and the override config also didn't change, then don't</span></div><div class="line">        <span class="comment">// bother calling onConfigurationChanged.</span></div><div class="line">        <span class="keyword">int</span> diff = activity.mCurrentConfig.diff(newConfig);</div><div class="line">        <span class="keyword">if</span> (diff != <span class="number">0</span> || !mResourcesManager.isSameResourcesOverrideConfig(activityToken,</div><div class="line">                amOverrideConfig)) &#123;</div><div class="line">            <span class="comment">// Always send the task-level config changes. For system-level configuration, if</span></div><div class="line">            <span class="comment">// this activity doesn't handle any of the config changes, then don't bother</span></div><div class="line">            <span class="comment">// calling onConfigurationChanged as we're going to destroy it.</span></div><div class="line">            <span class="keyword">if</span> (!mUpdatingSystemConfig</div><div class="line">                    || (~activity.mActivityInfo.getRealConfigChanged() &amp; diff) == <span class="number">0</span></div><div class="line">                    || !reportToActivity) &#123;</div><div class="line">                shouldChangeConfig = <span class="keyword">true</span>;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">if</span> (shouldChangeConfig) &#123;</div><div class="line">        <span class="comment">// Propagate the configuration change to the Activity and ResourcesManager.</span></div><div class="line"></div><div class="line">        <span class="comment">// ContextThemeWrappers may override the configuration for that context.</span></div><div class="line">        <span class="comment">// We must check and apply any overrides defined.</span></div><div class="line">        Configuration contextThemeWrapperOverrideConfig = <span class="keyword">null</span>;</div><div class="line">        <span class="keyword">if</span> (cb <span class="keyword">instanceof</span> ContextThemeWrapper) &#123;</div><div class="line">            <span class="keyword">final</span> ContextThemeWrapper contextThemeWrapper = (ContextThemeWrapper) cb;</div><div class="line">            contextThemeWrapperOverrideConfig = contextThemeWrapper.getOverrideConfiguration();</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="comment">// We only update an Activity's configuration if this is not a global</span></div><div class="line">        <span class="comment">// configuration change. This must also be done before the callback,</span></div><div class="line">        <span class="comment">// or else we violate the contract that the new resources are available</span></div><div class="line">        <span class="comment">// in &#123;@link ComponentCallbacks2#onConfigurationChanged(Configuration)&#125;.</span></div><div class="line">        <span class="keyword">if</span> (activityToken != <span class="keyword">null</span>) &#123;</div><div class="line">            <span class="comment">// Apply the ContextThemeWrapper override if necessary.</span></div><div class="line">            <span class="comment">// <span class="doctag">NOTE:</span> Make sure the configurations are not modified, as they are treated</span></div><div class="line">            <span class="comment">// as immutable in many places.</span></div><div class="line">            <span class="keyword">final</span> Configuration finalOverrideConfig = createNewConfigAndUpdateIfNotNull(</div><div class="line">                    amOverrideConfig, contextThemeWrapperOverrideConfig);</div><div class="line">            mResourcesManager.updateResourcesForActivity(activityToken, finalOverrideConfig);</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="keyword">if</span> (reportToActivity) &#123;</div><div class="line">            <span class="comment">// Apply the ContextThemeWrapper override if necessary.</span></div><div class="line">            <span class="comment">// <span class="doctag">NOTE:</span> Make sure the configurations are not modified, as they are treated</span></div><div class="line">            <span class="comment">// as immutable in many places.</span></div><div class="line">            <span class="keyword">final</span> Configuration configToReport = createNewConfigAndUpdateIfNotNull(</div><div class="line">                    newConfig, contextThemeWrapperOverrideConfig);</div><div class="line">            cb.onConfigurationChanged(configToReport);</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="keyword">if</span> (activity != <span class="keyword">null</span>) &#123;</div><div class="line">            <span class="keyword">if</span> (reportToActivity &amp;&amp; !activity.mCalled) &#123;</div><div class="line">                <span class="keyword">throw</span> <span class="keyword">new</span> SuperNotCalledException(</div><div class="line">                        <span class="string">"Activity "</span> + activity.getLocalClassName() +</div><div class="line">                        <span class="string">" did not call through to super.onConfigurationChanged()"</span>);</div><div class="line">            &#125;</div><div class="line">            activity.mConfigChangeFlags = <span class="number">0</span>;</div><div class="line">            activity.mCurrentConfig = <span class="keyword">new</span> Configuration(newConfig);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;从上面代码注释，可以看到，只有Activity组件才会实现这个方法，并且只有当配置修改不是全局时，Activity会在回调前调用updateResourcesForActivity()方法来更新配置资源，最后回调onConfigurationChanged()方法。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * Called by the system when the device configuration changes while your</div><div class="line"> * activity is running.  Note that this will &lt;em&gt;only&lt;/em&gt; be called if</div><div class="line"> * you have selected configurations you would like to handle with the</div><div class="line"> * &#123;<span class="doctag">@link</span> android.R.attr#configChanges&#125; attribute in your manifest.  If</div><div class="line"> * any configuration change occurs that is not selected to be reported</div><div class="line"> * by that attribute, then instead of reporting it the system will stop</div><div class="line"> * and restart the activity (to have it launched with the new</div><div class="line"> * configuration).</div><div class="line"> * &lt;p&gt;</div><div class="line"> * &lt;p&gt;At the time that this function has been called, your Resources</div><div class="line"> * object will have been updated to return resource values matching the</div><div class="line"> * new configuration.</div><div class="line"> *</div><div class="line"> * <span class="doctag">@param</span> newConfig The new device configuration.</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onConfigurationChanged</span><span class="params">(Configuration newConfig)</span> </span>&#123;</div><div class="line">    <span class="keyword">if</span> (DEBUG_LIFECYCLE) Slog.v(TAG, <span class="string">"onConfigurationChanged "</span> + <span class="keyword">this</span> + <span class="string">": "</span> + newConfig);</div><div class="line">    mCalled = <span class="keyword">true</span>;</div><div class="line"></div><div class="line">    mFragments.dispatchConfigurationChanged(newConfig);</div><div class="line"></div><div class="line">    <span class="keyword">if</span> (mWindow != <span class="keyword">null</span>) &#123;</div><div class="line">        <span class="comment">// Pass the configuration changed event to the window</span></div><div class="line">        mWindow.onConfigurationChanged(newConfig);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">if</span> (mActionBar != <span class="keyword">null</span>) &#123;</div><div class="line">        <span class="comment">// Do this last; the action bar will need to access</span></div><div class="line">        <span class="comment">// view changes from above.</span></div><div class="line">        mActionBar.onConfigurationChanged(newConfig);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>&#160;&#160;&#160;以上注释大概的意思是，当你的Activity在运行时，有设备配置发生了变化，系统就会调用这个方法。如果你在manifest中配置了configChanges属性，则表示由你自己处理配置修改，否则就会重启这个Activity,并且会加载新的资源，这样就让系统以及应用加载完新的资源，完成了语言的切换。</p>
+<p><strong>总结</strong></p>
+<p>&#160;&#160;&#160;从整个流程来看，Android字体切换的流程如下：</p>
+<ol>
+<li>当切换或添加新的语言时，会生成新的Configuration来替换原来的Configuration，并且修改项是可追寻的；</li>
+<li>根据最新的Configuration来更新系统资源以及应用资源；</li>
+<li>重启所有的Activity并更新到最新的资源；</li>
+<li>完成语言切换。</li>
+</ol>
+<p>&#160;&#160;&#160;以下为语言切换流程大致的时序图。</p>
+<p><img src="/images/2017-11-19-3.png" alt="这里写图片描述"></p>
+<blockquote>
+<p>注：由于个人能力有限以及时间关系，有遗漏或错误的地方，还请批评指出，谢谢。</p>
+</blockquote>
+<h2 id="参考博客"><a href="#参考博客" class="headerlink" title="参考博客"></a>参考博客</h2><p><strong>&#160;&#160;&#160;<a href="http://blog.csdn.net/wqhjfree/article/details/8244520" target="_blank" rel="external">wqhjfree</a></strong><br><strong>&#160;&#160;&#160;<a href="http://blog.csdn.net/kong92917/article/details/51463567" target="_blank" rel="external">七号大蒜</a></strong></p>
+<hr>
+<p><strong>版权声明：本文为博主原创文章，转载请注明出处<a href="https://kidsea.github.io/" target="_blank" rel="external">KidSea</a></strong></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/安卓/" rel="tag"># 安卓</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/10/17/深入理解java虚拟机-4/" rel="next" title="读深入理解Java虚拟机">
+                <i class="fa fa-chevron-left"></i> 读深入理解Java虚拟机
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+  <a class="jiathis_button_tsina"></a>
+  <a class="jiathis_button_tqq"></a>
+  <a class="jiathis_button_weixin"></a>
+  <a class="jiathis_button_cqq"></a>
+  <a class="jiathis_button_douban"></a>
+  <a class="jiathis_button_renren"></a>
+  <a class="jiathis_button_qzone"></a>
+  <a class="jiathis_button_kaixin001"></a>
+  <a class="jiathis_button_copy"></a>
+  <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank"></a>
+  <a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+  var jiathis_config={
+    hideMore:false
+  }
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8yNzk3MC80NTQ3"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/james.jpg"
+               alt="yuxuehai" />
+          <p class="site-author-name" itemprop="name">yuxuehai</p>
+           
+              <p class="site-description motion-element" itemprop="description">I belive I can fly</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">57</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/KidSea" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/a282255307?viewmode=list" target="_blank" title="CSDN">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  CSDN
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              友情链接
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://opiece.me/" title="Chillax" target="_blank">Chillax</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://hukai.me/" title="hukai" target="_blank">hukai</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://www.csdn.net/" title="CSDN" target="_blank">CSDN</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://duanqz.github.io/" title="启智观" target="_blank">启智观</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Android语言切换原理"><span class="nav-number">1.</span> <span class="nav-text">Android语言切换原理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Android语言切换流程分析"><span class="nav-number">1.2.</span> <span class="nav-text">Android语言切换流程分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#概述"><span class="nav-number">1.2.1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Android多语言描述"><span class="nav-number">1.2.2.</span> <span class="nav-text">Android多语言描述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Android多语言切换"><span class="nav-number">1.2.3.</span> <span class="nav-text">Android多语言切换</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考博客"><span class="nav-number">1.3.</span> <span class="nav-text">参考博客</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">yuxuehai</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+      search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.popup').toggle();
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+      $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = $( "entry", xmlResponse ).map(function() {
+            return {
+              title: $( "title", this ).text(),
+              content: $("content",this).text(),
+              url: $( "url" , this).text()
+            };
+          }).get();
+          var $input = document.getElementById(search_id);
+          var $resultContent = document.getElementById(content_id);
+          $input.addEventListener('input', function(){
+            var matchcounts = 0;
+            var str='<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length > 1) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var content_index = [];
+                var data_title = data.title.trim().toLowerCase();
+                var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                var data_url = decodeURIComponent(data.url);
+                var index_title = -1;
+                var index_content = -1;
+                var first_occur = -1;
+                // only match artiles with not empty titles and contents
+                if(data_title != '') {
+                  keywords.forEach(function(keyword, i) {
+                    index_title = data_title.indexOf(keyword);
+                    index_content = data_content.indexOf(keyword);
+                    if( index_title >= 0 || index_content >= 0 ){
+                      isMatch = true;
+                      if (i == 0) {
+                        first_occur = index_content;
+                      }
+                    }
+
+                  });
+                }
+                // show search results
+                if (isMatch) {
+                  matchcounts += 1;
+                  str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                  var content = data.content.trim().replace(/<[^>]+>/g,"");
+                  if (first_occur >= 0) {
+                    // cut out 100 characters
+                    var start = first_occur - 20;
+                    var end = first_occur + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if(start == 0){
+                      end = 50;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    var match_content = content.substring(start, end);
+                    // highlight all keywords
+                    keywords.forEach(function(keyword){
+                      var regS = new RegExp(keyword, "gi");
+                      match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                    });
+
+                    str += "<p class=\"search-result\">" + match_content +"...</p>"
+                  }
+                  str += "</li>";
+                }
+              })};
+            str += "</ul>";
+            if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+            if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+            $resultContent.innerHTML = str;
+          });
+          proceedsearch();
+        }
+      });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("4eyaSbRt4Gxv0uJLw1stS8o3-gzGzoHsz", "mJcxoCODhi155s3ypExw4OT6");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
